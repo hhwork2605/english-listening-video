@@ -1,0 +1,16 @@
+{
+  "title": "English Podcast | Talking About Your Day at Work",
+  "level": "B1-B2",
+  "topic": "Talking About Your Day at Work",
+  "fps": 30,
+  "speakers": {
+    "A": { "name": "Emma", "voice": "Microsoft Zira Desktop", "side": "left", "color": "#f48fb1" },
+    "B": { "name": "Mike", "voice": "Microsoft David Desktop", "side": "right", "color": "#64b5f6" }
+  },
+  "turns": [
+    { "id": "001", "speaker": "A", "en": "Hey Mike, how was your day at work today?", "vi": "Này Mike, hôm nay ngày làm việc của cậu thế nào?", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.4 },
+    { "id": "002", "speaker": "B", "en": "Honestly, it was pretty busy. I had three meetings.", "vi": "Thật ra khá bận. Tớ có ba cuộc họp.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.4 },
+    { "id": "003", "speaker": "A", "en": "Three meetings? That sounds exhausting.", "vi": "Ba cuộc họp? Nghe mệt thật đấy.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.4 },
+    { "id": "004", "speaker": "B", "en": "It was. But we finally finished the project plan.", "vi": "Đúng vậy. Nhưng cuối cùng bọn tớ cũng xong kế hoạch dự án.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.4 }
+  ]
+}

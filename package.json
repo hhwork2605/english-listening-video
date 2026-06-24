@@ -1,0 +1,40 @@
+{
+  "name": "english-listening-video",
+  "version": "1.0.0",
+  "description": "Passive English listening videos for YouTube, generated with Claude + Remotion",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "remotion studio",
+    "render:landscape": "remotion render LandscapeVideo out/landscape.mp4",
+    "render:portrait": "remotion render PortraitVideo out/portrait.mp4",
+    "render:all": "npm run render:landscape && npm run render:portrait",
+    "render:podcast": "remotion render Podcast out/podcast.mp4",
+    "render:podcast:portrait": "remotion render PodcastVertical out/podcast-portrait.mp4",
+    "render:thumbnail": "remotion still Thumbnail out/thumbnail.png",
+    "generate:dialogue": "tsx scripts/generate-dialogue.ts",
+    "dialogue:audio": "powershell -ExecutionPolicy Bypass -File scripts/tts-dialogue.ps1",
+    "dialogue:align": "python scripts/align_whisper.py",
+    "project:new": "node scripts/new-project.mjs",
+    "project:finalize": "node scripts/finalize-project.mjs",
+    "generate:script": "tsx scripts/generate-script.ts",
+    "generate:audio": "tsx scripts/generate-audio.ts",
+    "generate:audio:sapi": "powershell -ExecutionPolicy Bypass -File scripts/tts-sapi.ps1",
+    "measure": "tsx scripts/measure-duration.ts",
+    "build:content": "tsx scripts/build.ts"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.290",
+    "@remotion/media-parser": "4.0.290",
+    "@remotion/media-utils": "4.0.290",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.290"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "@types/react": "19.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

@@ -1,0 +1,1799 @@
+﻿{
+    "title":  "Daily English Conversations",
+    "level":  "B1",
+    "fps":  30,
+    "items":  [
+                  {
+                      "id":  "001",
+                      "en":  "I usually wake up at six in the morning.",
+                      "vi":  "Tôi thường thức dậy lúc sáu giờ sáng.",
+                      "phonetic":  "/aɪ ˈjuːʒuəli weɪk ʌp æt sɪks ɪn ðə ˈmɔːrnɪŋ/",
+                      "topic":  "daily routine",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/001.wav",
+                      "durationInSec":  3.259,
+                      "words":  [
+                                    {
+                                        "text":  "I",
+                                        "startSec":  0.151,
+                                        "endSec":  0.337
+                                    },
+                                    {
+                                        "text":  "usually",
+                                        "startSec":  0.337,
+                                        "endSec":  1.04
+                                    },
+                                    {
+                                        "text":  "wake",
+                                        "startSec":  1.04,
+                                        "endSec":  1.446
+                                    },
+                                    {
+                                        "text":  "up",
+                                        "startSec":  1.446,
+                                        "endSec":  1.715
+                                    },
+                                    {
+                                        "text":  "at",
+                                        "startSec":  1.715,
+                                        "endSec":  1.915
+                                    },
+                                    {
+                                        "text":  "six",
+                                        "startSec":  1.915,
+                                        "endSec":  2.369
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "startSec":  2.369,
+                                        "endSec":  2.548
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  2.548,
+                                        "endSec":  2.665
+                                    },
+                                    {
+                                        "text":  "morning",
+                                        "startSec":  2.665,
+                                        "endSec":  3.259
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "002",
+                      "en":  "After breakfast, I take the bus to work.",
+                      "vi":  "Sau bữa sáng, tôi bắt xe buýt đi làm.",
+                      "phonetic":  "/ˈæftər ˈbrekfəst aɪ teɪk ðə bʌs tə wɜːrk/",
+                      "topic":  "daily routine",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/002.wav",
+                      "durationInSec":  3.959,
+                      "words":  [
+                                    {
+                                        "text":  "After",
+                                        "startSec":  0.151,
+                                        "endSec":  0.674
+                                    },
+                                    {
+                                        "text":  "breakfast",
+                                        "startSec":  0.674,
+                                        "endSec":  2.314
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "startSec":  2.314,
+                                        "endSec":  2.521
+                                    },
+                                    {
+                                        "text":  "take",
+                                        "startSec":  2.521,
+                                        "endSec":  2.948
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  2.948,
+                                        "endSec":  3.106
+                                    },
+                                    {
+                                        "text":  "bus",
+                                        "startSec":  3.106,
+                                        "endSec":  3.506
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "startSec":  3.506,
+                                        "endSec":  3.685
+                                    },
+                                    {
+                                        "text":  "work",
+                                        "startSec":  3.685,
+                                        "endSec":  3.959
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "003",
+                      "en":  "In the evening, I like to read for an hour.",
+                      "vi":  "Vào buổi tối, tôi thích đọc sách một tiếng.",
+                      "phonetic":  "/ɪn ðə ˈiːvnɪŋ aɪ laɪk tə riːd fɔːr ən ˈaʊər/",
+                      "topic":  "daily routine",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/003.wav",
+                      "durationInSec":  3.719,
+                      "words":  [
+                                    {
+                                        "text":  "In",
+                                        "startSec":  0.151,
+                                        "endSec":  0.378
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  0.378,
+                                        "endSec":  0.564
+                                    },
+                                    {
+                                        "text":  "evening",
+                                        "startSec":  0.564,
+                                        "endSec":  1.887
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "startSec":  1.887,
+                                        "endSec":  2.046
+                                    },
+                                    {
+                                        "text":  "like",
+                                        "startSec":  2.046,
+                                        "endSec":  2.404
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "startSec":  2.404,
+                                        "endSec":  2.59
+                                    },
+                                    {
+                                        "text":  "read",
+                                        "startSec":  2.59,
+                                        "endSec":  2.941
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "startSec":  2.941,
+                                        "endSec":  3.224
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "startSec":  3.224,
+                                        "endSec":  3.396
+                                    },
+                                    {
+                                        "text":  "hour",
+                                        "startSec":  3.396,
+                                        "endSec":  3.719
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "004",
+                      "en":  "Could you send me the report by tomorrow?",
+                      "vi":  "Bạn gửi giúp tôi báo cáo trước ngày mai nhé?",
+                      "phonetic":  "/kʊd juː send miː ðə rɪˈpɔːrt baɪ təˈmɒroʊ/",
+                      "topic":  "work",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/004.wav",
+                      "durationInSec":  3.174,
+                      "words":  [
+                                    {
+                                        "text":  "Could",
+                                        "startSec":  0.151,
+                                        "endSec":  0.447
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "startSec":  0.447,
+                                        "endSec":  0.64
+                                    },
+                                    {
+                                        "text":  "send",
+                                        "startSec":  0.64,
+                                        "endSec":  1.108
+                                    },
+                                    {
+                                        "text":  "me",
+                                        "startSec":  1.108,
+                                        "endSec":  1.343
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  1.343,
+                                        "endSec":  1.529
+                                    },
+                                    {
+                                        "text":  "report",
+                                        "startSec":  1.529,
+                                        "endSec":  2.114
+                                    },
+                                    {
+                                        "text":  "by",
+                                        "startSec":  2.114,
+                                        "endSec":  2.403
+                                    },
+                                    {
+                                        "text":  "tomorrow",
+                                        "startSec":  2.403,
+                                        "endSec":  3.174
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "005",
+                      "en":  "I have a meeting at ten o\u0027clock this morning.",
+                      "vi":  "Tôi có một cuộc họp lúc mười giờ sáng nay.",
+                      "phonetic":  "/aɪ hæv ə ˈmiːtɪŋ æt ten əˈklɒk ðɪs ˈmɔːrnɪŋ/",
+                      "topic":  "work",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/005.wav",
+                      "durationInSec":  3.284,
+                      "words":  [
+                                    {
+                                        "text":  "I",
+                                        "startSec":  0.151,
+                                        "endSec":  0.337
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "startSec":  0.337,
+                                        "endSec":  0.64
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "startSec":  0.64,
+                                        "endSec":  0.736
+                                    },
+                                    {
+                                        "text":  "meeting",
+                                        "startSec":  0.736,
+                                        "endSec":  1.239
+                                    },
+                                    {
+                                        "text":  "at",
+                                        "startSec":  1.239,
+                                        "endSec":  1.46
+                                    },
+                                    {
+                                        "text":  "ten",
+                                        "startSec":  1.46,
+                                        "endSec":  1.797
+                                    },
+                                    {
+                                        "text":  "o\u0027clock",
+                                        "startSec":  1.797,
+                                        "endSec":  2.397
+                                    },
+                                    {
+                                        "text":  "this",
+                                        "startSec":  2.397,
+                                        "endSec":  2.7
+                                    },
+                                    {
+                                        "text":  "morning",
+                                        "startSec":  2.7,
+                                        "endSec":  3.284
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "006",
+                      "en":  "Let me know if you need any help.",
+                      "vi":  "Cứ báo tôi nếu bạn cần giúp đỡ.",
+                      "phonetic":  "/let miː noʊ ɪf juː niːd ˈeni help/",
+                      "topic":  "work",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/006.wav",
+                      "durationInSec":  2.904,
+                      "words":  [
+                                    {
+                                        "text":  "Let",
+                                        "startSec":  0.151,
+                                        "endSec":  0.482
+                                    },
+                                    {
+                                        "text":  "me",
+                                        "startSec":  0.482,
+                                        "endSec":  0.681
+                                    },
+                                    {
+                                        "text":  "know",
+                                        "startSec":  0.681,
+                                        "endSec":  1.012
+                                    },
+                                    {
+                                        "text":  "if",
+                                        "startSec":  1.012,
+                                        "endSec":  1.219
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "startSec":  1.219,
+                                        "endSec":  1.398
+                                    },
+                                    {
+                                        "text":  "need",
+                                        "startSec":  1.398,
+                                        "endSec":  1.77
+                                    },
+                                    {
+                                        "text":  "any",
+                                        "startSec":  1.77,
+                                        "endSec":  2.142
+                                    },
+                                    {
+                                        "text":  "help",
+                                        "startSec":  2.142,
+                                        "endSec":  2.904
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "007",
+                      "en":  "I\u0027m a little behind on my work this week.",
+                      "vi":  "Tuần này tôi hơi bị trễ tiến độ công việc.",
+                      "phonetic":  "/aɪm ə ˈlɪtl bɪˈhaɪnd ɒn maɪ wɜːrk ðɪs wiːk/",
+                      "topic":  "work",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/007.wav",
+                      "durationInSec":  3.239,
+                      "words":  [
+                                    {
+                                        "text":  "I\u0027m",
+                                        "startSec":  0.151,
+                                        "endSec":  0.413
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "startSec":  0.413,
+                                        "endSec":  0.502
+                                    },
+                                    {
+                                        "text":  "little",
+                                        "startSec":  0.502,
+                                        "endSec":  0.929
+                                    },
+                                    {
+                                        "text":  "behind",
+                                        "startSec":  0.929,
+                                        "endSec":  1.604
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "startSec":  1.604,
+                                        "endSec":  1.832
+                                    },
+                                    {
+                                        "text":  "my",
+                                        "startSec":  1.832,
+                                        "endSec":  2.08
+                                    },
+                                    {
+                                        "text":  "work",
+                                        "startSec":  2.08,
+                                        "endSec":  2.493
+                                    },
+                                    {
+                                        "text":  "this",
+                                        "startSec":  2.493,
+                                        "endSec":  2.789
+                                    },
+                                    {
+                                        "text":  "week",
+                                        "startSec":  2.789,
+                                        "endSec":  3.239
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "008",
+                      "en":  "We should finish this project before the weekend.",
+                      "vi":  "Chúng ta nên hoàn thành dự án này trước cuối tuần.",
+                      "phonetic":  "/wiː ʃʊd ˈfɪnɪʃ ðɪs ˈprɒdʒekt bɪˈfɔːr ðə ˈwiːkend/",
+                      "topic":  "work",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/008.wav",
+                      "durationInSec":  3.584,
+                      "words":  [
+                                    {
+                                        "text":  "We",
+                                        "startSec":  0.151,
+                                        "endSec":  0.364
+                                    },
+                                    {
+                                        "text":  "should",
+                                        "startSec":  0.364,
+                                        "endSec":  0.695
+                                    },
+                                    {
+                                        "text":  "finish",
+                                        "startSec":  0.695,
+                                        "endSec":  1.226
+                                    },
+                                    {
+                                        "text":  "this",
+                                        "startSec":  1.226,
+                                        "endSec":  1.529
+                                    },
+                                    {
+                                        "text":  "project",
+                                        "startSec":  1.529,
+                                        "endSec":  2.3
+                                    },
+                                    {
+                                        "text":  "before",
+                                        "startSec":  2.3,
+                                        "endSec":  2.844
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  2.844,
+                                        "endSec":  2.996
+                                    },
+                                    {
+                                        "text":  "weekend",
+                                        "startSec":  2.996,
+                                        "endSec":  3.584
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "009",
+                      "en":  "How much is this jacket in a larger size?",
+                      "vi":  "Cái áo khoác này cỡ lớn hơn giá bao nhiêu?",
+                      "phonetic":  "/haʊ mʌtʃ ɪz ðɪs ˈdʒækɪt ɪn ə ˈlɑːrdʒər saɪz/",
+                      "topic":  "shopping",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/009.wav",
+                      "durationInSec":  3.474,
+                      "words":  [
+                                    {
+                                        "text":  "How",
+                                        "startSec":  0.151,
+                                        "endSec":  0.454
+                                    },
+                                    {
+                                        "text":  "much",
+                                        "startSec":  0.454,
+                                        "endSec":  0.812
+                                    },
+                                    {
+                                        "text":  "is",
+                                        "startSec":  0.812,
+                                        "endSec":  1.026
+                                    },
+                                    {
+                                        "text":  "this",
+                                        "startSec":  1.026,
+                                        "endSec":  1.35
+                                    },
+                                    {
+                                        "text":  "jacket",
+                                        "startSec":  1.35,
+                                        "endSec":  1.97
+                                    },
+                                    {
+                                        "text":  "in",
+                                        "startSec":  1.97,
+                                        "endSec":  2.163
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "startSec":  2.163,
+                                        "endSec":  2.252
+                                    },
+                                    {
+                                        "text":  "larger",
+                                        "startSec":  2.252,
+                                        "endSec":  2.845
+                                    },
+                                    {
+                                        "text":  "size",
+                                        "startSec":  2.845,
+                                        "endSec":  3.474
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "010",
+                      "en":  "Do you accept credit cards or only cash?",
+                      "vi":  "Bạn có nhận thẻ tín dụng hay chỉ tiền mặt?",
+                      "phonetic":  "/duː juː əkˈsept ˈkredɪt kɑːrdz ɔːr ˈoʊnli kæʃ/",
+                      "topic":  "shopping",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/010.wav",
+                      "durationInSec":  3.544,
+                      "words":  [
+                                    {
+                                        "text":  "Do",
+                                        "startSec":  0.151,
+                                        "endSec":  0.344
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "startSec":  0.344,
+                                        "endSec":  0.585
+                                    },
+                                    {
+                                        "text":  "accept",
+                                        "startSec":  0.585,
+                                        "endSec":  1.205
+                                    },
+                                    {
+                                        "text":  "credit",
+                                        "startSec":  1.205,
+                                        "endSec":  1.742
+                                    },
+                                    {
+                                        "text":  "cards",
+                                        "startSec":  1.742,
+                                        "endSec":  2.307
+                                    },
+                                    {
+                                        "text":  "or",
+                                        "startSec":  2.307,
+                                        "endSec":  2.583
+                                    },
+                                    {
+                                        "text":  "only",
+                                        "startSec":  2.583,
+                                        "endSec":  3.01
+                                    },
+                                    {
+                                        "text":  "cash",
+                                        "startSec":  3.01,
+                                        "endSec":  3.544
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "011",
+                      "en":  "Can I get a refund if it doesn\u0027t fit?",
+                      "vi":  "Tôi có được hoàn tiền nếu không vừa không?",
+                      "phonetic":  "/kæn aɪ get ə ˈriːfʌnd ɪf ɪt ˈdʌznt fɪt/",
+                      "topic":  "shopping",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/011.wav",
+                      "durationInSec":  3.094,
+                      "words":  [
+                                    {
+                                        "text":  "Can",
+                                        "startSec":  0.151,
+                                        "endSec":  0.433
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "startSec":  0.433,
+                                        "endSec":  0.599
+                                    },
+                                    {
+                                        "text":  "get",
+                                        "startSec":  0.599,
+                                        "endSec":  0.895
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "startSec":  0.895,
+                                        "endSec":  1.012
+                                    },
+                                    {
+                                        "text":  "refund",
+                                        "startSec":  1.012,
+                                        "endSec":  1.632
+                                    },
+                                    {
+                                        "text":  "if",
+                                        "startSec":  1.632,
+                                        "endSec":  1.859
+                                    },
+                                    {
+                                        "text":  "it",
+                                        "startSec":  1.859,
+                                        "endSec":  2.039
+                                    },
+                                    {
+                                        "text":  "doesn\u0027t",
+                                        "startSec":  2.039,
+                                        "endSec":  2.597
+                                    },
+                                    {
+                                        "text":  "fit",
+                                        "startSec":  2.597,
+                                        "endSec":  3.094
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "012",
+                      "en":  "I\u0027d like to book a table for two, please.",
+                      "vi":  "Tôi muốn đặt một bàn cho hai người.",
+                      "phonetic":  "/aɪd laɪk tə bʊk ə ˈteɪbl fɔːr tuː pliːz/",
+                      "topic":  "restaurant",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/012.wav",
+                      "durationInSec":  3.799,
+                      "words":  [
+                                    {
+                                        "text":  "I\u0027d",
+                                        "startSec":  0.151,
+                                        "endSec":  0.44
+                                    },
+                                    {
+                                        "text":  "like",
+                                        "startSec":  0.44,
+                                        "endSec":  0.785
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "startSec":  0.785,
+                                        "endSec":  0.957
+                                    },
+                                    {
+                                        "text":  "book",
+                                        "startSec":  0.957,
+                                        "endSec":  1.301
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "startSec":  1.301,
+                                        "endSec":  1.398
+                                    },
+                                    {
+                                        "text":  "table",
+                                        "startSec":  1.398,
+                                        "endSec":  1.935
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "startSec":  1.935,
+                                        "endSec":  2.218
+                                    },
+                                    {
+                                        "text":  "two",
+                                        "startSec":  2.218,
+                                        "endSec":  3.299
+                                    },
+                                    {
+                                        "text":  "please",
+                                        "startSec":  3.299,
+                                        "endSec":  3.799
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "013",
+                      "en":  "Could we see the menu when you have a moment?",
+                      "vi":  "Khi nào tiện cho chúng tôi xem thực đơn nhé?",
+                      "phonetic":  "/kʊd wiː siː ðə ˈmenjuː wen juː hæv ə ˈmoʊmənt/",
+                      "topic":  "restaurant",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/013.wav",
+                      "durationInSec":  3.189,
+                      "words":  [
+                                    {
+                                        "text":  "Could",
+                                        "startSec":  0.151,
+                                        "endSec":  0.447
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "startSec":  0.447,
+                                        "endSec":  0.654
+                                    },
+                                    {
+                                        "text":  "see",
+                                        "startSec":  0.654,
+                                        "endSec":  1.033
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  1.033,
+                                        "endSec":  1.184
+                                    },
+                                    {
+                                        "text":  "menu",
+                                        "startSec":  1.184,
+                                        "endSec":  1.673
+                                    },
+                                    {
+                                        "text":  "when",
+                                        "startSec":  1.673,
+                                        "endSec":  1.963
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "startSec":  1.963,
+                                        "endSec":  2.176
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "startSec":  2.176,
+                                        "endSec":  2.466
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "startSec":  2.466,
+                                        "endSec":  2.555
+                                    },
+                                    {
+                                        "text":  "moment",
+                                        "startSec":  2.555,
+                                        "endSec":  3.189
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "014",
+                      "en":  "This soup tastes a bit too salty for me.",
+                      "vi":  "Món súp này hơi mặn so với tôi.",
+                      "phonetic":  "/ðɪs suːp teɪsts ə bɪt tuː ˈsɔːlti fɔːr miː/",
+                      "topic":  "restaurant",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/014.wav",
+                      "durationInSec":  3.379,
+                      "words":  [
+                                    {
+                                        "text":  "This",
+                                        "startSec":  0.151,
+                                        "endSec":  0.433
+                                    },
+                                    {
+                                        "text":  "soup",
+                                        "startSec":  0.433,
+                                        "endSec":  0.819
+                                    },
+                                    {
+                                        "text":  "tastes",
+                                        "startSec":  0.819,
+                                        "endSec":  1.439
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "startSec":  1.439,
+                                        "endSec":  1.529
+                                    },
+                                    {
+                                        "text":  "bit",
+                                        "startSec":  1.529,
+                                        "endSec":  1.887
+                                    },
+                                    {
+                                        "text":  "too",
+                                        "startSec":  1.887,
+                                        "endSec":  2.163
+                                    },
+                                    {
+                                        "text":  "salty",
+                                        "startSec":  2.163,
+                                        "endSec":  2.831
+                                    },
+                                    {
+                                        "text":  "for",
+                                        "startSec":  2.831,
+                                        "endSec":  3.099
+                                    },
+                                    {
+                                        "text":  "me",
+                                        "startSec":  3.099,
+                                        "endSec":  3.379
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "015",
+                      "en":  "Can I have the bill, please?",
+                      "vi":  "Cho tôi xin hóa đơn nhé?",
+                      "phonetic":  "/kæn aɪ hæv ðə bɪl pliːz/",
+                      "topic":  "restaurant",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/015.wav",
+                      "durationInSec":  3.019,
+                      "words":  [
+                                    {
+                                        "text":  "Can",
+                                        "startSec":  0.151,
+                                        "endSec":  0.433
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "startSec":  0.433,
+                                        "endSec":  0.599
+                                    },
+                                    {
+                                        "text":  "have",
+                                        "startSec":  0.599,
+                                        "endSec":  0.895
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  0.895,
+                                        "endSec":  1.053
+                                    },
+                                    {
+                                        "text":  "bill",
+                                        "startSec":  1.053,
+                                        "endSec":  2.232
+                                    },
+                                    {
+                                        "text":  "please",
+                                        "startSec":  2.232,
+                                        "endSec":  3.019
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "016",
+                      "en":  "Excuse me, how do I get to the airport?",
+                      "vi":  "Xin lỗi, tôi đi ra sân bay bằng cách nào?",
+                      "phonetic":  "/ɪkˈskjuːz miː haʊ duː aɪ get tə ðə ˈeərpɔːrt/",
+                      "topic":  "travel",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/016.wav",
+                      "durationInSec":  3.984,
+                      "words":  [
+                                    {
+                                        "text":  "Excuse",
+                                        "startSec":  0.151,
+                                        "endSec":  0.984
+                                    },
+                                    {
+                                        "text":  "me",
+                                        "startSec":  0.984,
+                                        "endSec":  1.99
+                                    },
+                                    {
+                                        "text":  "how",
+                                        "startSec":  1.99,
+                                        "endSec":  2.287
+                                    },
+                                    {
+                                        "text":  "do",
+                                        "startSec":  2.287,
+                                        "endSec":  2.555
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "startSec":  2.555,
+                                        "endSec":  2.741
+                                    },
+                                    {
+                                        "text":  "get",
+                                        "startSec":  2.741,
+                                        "endSec":  3.065
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "startSec":  3.065,
+                                        "endSec":  3.244
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  3.244,
+                                        "endSec":  3.444
+                                    },
+                                    {
+                                        "text":  "airport",
+                                        "startSec":  3.444,
+                                        "endSec":  3.984
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "017",
+                      "en":  "What time does the next train leave?",
+                      "vi":  "Chuyến tàu kế tiếp khởi hành lúc mấy giờ?",
+                      "phonetic":  "/wɒt taɪm dʌz ðə nekst treɪn liːv/",
+                      "topic":  "travel",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/017.wav",
+                      "durationInSec":  3.029,
+                      "words":  [
+                                    {
+                                        "text":  "What",
+                                        "startSec":  0.151,
+                                        "endSec":  0.468
+                                    },
+                                    {
+                                        "text":  "time",
+                                        "startSec":  0.468,
+                                        "endSec":  0.95
+                                    },
+                                    {
+                                        "text":  "does",
+                                        "startSec":  0.95,
+                                        "endSec":  1.281
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  1.281,
+                                        "endSec":  1.432
+                                    },
+                                    {
+                                        "text":  "next",
+                                        "startSec":  1.432,
+                                        "endSec":  1.887
+                                    },
+                                    {
+                                        "text":  "train",
+                                        "startSec":  1.887,
+                                        "endSec":  2.39
+                                    },
+                                    {
+                                        "text":  "leave",
+                                        "startSec":  2.39,
+                                        "endSec":  3.029
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "018",
+                      "en":  "I think we should take a taxi instead.",
+                      "vi":  "Tôi nghĩ chúng ta nên bắt taxi thì hơn.",
+                      "phonetic":  "/aɪ θɪŋk wiː ʃʊd teɪk ə ˈtæksi ɪnˈsted/",
+                      "topic":  "travel",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/018.wav",
+                      "durationInSec":  3.279,
+                      "words":  [
+                                    {
+                                        "text":  "I",
+                                        "startSec":  0.151,
+                                        "endSec":  0.337
+                                    },
+                                    {
+                                        "text":  "think",
+                                        "startSec":  0.337,
+                                        "endSec":  0.771
+                                    },
+                                    {
+                                        "text":  "we",
+                                        "startSec":  0.771,
+                                        "endSec":  0.978
+                                    },
+                                    {
+                                        "text":  "should",
+                                        "startSec":  0.978,
+                                        "endSec":  1.322
+                                    },
+                                    {
+                                        "text":  "take",
+                                        "startSec":  1.322,
+                                        "endSec":  1.694
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "startSec":  1.694,
+                                        "endSec":  1.79
+                                    },
+                                    {
+                                        "text":  "taxi",
+                                        "startSec":  1.79,
+                                        "endSec":  2.521
+                                    },
+                                    {
+                                        "text":  "instead",
+                                        "startSec":  2.521,
+                                        "endSec":  3.279
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "019",
+                      "en":  "I\u0027ve had a headache since this morning.",
+                      "vi":  "Tôi bị đau đầu từ sáng đến giờ.",
+                      "phonetic":  "/aɪv hæd ə ˈhedeɪk sɪns ðɪs ˈmɔːrnɪŋ/",
+                      "topic":  "health",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/019.wav",
+                      "durationInSec":  2.869,
+                      "words":  [
+                                    {
+                                        "text":  "I\u0027ve",
+                                        "startSec":  0.151,
+                                        "endSec":  0.406
+                                    },
+                                    {
+                                        "text":  "had",
+                                        "startSec":  0.406,
+                                        "endSec":  0.709
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "startSec":  0.709,
+                                        "endSec":  0.805
+                                    },
+                                    {
+                                        "text":  "headache",
+                                        "startSec":  0.805,
+                                        "endSec":  1.398
+                                    },
+                                    {
+                                        "text":  "since",
+                                        "startSec":  1.398,
+                                        "endSec":  1.825
+                                    },
+                                    {
+                                        "text":  "this",
+                                        "startSec":  1.825,
+                                        "endSec":  2.128
+                                    },
+                                    {
+                                        "text":  "morning",
+                                        "startSec":  2.128,
+                                        "endSec":  2.869
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "020",
+                      "en":  "You should get some rest and drink warm water.",
+                      "vi":  "Bạn nên nghỉ ngơi và uống nước ấm.",
+                      "phonetic":  "/juː ʃʊd get sʌm rest ænd drɪŋk wɔːrm ˈwɔːtər/",
+                      "topic":  "health",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/020.wav",
+                      "durationInSec":  3.439,
+                      "words":  [
+                                    {
+                                        "text":  "You",
+                                        "startSec":  0.151,
+                                        "endSec":  0.385
+                                    },
+                                    {
+                                        "text":  "should",
+                                        "startSec":  0.385,
+                                        "endSec":  0.716
+                                    },
+                                    {
+                                        "text":  "get",
+                                        "startSec":  0.716,
+                                        "endSec":  0.991
+                                    },
+                                    {
+                                        "text":  "some",
+                                        "startSec":  0.991,
+                                        "endSec":  1.37
+                                    },
+                                    {
+                                        "text":  "rest",
+                                        "startSec":  1.37,
+                                        "endSec":  1.797
+                                    },
+                                    {
+                                        "text":  "and",
+                                        "startSec":  1.797,
+                                        "endSec":  2.059
+                                    },
+                                    {
+                                        "text":  "drink",
+                                        "startSec":  2.059,
+                                        "endSec":  2.528
+                                    },
+                                    {
+                                        "text":  "warm",
+                                        "startSec":  2.528,
+                                        "endSec":  2.968
+                                    },
+                                    {
+                                        "text":  "water",
+                                        "startSec":  2.968,
+                                        "endSec":  3.439
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "021",
+                      "en":  "I need to make an appointment with the doctor.",
+                      "vi":  "Tôi cần đặt lịch hẹn với bác sĩ.",
+                      "phonetic":  "/aɪ niːd tə meɪk ən əˈpɔɪntmənt wɪð ðə ˈdɒktər/",
+                      "topic":  "health",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/021.wav",
+                      "durationInSec":  3.324,
+                      "words":  [
+                                    {
+                                        "text":  "I",
+                                        "startSec":  0.151,
+                                        "endSec":  0.351
+                                    },
+                                    {
+                                        "text":  "need",
+                                        "startSec":  0.351,
+                                        "endSec":  0.709
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "startSec":  0.709,
+                                        "endSec":  0.867
+                                    },
+                                    {
+                                        "text":  "make",
+                                        "startSec":  0.867,
+                                        "endSec":  1.219
+                                    },
+                                    {
+                                        "text":  "an",
+                                        "startSec":  1.219,
+                                        "endSec":  1.356
+                                    },
+                                    {
+                                        "text":  "appointment",
+                                        "startSec":  1.356,
+                                        "endSec":  2.197
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "startSec":  2.197,
+                                        "endSec":  2.507
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  2.507,
+                                        "endSec":  2.658
+                                    },
+                                    {
+                                        "text":  "doctor",
+                                        "startSec":  2.658,
+                                        "endSec":  3.324
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "022",
+                      "en":  "It was really nice to meet you today.",
+                      "vi":  "Hôm nay rất vui được gặp bạn.",
+                      "phonetic":  "/ɪt wɒz ˈrɪəli naɪs tə miːt juː təˈdeɪ/",
+                      "topic":  "small talk",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/022.wav",
+                      "durationInSec":  2.924,
+                      "words":  [
+                                    {
+                                        "text":  "It",
+                                        "startSec":  0.151,
+                                        "endSec":  0.358
+                                    },
+                                    {
+                                        "text":  "was",
+                                        "startSec":  0.358,
+                                        "endSec":  0.654
+                                    },
+                                    {
+                                        "text":  "really",
+                                        "startSec":  0.654,
+                                        "endSec":  1.122
+                                    },
+                                    {
+                                        "text":  "nice",
+                                        "startSec":  1.122,
+                                        "endSec":  1.591
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "startSec":  1.591,
+                                        "endSec":  1.749
+                                    },
+                                    {
+                                        "text":  "meet",
+                                        "startSec":  1.749,
+                                        "endSec":  2.08
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "startSec":  2.08,
+                                        "endSec":  2.287
+                                    },
+                                    {
+                                        "text":  "today",
+                                        "startSec":  2.287,
+                                        "endSec":  2.924
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "023",
+                      "en":  "What do you usually do on the weekend?",
+                      "vi":  "Cuối tuần bạn thường làm gì?",
+                      "phonetic":  "/wɒt duː juː ˈjuːʒuəli duː ɒn ðə ˈwiːkend/",
+                      "topic":  "small talk",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/023.wav",
+                      "durationInSec":  3.044,
+                      "words":  [
+                                    {
+                                        "text":  "What",
+                                        "startSec":  0.151,
+                                        "endSec":  0.468
+                                    },
+                                    {
+                                        "text":  "do",
+                                        "startSec":  0.468,
+                                        "endSec":  0.688
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "startSec":  0.688,
+                                        "endSec":  0.916
+                                    },
+                                    {
+                                        "text":  "usually",
+                                        "startSec":  0.916,
+                                        "endSec":  1.625
+                                    },
+                                    {
+                                        "text":  "do",
+                                        "startSec":  1.625,
+                                        "endSec":  1.901
+                                    },
+                                    {
+                                        "text":  "on",
+                                        "startSec":  1.901,
+                                        "endSec":  2.121
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  2.121,
+                                        "endSec":  2.252
+                                    },
+                                    {
+                                        "text":  "weekend",
+                                        "startSec":  2.252,
+                                        "endSec":  3.044
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "024",
+                      "en":  "Let\u0027s catch up over coffee sometime soon.",
+                      "vi":  "Hôm nào đó mình đi cà phê tâm sự nhé.",
+                      "phonetic":  "/lets kætʃ ʌp ˈoʊvər ˈkɒfi ˈsʌmtaɪm suːn/",
+                      "topic":  "small talk",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/024.wav",
+                      "durationInSec":  3.689,
+                      "words":  [
+                                    {
+                                        "text":  "Let\u0027s",
+                                        "startSec":  0.151,
+                                        "endSec":  0.557
+                                    },
+                                    {
+                                        "text":  "catch",
+                                        "startSec":  0.557,
+                                        "endSec":  1.053
+                                    },
+                                    {
+                                        "text":  "up",
+                                        "startSec":  1.053,
+                                        "endSec":  1.322
+                                    },
+                                    {
+                                        "text":  "over",
+                                        "startSec":  1.322,
+                                        "endSec":  1.715
+                                    },
+                                    {
+                                        "text":  "coffee",
+                                        "startSec":  1.715,
+                                        "endSec":  2.39
+                                    },
+                                    {
+                                        "text":  "sometime",
+                                        "startSec":  2.39,
+                                        "endSec":  3.224
+                                    },
+                                    {
+                                        "text":  "soon",
+                                        "startSec":  3.224,
+                                        "endSec":  3.689
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "025",
+                      "en":  "I\u0027m sorry, I didn\u0027t catch your name.",
+                      "vi":  "Xin lỗi, tôi chưa nghe rõ tên bạn.",
+                      "phonetic":  "/aɪm ˈsɒri aɪ ˈdɪdnt kætʃ jɔːr neɪm/",
+                      "topic":  "small talk",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/025.wav",
+                      "durationInSec":  3.544,
+                      "words":  [
+                                    {
+                                        "text":  "I\u0027m",
+                                        "startSec":  0.151,
+                                        "endSec":  0.426
+                                    },
+                                    {
+                                        "text":  "sorry",
+                                        "startSec":  0.426,
+                                        "endSec":  1.736
+                                    },
+                                    {
+                                        "text":  "I",
+                                        "startSec":  1.736,
+                                        "endSec":  1.915
+                                    },
+                                    {
+                                        "text":  "didn\u0027t",
+                                        "startSec":  1.915,
+                                        "endSec":  2.397
+                                    },
+                                    {
+                                        "text":  "catch",
+                                        "startSec":  2.397,
+                                        "endSec":  2.907
+                                    },
+                                    {
+                                        "text":  "your",
+                                        "startSec":  2.907,
+                                        "endSec":  3.134
+                                    },
+                                    {
+                                        "text":  "name",
+                                        "startSec":  3.134,
+                                        "endSec":  3.544
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "026",
+                      "en":  "It looks like it\u0027s going to rain later.",
+                      "vi":  "Trông như trời sắp mưa rồi.",
+                      "phonetic":  "/ɪt lʊks laɪk ɪts ˈɡoʊɪŋ tə reɪn ˈleɪtər/",
+                      "topic":  "weather",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/026.wav",
+                      "durationInSec":  2.994,
+                      "words":  [
+                                    {
+                                        "text":  "It",
+                                        "startSec":  0.151,
+                                        "endSec":  0.358
+                                    },
+                                    {
+                                        "text":  "looks",
+                                        "startSec":  0.358,
+                                        "endSec":  0.771
+                                    },
+                                    {
+                                        "text":  "like",
+                                        "startSec":  0.771,
+                                        "endSec":  1.129
+                                    },
+                                    {
+                                        "text":  "it\u0027s",
+                                        "startSec":  1.129,
+                                        "endSec":  1.363
+                                    },
+                                    {
+                                        "text":  "going",
+                                        "startSec":  1.363,
+                                        "endSec":  1.825
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "startSec":  1.825,
+                                        "endSec":  2.011
+                                    },
+                                    {
+                                        "text":  "rain",
+                                        "startSec":  2.011,
+                                        "endSec":  2.41
+                                    },
+                                    {
+                                        "text":  "later",
+                                        "startSec":  2.41,
+                                        "endSec":  2.994
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "027",
+                      "en":  "My phone battery dies very quickly these days.",
+                      "vi":  "Dạo này pin điện thoại của tôi hết rất nhanh.",
+                      "phonetic":  "/maɪ foʊn ˈbætəri daɪz ˈveri ˈkwɪkli ðiːz deɪz/",
+                      "topic":  "technology",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/027.wav",
+                      "durationInSec":  3.854,
+                      "words":  [
+                                    {
+                                        "text":  "My",
+                                        "startSec":  0.151,
+                                        "endSec":  0.399
+                                    },
+                                    {
+                                        "text":  "phone",
+                                        "startSec":  0.399,
+                                        "endSec":  0.854
+                                    },
+                                    {
+                                        "text":  "battery",
+                                        "startSec":  0.854,
+                                        "endSec":  1.467
+                                    },
+                                    {
+                                        "text":  "dies",
+                                        "startSec":  1.467,
+                                        "endSec":  1.983
+                                    },
+                                    {
+                                        "text":  "very",
+                                        "startSec":  1.983,
+                                        "endSec":  2.452
+                                    },
+                                    {
+                                        "text":  "quickly",
+                                        "startSec":  2.452,
+                                        "endSec":  3.1
+                                    },
+                                    {
+                                        "text":  "these",
+                                        "startSec":  3.1,
+                                        "endSec":  3.492
+                                    },
+                                    {
+                                        "text":  "days",
+                                        "startSec":  3.492,
+                                        "endSec":  3.854
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "028",
+                      "en":  "Could you help me connect to the wifi?",
+                      "vi":  "Bạn giúp tôi kết nối wifi được không?",
+                      "phonetic":  "/kʊd juː help miː kəˈnekt tə ðə ˈwaɪfaɪ/",
+                      "topic":  "technology",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/028.wav",
+                      "durationInSec":  2.969,
+                      "words":  [
+                                    {
+                                        "text":  "Could",
+                                        "startSec":  0.151,
+                                        "endSec":  0.447
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "startSec":  0.447,
+                                        "endSec":  0.661
+                                    },
+                                    {
+                                        "text":  "help",
+                                        "startSec":  0.661,
+                                        "endSec":  1.046
+                                    },
+                                    {
+                                        "text":  "me",
+                                        "startSec":  1.046,
+                                        "endSec":  1.281
+                                    },
+                                    {
+                                        "text":  "connect",
+                                        "startSec":  1.281,
+                                        "endSec":  1.804
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "startSec":  1.804,
+                                        "endSec":  1.976
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  1.976,
+                                        "endSec":  2.135
+                                    },
+                                    {
+                                        "text":  "wifi",
+                                        "startSec":  2.135,
+                                        "endSec":  2.969
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "029",
+                      "en":  "I\u0027m really looking forward to the trip.",
+                      "vi":  "Tôi rất mong chờ chuyến đi.",
+                      "phonetic":  "/aɪm ˈrɪəli ˈlʊkɪŋ ˈfɔːrwərd tə ðə trɪp/",
+                      "topic":  "feelings",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/029.wav",
+                      "durationInSec":  3.014,
+                      "words":  [
+                                    {
+                                        "text":  "I\u0027m",
+                                        "startSec":  0.151,
+                                        "endSec":  0.447
+                                    },
+                                    {
+                                        "text":  "really",
+                                        "startSec":  0.447,
+                                        "endSec":  0.922
+                                    },
+                                    {
+                                        "text":  "looking",
+                                        "startSec":  0.922,
+                                        "endSec":  1.425
+                                    },
+                                    {
+                                        "text":  "forward",
+                                        "startSec":  1.425,
+                                        "endSec":  2.025
+                                    },
+                                    {
+                                        "text":  "to",
+                                        "startSec":  2.025,
+                                        "endSec":  2.197
+                                    },
+                                    {
+                                        "text":  "the",
+                                        "startSec":  2.197,
+                                        "endSec":  2.335
+                                    },
+                                    {
+                                        "text":  "trip",
+                                        "startSec":  2.335,
+                                        "endSec":  3.014
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "030",
+                      "en":  "Honestly, I\u0027m not sure that\u0027s a good idea.",
+                      "vi":  "Thật lòng mà nói, tôi không chắc đó là ý hay.",
+                      "phonetic":  "/ˈɒnɪstli aɪm nɒt ʃʊər ðæts ə ɡʊd aɪˈdɪə/",
+                      "topic":  "feelings",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/030.wav",
+                      "durationInSec":  3.854,
+                      "words":  [
+                                    {
+                                        "text":  "Honestly",
+                                        "startSec":  0.151,
+                                        "endSec":  1.625
+                                    },
+                                    {
+                                        "text":  "I\u0027m",
+                                        "startSec":  1.625,
+                                        "endSec":  1.901
+                                    },
+                                    {
+                                        "text":  "not",
+                                        "startSec":  1.901,
+                                        "endSec":  2.218
+                                    },
+                                    {
+                                        "text":  "sure",
+                                        "startSec":  2.218,
+                                        "endSec":  2.645
+                                    },
+                                    {
+                                        "text":  "that\u0027s",
+                                        "startSec":  2.645,
+                                        "endSec":  3.01
+                                    },
+                                    {
+                                        "text":  "a",
+                                        "startSec":  3.01,
+                                        "endSec":  3.12
+                                    },
+                                    {
+                                        "text":  "good",
+                                        "startSec":  3.12,
+                                        "endSec":  3.437
+                                    },
+                                    {
+                                        "text":  "idea",
+                                        "startSec":  3.437,
+                                        "endSec":  3.854
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "031",
+                      "en":  "That sounds great, let\u0027s do it.",
+                      "vi":  "Nghe hay đấy, làm thôi.",
+                      "phonetic":  "/ðæt saʊndz ɡreɪt lets duː ɪt/",
+                      "topic":  "feelings",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/031.wav",
+                      "durationInSec":  3.219,
+                      "words":  [
+                                    {
+                                        "text":  "That",
+                                        "startSec":  0.151,
+                                        "endSec":  0.468
+                                    },
+                                    {
+                                        "text":  "sounds",
+                                        "startSec":  0.468,
+                                        "endSec":  1.053
+                                    },
+                                    {
+                                        "text":  "great",
+                                        "startSec":  1.053,
+                                        "endSec":  2.245
+                                    },
+                                    {
+                                        "text":  "let\u0027s",
+                                        "startSec":  2.245,
+                                        "endSec":  2.672
+                                    },
+                                    {
+                                        "text":  "do",
+                                        "startSec":  2.672,
+                                        "endSec":  2.92
+                                    },
+                                    {
+                                        "text":  "it",
+                                        "startSec":  2.92,
+                                        "endSec":  3.219
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "032",
+                      "en":  "I completely agree with what you said.",
+                      "vi":  "Tôi hoàn toàn đồng ý với điều bạn nói.",
+                      "phonetic":  "/aɪ kəmˈpliːtli əˈɡriː wɪð wɒt juː sed/",
+                      "topic":  "feelings",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/032.wav",
+                      "durationInSec":  3.084,
+                      "words":  [
+                                    {
+                                        "text":  "I",
+                                        "startSec":  0.151,
+                                        "endSec":  0.337
+                                    },
+                                    {
+                                        "text":  "completely",
+                                        "startSec":  0.337,
+                                        "endSec":  1.212
+                                    },
+                                    {
+                                        "text":  "agree",
+                                        "startSec":  1.212,
+                                        "endSec":  1.701
+                                    },
+                                    {
+                                        "text":  "with",
+                                        "startSec":  1.701,
+                                        "endSec":  1.983
+                                    },
+                                    {
+                                        "text":  "what",
+                                        "startSec":  1.983,
+                                        "endSec":  2.286
+                                    },
+                                    {
+                                        "text":  "you",
+                                        "startSec":  2.286,
+                                        "endSec":  2.479
+                                    },
+                                    {
+                                        "text":  "said",
+                                        "startSec":  2.479,
+                                        "endSec":  3.084
+                                    }
+                                ]
+                  },
+                  {
+                      "id":  "033",
+                      "en":  "Don\u0027t worry, everything will be fine.",
+                      "vi":  "Đừng lo, mọi chuyện sẽ ổn thôi.",
+                      "phonetic":  "/doʊnt ˈwʌri ˈevriθɪŋ wɪl biː faɪn/",
+                      "topic":  "feelings",
+                      "repeat":  2,
+                      "gapBetweenRepeatsSec":  0.6,
+                      "pauseAfterSec":  1.5,
+                      "audio":  "audio/033.wav",
+                      "durationInSec":  3.394,
+                      "words":  [
+                                    {
+                                        "text":  "Don\u0027t",
+                                        "startSec":  0.151,
+                                        "endSec":  0.523
+                                    },
+                                    {
+                                        "text":  "worry",
+                                        "startSec":  0.523,
+                                        "endSec":  1.715
+                                    },
+                                    {
+                                        "text":  "everything",
+                                        "startSec":  1.715,
+                                        "endSec":  2.411
+                                    },
+                                    {
+                                        "text":  "will",
+                                        "startSec":  2.411,
+                                        "endSec":  2.631
+                                    },
+                                    {
+                                        "text":  "be",
+                                        "startSec":  2.631,
+                                        "endSec":  2.852
+                                    },
+                                    {
+                                        "text":  "fine",
+                                        "startSec":  2.852,
+                                        "endSec":  3.394
+                                    }
+                                ]
+                  }
+              ]
+}

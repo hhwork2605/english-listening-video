@@ -1,0 +1,1467 @@
+{
+  "title": "English Podcast | Talking About Wild Animals",
+  "level": "B1",
+  "topic": "Talking About Wild Animals",
+  "youtubeTitle": "Listen To This Before Bed To Learn English",
+  "youtubeDescription": "A calm, slow English conversation about wild animals — clear and easy for B1 learners. Listen along with the English subtitles to improve your listening, vocabulary and natural speaking. Perfect for daily practice, studying, or before bed.\n\n🎧 Turn on captions (CC) and just listen.\n👉 Subscribe for a new easy English conversation every week!\n\n#LearnEnglish #EnglishPodcast #EnglishListening #B1English #WildAnimals",
+  "tags": [
+    "learn english",
+    "english podcast",
+    "english listening practice",
+    "english conversation",
+    "b1 english",
+    "esl listening",
+    "speak english",
+    "english for beginners",
+    "wild animals in english",
+    "nature english"
+  ],
+  "fps": 30,
+  "speakers": {
+    "A": {
+      "name": "Emma",
+      "voice": "Microsoft Zira Desktop",
+      "side": "left",
+      "color": "#f48fb1"
+    },
+    "B": {
+      "name": "Mike",
+      "voice": "Microsoft David Desktop",
+      "side": "right",
+      "color": "#64b5f6"
+    }
+  },
+  "turns": [
+    {
+      "id": "001",
+      "speaker": "A",
+      "en": "Hi Mike! What's your favorite wild animal?",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d001.wav",
+      "durationInSec": 4.274,
+      "words": [
+        {
+          "text": "Hi",
+          "startSec": 0.0,
+          "endSec": 0.28
+        },
+        {
+          "text": "Mike.",
+          "startSec": 0.28,
+          "endSec": 0.54
+        },
+        {
+          "text": "What's",
+          "startSec": 1.32,
+          "endSec": 1.96
+        },
+        {
+          "text": "your",
+          "startSec": 1.96,
+          "endSec": 2.08
+        },
+        {
+          "text": "favorite",
+          "startSec": 2.08,
+          "endSec": 2.36
+        },
+        {
+          "text": "wild",
+          "startSec": 2.36,
+          "endSec": 2.74
+        },
+        {
+          "text": "animal?",
+          "startSec": 2.74,
+          "endSec": 3.14
+        }
+      ]
+    },
+    {
+      "id": "002",
+      "speaker": "B",
+      "en": "Hi Emma! I really love tigers. They're so powerful.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d002.wav",
+      "durationInSec": 5.994,
+      "words": [
+        {
+          "text": "Hi",
+          "startSec": 0.0,
+          "endSec": 0.32
+        },
+        {
+          "text": "Emma.",
+          "startSec": 0.32,
+          "endSec": 0.52
+        },
+        {
+          "text": "I",
+          "startSec": 1.52,
+          "endSec": 1.74
+        },
+        {
+          "text": "really",
+          "startSec": 1.74,
+          "endSec": 1.96
+        },
+        {
+          "text": "love",
+          "startSec": 1.96,
+          "endSec": 2.36
+        },
+        {
+          "text": "tigers.",
+          "startSec": 2.36,
+          "endSec": 2.64
+        },
+        {
+          "text": "They're",
+          "startSec": 3.92,
+          "endSec": 4.2
+        },
+        {
+          "text": "so",
+          "startSec": 4.2,
+          "endSec": 4.38
+        },
+        {
+          "text": "powerful.",
+          "startSec": 4.38,
+          "endSec": 4.82
+        }
+      ]
+    },
+    {
+      "id": "003",
+      "speaker": "A",
+      "en": "Tigers are beautiful. But aren't they dangerous?",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d003.wav",
+      "durationInSec": 4.484,
+      "words": [
+        {
+          "text": "Tigers",
+          "startSec": 0.0,
+          "endSec": 0.32
+        },
+        {
+          "text": "are",
+          "startSec": 0.32,
+          "endSec": 0.66
+        },
+        {
+          "text": "beautiful,",
+          "startSec": 0.66,
+          "endSec": 1.04
+        },
+        {
+          "text": "but",
+          "startSec": 1.92,
+          "endSec": 2.42
+        },
+        {
+          "text": "aren't",
+          "startSec": 2.42,
+          "endSec": 2.7
+        },
+        {
+          "text": "they",
+          "startSec": 2.7,
+          "endSec": 2.82
+        },
+        {
+          "text": "dangerous?",
+          "startSec": 2.82,
+          "endSec": 3.24
+        }
+      ]
+    },
+    {
+      "id": "004",
+      "speaker": "B",
+      "en": "Yes, in the wild they are. I only watch them in documentaries.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d004.wav",
+      "durationInSec": 6.109,
+      "words": [
+        {
+          "text": "Yes,",
+          "startSec": 0.0,
+          "endSec": 0.34
+        },
+        {
+          "text": "in",
+          "startSec": 0.76,
+          "endSec": 1.1
+        },
+        {
+          "text": "the",
+          "startSec": 1.1,
+          "endSec": 1.2
+        },
+        {
+          "text": "wild",
+          "startSec": 1.2,
+          "endSec": 1.46
+        },
+        {
+          "text": "they",
+          "startSec": 1.46,
+          "endSec": 1.72
+        },
+        {
+          "text": "are.",
+          "startSec": 1.72,
+          "endSec": 1.94
+        },
+        {
+          "text": "I",
+          "startSec": 2.72,
+          "endSec": 3.14
+        },
+        {
+          "text": "only",
+          "startSec": 3.14,
+          "endSec": 3.34
+        },
+        {
+          "text": "watch",
+          "startSec": 3.34,
+          "endSec": 3.72
+        },
+        {
+          "text": "them",
+          "startSec": 3.72,
+          "endSec": 3.98
+        },
+        {
+          "text": "in",
+          "startSec": 3.98,
+          "endSec": 4.14
+        },
+        {
+          "text": "documentaries.",
+          "startSec": 4.14,
+          "endSec": 4.6
+        }
+      ]
+    },
+    {
+      "id": "005",
+      "speaker": "A",
+      "en": "Me too. I love nature documentaries on the weekend.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d005.wav",
+      "durationInSec": 4.899,
+      "words": [
+        {
+          "text": "Me",
+          "startSec": 0.0,
+          "endSec": 0.22
+        },
+        {
+          "text": "too.",
+          "startSec": 0.22,
+          "endSec": 0.48
+        },
+        {
+          "text": "I",
+          "startSec": 1.48,
+          "endSec": 1.64
+        },
+        {
+          "text": "love",
+          "startSec": 1.64,
+          "endSec": 1.86
+        },
+        {
+          "text": "nature",
+          "startSec": 1.86,
+          "endSec": 2.22
+        },
+        {
+          "text": "documentaries",
+          "startSec": 2.22,
+          "endSec": 2.74
+        },
+        {
+          "text": "on",
+          "startSec": 2.74,
+          "endSec": 3.32
+        },
+        {
+          "text": "the",
+          "startSec": 3.32,
+          "endSec": 3.46
+        },
+        {
+          "text": "weekend.",
+          "startSec": 3.46,
+          "endSec": 3.78
+        }
+      ]
+    },
+    {
+      "id": "006",
+      "speaker": "B",
+      "en": "Same here. They help me relax after a long week.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d006.wav",
+      "durationInSec": 4.909,
+      "words": [
+        {
+          "text": "Same",
+          "startSec": 0.0,
+          "endSec": 0.36
+        },
+        {
+          "text": "here.",
+          "startSec": 0.36,
+          "endSec": 0.76
+        },
+        {
+          "text": "They",
+          "startSec": 1.5,
+          "endSec": 1.92
+        },
+        {
+          "text": "help",
+          "startSec": 1.92,
+          "endSec": 2.16
+        },
+        {
+          "text": "me",
+          "startSec": 2.16,
+          "endSec": 2.36
+        },
+        {
+          "text": "relax",
+          "startSec": 2.36,
+          "endSec": 2.68
+        },
+        {
+          "text": "after",
+          "startSec": 2.68,
+          "endSec": 3.24
+        },
+        {
+          "text": "a",
+          "startSec": 3.24,
+          "endSec": 3.38
+        },
+        {
+          "text": "long",
+          "startSec": 3.38,
+          "endSec": 3.58
+        },
+        {
+          "text": "week.",
+          "startSec": 3.58,
+          "endSec": 3.84
+        }
+      ]
+    },
+    {
+      "id": "007",
+      "speaker": "A",
+      "en": "Have you ever seen a wild animal in real life?",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d007.wav",
+      "durationInSec": 3.594,
+      "words": [
+        {
+          "text": "Have",
+          "startSec": 0.0,
+          "endSec": 0.28
+        },
+        {
+          "text": "you",
+          "startSec": 0.28,
+          "endSec": 0.42
+        },
+        {
+          "text": "ever",
+          "startSec": 0.42,
+          "endSec": 0.66
+        },
+        {
+          "text": "seen",
+          "startSec": 0.66,
+          "endSec": 0.96
+        },
+        {
+          "text": "a",
+          "startSec": 0.96,
+          "endSec": 1.1
+        },
+        {
+          "text": "wild",
+          "startSec": 1.1,
+          "endSec": 1.32
+        },
+        {
+          "text": "animal",
+          "startSec": 1.32,
+          "endSec": 1.64
+        },
+        {
+          "text": "in",
+          "startSec": 1.64,
+          "endSec": 1.96
+        },
+        {
+          "text": "real",
+          "startSec": 1.96,
+          "endSec": 2.16
+        },
+        {
+          "text": "life?",
+          "startSec": 2.16,
+          "endSec": 2.56
+        }
+      ]
+    },
+    {
+      "id": "008",
+      "speaker": "B",
+      "en": "Once I saw a deer while hiking in the mountains.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d008.wav",
+      "durationInSec": 3.674,
+      "words": [
+        {
+          "text": "Once",
+          "startSec": 0.0,
+          "endSec": 0.28
+        },
+        {
+          "text": "I",
+          "startSec": 0.28,
+          "endSec": 0.5
+        },
+        {
+          "text": "saw",
+          "startSec": 0.5,
+          "endSec": 0.76
+        },
+        {
+          "text": "a",
+          "startSec": 0.76,
+          "endSec": 0.92
+        },
+        {
+          "text": "deer",
+          "startSec": 0.92,
+          "endSec": 1.06
+        },
+        {
+          "text": "while",
+          "startSec": 1.06,
+          "endSec": 1.4
+        },
+        {
+          "text": "hiking",
+          "startSec": 1.4,
+          "endSec": 1.72
+        },
+        {
+          "text": "in",
+          "startSec": 1.72,
+          "endSec": 2.0
+        },
+        {
+          "text": "the",
+          "startSec": 2.0,
+          "endSec": 2.12
+        },
+        {
+          "text": "mountains.",
+          "startSec": 2.12,
+          "endSec": 2.44
+        }
+      ]
+    },
+    {
+      "id": "009",
+      "speaker": "A",
+      "en": "That sounds magical. Was it scared of you?",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d009.wav",
+      "durationInSec": 4.339,
+      "words": [
+        {
+          "text": "That",
+          "startSec": 0.0,
+          "endSec": 0.24
+        },
+        {
+          "text": "sounds",
+          "startSec": 0.24,
+          "endSec": 0.58
+        },
+        {
+          "text": "magical.",
+          "startSec": 0.58,
+          "endSec": 1.12
+        },
+        {
+          "text": "Was",
+          "startSec": 2.36,
+          "endSec": 2.46
+        },
+        {
+          "text": "it",
+          "startSec": 2.46,
+          "endSec": 2.62
+        },
+        {
+          "text": "scared",
+          "startSec": 2.62,
+          "endSec": 2.86
+        },
+        {
+          "text": "of",
+          "startSec": 2.86,
+          "endSec": 3.1
+        },
+        {
+          "text": "you?",
+          "startSec": 3.1,
+          "endSec": 3.32
+        }
+      ]
+    },
+    {
+      "id": "010",
+      "speaker": "B",
+      "en": "A little. It looked at me and then ran away.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d010.wav",
+      "durationInSec": 4.269,
+      "words": [
+        {
+          "text": "A",
+          "startSec": 0.0,
+          "endSec": 0.2
+        },
+        {
+          "text": "little.",
+          "startSec": 0.2,
+          "endSec": 0.42
+        },
+        {
+          "text": "It",
+          "startSec": 1.36,
+          "endSec": 1.68
+        },
+        {
+          "text": "looked",
+          "startSec": 1.68,
+          "endSec": 1.84
+        },
+        {
+          "text": "at",
+          "startSec": 1.84,
+          "endSec": 2.08
+        },
+        {
+          "text": "me",
+          "startSec": 2.08,
+          "endSec": 2.26
+        },
+        {
+          "text": "and",
+          "startSec": 2.26,
+          "endSec": 2.48
+        },
+        {
+          "text": "then",
+          "startSec": 2.48,
+          "endSec": 2.66
+        },
+        {
+          "text": "ran",
+          "startSec": 2.66,
+          "endSec": 2.9
+        },
+        {
+          "text": "away.",
+          "startSec": 2.9,
+          "endSec": 3.24
+        }
+      ]
+    },
+    {
+      "id": "011",
+      "speaker": "A",
+      "en": "Deer are so gentle. My favorite animal is the elephant.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d011.wav",
+      "durationInSec": 5.054,
+      "words": [
+        {
+          "text": "Dear",
+          "startSec": 0.0,
+          "endSec": 0.22
+        },
+        {
+          "text": "are",
+          "startSec": 0.22,
+          "endSec": 0.44
+        },
+        {
+          "text": "so",
+          "startSec": 0.44,
+          "endSec": 0.7
+        },
+        {
+          "text": "gentle.",
+          "startSec": 0.7,
+          "endSec": 1.04
+        },
+        {
+          "text": "My",
+          "startSec": 2.22,
+          "endSec": 2.32
+        },
+        {
+          "text": "favorite",
+          "startSec": 2.32,
+          "endSec": 2.72
+        },
+        {
+          "text": "animal",
+          "startSec": 2.72,
+          "endSec": 3.06
+        },
+        {
+          "text": "is",
+          "startSec": 3.06,
+          "endSec": 3.4
+        },
+        {
+          "text": "the",
+          "startSec": 3.4,
+          "endSec": 3.54
+        },
+        {
+          "text": "elephant.",
+          "startSec": 3.54,
+          "endSec": 3.92
+        }
+      ]
+    },
+    {
+      "id": "012",
+      "speaker": "B",
+      "en": "Elephants are amazing. They're very intelligent, too.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d012.wav",
+      "durationInSec": 5.279,
+      "words": [
+        {
+          "text": "Elephants",
+          "startSec": 0.0,
+          "endSec": 0.54
+        },
+        {
+          "text": "are",
+          "startSec": 0.54,
+          "endSec": 0.7
+        },
+        {
+          "text": "amazing.",
+          "startSec": 0.7,
+          "endSec": 1.04
+        },
+        {
+          "text": "They're",
+          "startSec": 2.0,
+          "endSec": 2.52
+        },
+        {
+          "text": "very",
+          "startSec": 2.52,
+          "endSec": 2.68
+        },
+        {
+          "text": "intelligent,",
+          "startSec": 2.68,
+          "endSec": 3.32
+        },
+        {
+          "text": "too.",
+          "startSec": 4.0,
+          "endSec": 4.28
+        }
+      ]
+    },
+    {
+      "id": "013",
+      "speaker": "A",
+      "en": "They are. I read that they never forget a face.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d013.wav",
+      "durationInSec": 4.369,
+      "words": [
+        {
+          "text": "They",
+          "startSec": 0.0,
+          "endSec": 0.22
+        },
+        {
+          "text": "are.",
+          "startSec": 0.22,
+          "endSec": 0.42
+        },
+        {
+          "text": "I",
+          "startSec": 1.38,
+          "endSec": 1.62
+        },
+        {
+          "text": "read",
+          "startSec": 1.62,
+          "endSec": 1.84
+        },
+        {
+          "text": "that",
+          "startSec": 1.84,
+          "endSec": 2.04
+        },
+        {
+          "text": "they",
+          "startSec": 2.04,
+          "endSec": 2.2
+        },
+        {
+          "text": "never",
+          "startSec": 2.2,
+          "endSec": 2.48
+        },
+        {
+          "text": "forget",
+          "startSec": 2.48,
+          "endSec": 2.76
+        },
+        {
+          "text": "a",
+          "startSec": 2.76,
+          "endSec": 2.96
+        },
+        {
+          "text": "face.",
+          "startSec": 2.96,
+          "endSec": 3.22
+        }
+      ]
+    },
+    {
+      "id": "014",
+      "speaker": "B",
+      "en": "Really? That's incredible. Where do they live?",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d014.wav",
+      "durationInSec": 5.249,
+      "words": [
+        {
+          "text": "Really.",
+          "startSec": 0.0,
+          "endSec": 0.36
+        },
+        {
+          "text": "That's",
+          "startSec": 1.34,
+          "endSec": 1.76
+        },
+        {
+          "text": "incredible.",
+          "startSec": 1.76,
+          "endSec": 2.08
+        },
+        {
+          "text": "Where",
+          "startSec": 3.34,
+          "endSec": 3.58
+        },
+        {
+          "text": "do",
+          "startSec": 3.58,
+          "endSec": 3.78
+        },
+        {
+          "text": "they",
+          "startSec": 3.78,
+          "endSec": 3.98
+        },
+        {
+          "text": "live?",
+          "startSec": 3.98,
+          "endSec": 4.32
+        }
+      ]
+    },
+    {
+      "id": "015",
+      "speaker": "A",
+      "en": "Mostly in Africa and parts of Asia.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d015.wav",
+      "durationInSec": 3.264,
+      "words": [
+        {
+          "text": "Mostly",
+          "startSec": 0.0,
+          "endSec": 0.42
+        },
+        {
+          "text": "in",
+          "startSec": 0.42,
+          "endSec": 0.7
+        },
+        {
+          "text": "Africa",
+          "startSec": 0.7,
+          "endSec": 1.08
+        },
+        {
+          "text": "and",
+          "startSec": 1.08,
+          "endSec": 1.4
+        },
+        {
+          "text": "parts",
+          "startSec": 1.4,
+          "endSec": 1.66
+        },
+        {
+          "text": "of",
+          "startSec": 1.66,
+          "endSec": 1.9
+        },
+        {
+          "text": "Asia.",
+          "startSec": 1.9,
+          "endSec": 2.16
+        }
+      ]
+    },
+    {
+      "id": "016",
+      "speaker": "B",
+      "en": "I'd love to go on a safari someday.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d016.wav",
+      "durationInSec": 3.074,
+      "words": [
+        {
+          "text": "I'd",
+          "startSec": 0.0,
+          "endSec": 0.28
+        },
+        {
+          "text": "love",
+          "startSec": 0.28,
+          "endSec": 0.44
+        },
+        {
+          "text": "to",
+          "startSec": 0.44,
+          "endSec": 0.64
+        },
+        {
+          "text": "go",
+          "startSec": 0.64,
+          "endSec": 0.82
+        },
+        {
+          "text": "on",
+          "startSec": 0.82,
+          "endSec": 1.06
+        },
+        {
+          "text": "a",
+          "startSec": 1.06,
+          "endSec": 1.14
+        },
+        {
+          "text": "safari",
+          "startSec": 1.14,
+          "endSec": 1.54
+        },
+        {
+          "text": "someday.",
+          "startSec": 1.54,
+          "endSec": 2.1
+        }
+      ]
+    },
+    {
+      "id": "017",
+      "speaker": "A",
+      "en": "Same! Seeing lions and giraffes would be a dream.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d017.wav",
+      "durationInSec": 4.834,
+      "words": [
+        {
+          "text": "Same",
+          "startSec": 0.0,
+          "endSec": 0.46
+        },
+        {
+          "text": "Seeing",
+          "startSec": 1.28,
+          "endSec": 1.92
+        },
+        {
+          "text": "lions",
+          "startSec": 1.92,
+          "endSec": 2.16
+        },
+        {
+          "text": "and",
+          "startSec": 2.16,
+          "endSec": 2.56
+        },
+        {
+          "text": "giraffes",
+          "startSec": 2.56,
+          "endSec": 3.1
+        },
+        {
+          "text": "would",
+          "startSec": 3.1,
+          "endSec": 3.22
+        },
+        {
+          "text": "be",
+          "startSec": 3.22,
+          "endSec": 3.36
+        },
+        {
+          "text": "a",
+          "startSec": 3.36,
+          "endSec": 3.48
+        },
+        {
+          "text": "dream",
+          "startSec": 3.48,
+          "endSec": 3.8
+        }
+      ]
+    },
+    {
+      "id": "018",
+      "speaker": "B",
+      "en": "We should plan a trip together in the future.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d018.wav",
+      "durationInSec": 3.329,
+      "words": [
+        {
+          "text": "We",
+          "startSec": 0.0,
+          "endSec": 0.22
+        },
+        {
+          "text": "should",
+          "startSec": 0.22,
+          "endSec": 0.42
+        },
+        {
+          "text": "plan",
+          "startSec": 0.42,
+          "endSec": 0.7
+        },
+        {
+          "text": "a",
+          "startSec": 0.7,
+          "endSec": 0.9
+        },
+        {
+          "text": "trip",
+          "startSec": 0.9,
+          "endSec": 1.1
+        },
+        {
+          "text": "together",
+          "startSec": 1.1,
+          "endSec": 1.44
+        },
+        {
+          "text": "in",
+          "startSec": 1.44,
+          "endSec": 1.8
+        },
+        {
+          "text": "the",
+          "startSec": 1.8,
+          "endSec": 1.9
+        },
+        {
+          "text": "future.",
+          "startSec": 1.9,
+          "endSec": 2.28
+        }
+      ]
+    },
+    {
+      "id": "019",
+      "speaker": "A",
+      "en": "Definitely. But safaris can be quite expensive.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d019.wav",
+      "durationInSec": 4.769,
+      "words": [
+        {
+          "text": "Definitely.",
+          "startSec": 0.0,
+          "endSec": 0.44
+        },
+        {
+          "text": "But",
+          "startSec": 1.82,
+          "endSec": 1.82
+        },
+        {
+          "text": "safaris",
+          "startSec": 1.82,
+          "endSec": 2.3
+        },
+        {
+          "text": "can",
+          "startSec": 2.3,
+          "endSec": 2.62
+        },
+        {
+          "text": "be",
+          "startSec": 2.62,
+          "endSec": 2.8
+        },
+        {
+          "text": "quite",
+          "startSec": 2.8,
+          "endSec": 3.08
+        },
+        {
+          "text": "expensive.",
+          "startSec": 3.08,
+          "endSec": 3.54
+        }
+      ]
+    },
+    {
+      "id": "020",
+      "speaker": "B",
+      "en": "True. We could start by saving a little each month.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d020.wav",
+      "durationInSec": 4.784,
+      "words": [
+        {
+          "text": "True.",
+          "startSec": 0.0,
+          "endSec": 0.36
+        },
+        {
+          "text": "We",
+          "startSec": 1.24,
+          "endSec": 1.56
+        },
+        {
+          "text": "could",
+          "startSec": 1.56,
+          "endSec": 1.76
+        },
+        {
+          "text": "start",
+          "startSec": 1.76,
+          "endSec": 2.02
+        },
+        {
+          "text": "by",
+          "startSec": 2.02,
+          "endSec": 2.3
+        },
+        {
+          "text": "saving",
+          "startSec": 2.3,
+          "endSec": 2.7
+        },
+        {
+          "text": "a",
+          "startSec": 2.7,
+          "endSec": 2.92
+        },
+        {
+          "text": "little",
+          "startSec": 2.92,
+          "endSec": 3.12
+        },
+        {
+          "text": "each",
+          "startSec": 3.12,
+          "endSec": 3.36
+        },
+        {
+          "text": "month.",
+          "startSec": 3.36,
+          "endSec": 3.68
+        }
+      ]
+    },
+    {
+      "id": "021",
+      "speaker": "A",
+      "en": "Good idea. Until then, documentaries will have to do.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d021.wav",
+      "durationInSec": 5.514,
+      "words": [
+        {
+          "text": "Good",
+          "startSec": 0.0,
+          "endSec": 0.2
+        },
+        {
+          "text": "idea.",
+          "startSec": 0.2,
+          "endSec": 0.58
+        },
+        {
+          "text": "Until",
+          "startSec": 1.32,
+          "endSec": 2.02
+        },
+        {
+          "text": "then,",
+          "startSec": 2.02,
+          "endSec": 2.38
+        },
+        {
+          "text": "documentaries",
+          "startSec": 2.84,
+          "endSec": 3.48
+        },
+        {
+          "text": "will",
+          "startSec": 3.48,
+          "endSec": 3.92
+        },
+        {
+          "text": "have",
+          "startSec": 3.92,
+          "endSec": 4.16
+        },
+        {
+          "text": "to",
+          "startSec": 4.16,
+          "endSec": 4.32
+        },
+        {
+          "text": "do.",
+          "startSec": 4.32,
+          "endSec": 4.52
+        }
+      ]
+    },
+    {
+      "id": "022",
+      "speaker": "B",
+      "en": "Ha! At least they're free and very relaxing.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d022.wav",
+      "durationInSec": 4.464,
+      "words": [
+        {
+          "text": "Ha!",
+          "startSec": 0.0,
+          "endSec": 0.24
+        },
+        {
+          "text": "At",
+          "startSec": 0.92,
+          "endSec": 1.5
+        },
+        {
+          "text": "least",
+          "startSec": 1.5,
+          "endSec": 1.68
+        },
+        {
+          "text": "they're",
+          "startSec": 1.68,
+          "endSec": 2.02
+        },
+        {
+          "text": "free",
+          "startSec": 2.02,
+          "endSec": 2.24
+        },
+        {
+          "text": "and",
+          "startSec": 2.24,
+          "endSec": 2.42
+        },
+        {
+          "text": "very",
+          "startSec": 2.42,
+          "endSec": 2.66
+        },
+        {
+          "text": "relaxing.",
+          "startSec": 2.66,
+          "endSec": 3.42
+        }
+      ]
+    },
+    {
+      "id": "023",
+      "speaker": "A",
+      "en": "Do you think it's important to protect wild animals?",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d023.wav",
+      "durationInSec": 3.884,
+      "words": [
+        {
+          "text": "Do",
+          "startSec": 0.0,
+          "endSec": 0.18
+        },
+        {
+          "text": "you",
+          "startSec": 0.18,
+          "endSec": 0.4
+        },
+        {
+          "text": "think",
+          "startSec": 0.4,
+          "endSec": 0.64
+        },
+        {
+          "text": "it's",
+          "startSec": 0.64,
+          "endSec": 0.92
+        },
+        {
+          "text": "important",
+          "startSec": 0.92,
+          "endSec": 1.2
+        },
+        {
+          "text": "to",
+          "startSec": 1.2,
+          "endSec": 1.58
+        },
+        {
+          "text": "protect",
+          "startSec": 1.58,
+          "endSec": 1.86
+        },
+        {
+          "text": "wild",
+          "startSec": 1.86,
+          "endSec": 2.2
+        },
+        {
+          "text": "animals?",
+          "startSec": 2.2,
+          "endSec": 2.66
+        }
+      ]
+    },
+    {
+      "id": "024",
+      "speaker": "B",
+      "en": "Absolutely. Many of them are losing their homes.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d024.wav",
+      "durationInSec": 4.619,
+      "words": [
+        {
+          "text": "Absolutely.",
+          "startSec": 0.0,
+          "endSec": 0.48
+        },
+        {
+          "text": "Many",
+          "startSec": 1.54,
+          "endSec": 2.14
+        },
+        {
+          "text": "of",
+          "startSec": 2.14,
+          "endSec": 2.32
+        },
+        {
+          "text": "them",
+          "startSec": 2.32,
+          "endSec": 2.48
+        },
+        {
+          "text": "are",
+          "startSec": 2.48,
+          "endSec": 2.64
+        },
+        {
+          "text": "losing",
+          "startSec": 2.64,
+          "endSec": 2.88
+        },
+        {
+          "text": "their",
+          "startSec": 2.88,
+          "endSec": 3.22
+        },
+        {
+          "text": "homes.",
+          "startSec": 3.22,
+          "endSec": 3.48
+        }
+      ]
+    },
+    {
+      "id": "025",
+      "speaker": "A",
+      "en": "Yes, that worries me. We should all help if we can.",
+      "vi": "",
+      "pauseAfterSec": 0.4,
+      "audio": "audio/d025.wav",
+      "durationInSec": 5.289,
+      "words": [
+        {
+          "text": "Yes,",
+          "startSec": 0.0,
+          "endSec": 0.34
+        },
+        {
+          "text": "that",
+          "startSec": 0.86,
+          "endSec": 1.08
+        },
+        {
+          "text": "worries",
+          "startSec": 1.08,
+          "endSec": 1.34
+        },
+        {
+          "text": "me.",
+          "startSec": 1.34,
+          "endSec": 1.68
+        },
+        {
+          "text": "We",
+          "startSec": 2.56,
+          "endSec": 2.84
+        },
+        {
+          "text": "should",
+          "startSec": 2.84,
+          "endSec": 3.06
+        },
+        {
+          "text": "all",
+          "startSec": 3.06,
+          "endSec": 3.26
+        },
+        {
+          "text": "help",
+          "startSec": 3.26,
+          "endSec": 3.54
+        },
+        {
+          "text": "if",
+          "startSec": 3.54,
+          "endSec": 3.72
+        },
+        {
+          "text": "we",
+          "startSec": 3.72,
+          "endSec": 3.9
+        },
+        {
+          "text": "can.",
+          "startSec": 3.9,
+          "endSec": 4.2
+        }
+      ]
+    },
+    {
+      "id": "026",
+      "speaker": "B",
+      "en": "Agreed. Even small actions can make a difference.",
+      "vi": "",
+      "pauseAfterSec": 0.6,
+      "audio": "audio/d026.wav",
+      "durationInSec": 4.804,
+      "words": [
+        {
+          "text": "Agreed.",
+          "startSec": 0.0,
+          "endSec": 0.44
+        },
+        {
+          "text": "Even",
+          "startSec": 1.82,
+          "endSec": 1.82
+        },
+        {
+          "text": "small",
+          "startSec": 1.82,
+          "endSec": 2.08
+        },
+        {
+          "text": "actions",
+          "startSec": 2.08,
+          "endSec": 2.56
+        },
+        {
+          "text": "can",
+          "startSec": 2.56,
+          "endSec": 2.9
+        },
+        {
+          "text": "make",
+          "startSec": 2.9,
+          "endSec": 3.14
+        },
+        {
+          "text": "a",
+          "startSec": 3.14,
+          "endSec": 3.28
+        },
+        {
+          "text": "difference.",
+          "startSec": 3.28,
+          "endSec": 3.66
+        }
+      ]
+    }
+  ]
+}
