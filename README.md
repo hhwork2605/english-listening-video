@@ -1,112 +1,102 @@
-# English Listening Video (Claude + Remotion)
+# English Listening Video
 
-Tạo video "nghe thụ động tiếng Anh" cho YouTube. Claude lo nội dung,
-Remotion dựng & render video. Dùng chung dữ liệu cho cả bản ngang (YouTube)
-và bản dọc (Shorts/TikTok).
+Tạo video học tiếng Anh cho YouTube theo phong cách kênh podcast hội thoại
+(*Speak English With Class* / English Leap), bằng pipeline **Claude → TTS →
+Remotion**. Mỗi lần chạy cho ra một **bộ upload hoàn chỉnh** (video ngang + dọc,
+thumbnail, phụ đề `.srt`, tiêu đề/mô tả/tags) gom trong một project folder.
 
-## Luồng dữ liệu
+> Định dạng chính: **MỘT ảnh studio tĩnh + sóng âm chạy + transcript tiếng Anh
+> highlight từng từ**. Audio là hội thoại 2 giọng. Không hiện tiếng Việt trên màn hình.
 
-```
-Claude  ->  data/script.json  ->  TTS  ->  public/audio/*.mp3
-                  ^                              |
-                  |  (measure: đo độ dài)        |
-                  +------------------------------+
-                                 |
-                                 v
-                            Remotion  ->  out/*.mp4
-```
+## Tính năng
+
+- 🎙️ **Hội thoại 2 người** (Emma/Mike) — Claude tự viết kịch bản theo chủ đề + cấp độ.
+- 🗣️ **Giọng đọc offline** qua Windows SAPI (miễn phí, không API key); 2 giọng luân phiên.
+- ✨ **Highlight từng từ khớp tuyệt đối** — forced-align bằng Whisper (offline).
+- 📊 **Sóng âm phản ứng theo audio** chạy xuyên suốt (chống YouTube gắn cờ trùng lặp).
+- 🖼️ **Thumbnail kiểu kênh** — ảnh 2 nhân vật (Canva) + overlay tiêu đề/badge.
+- 📐 **Hai khung**: ngang 1920×1080 (YouTube) + dọc 1080×1920 (Shorts/TikTok).
+- 📦 **Mỗi video một folder**: `projects/<slug>_<thoigian>/` đủ video + thumbnail +
+  `.srt` + `youtube-title/description/tags` + nguồn.
 
 ## Cài đặt
 
 ```bash
 npm install
+# Cho bước highlight khớp tuyệt đối (một lần):
+pip install faster-whisper truststore
 ```
 
-## Chạy nhanh (xem trước, chưa cần audio)
+Yêu cầu: Node 18+, Windows (giọng SAPI), Python 3.9+ (Whisper align). Render
+dùng Chrome Headless do Remotion tự tải.
+
+## Quy trình (định dạng podcast — chính)
 
 ```bash
-npm run dev
+# 1) Tạo project folder cho video
+ID=$(node scripts/new-project.mjs "Talking About Animals")
+
+# 2) Soạn data/dialogue.json (Claude viết: turns + youtubeTitle/Description/tags)
+
+# 3) Giọng đọc 2 người + mốc từ
+npm run dialogue:audio
+
+# 4) Khớp tuyệt đối (mốc từng từ thật)
+npm run dialogue:align
+
+# 5) Ảnh nền (Canva hoặc tự cung cấp) -> public/backgrounds/scene.png,
+#    public/backgrounds/scene-vertical.png, public/thumbnails/scene.png
+
+# 6) Render vào project folder (ảnh nền/tiêu đề qua --props)
+printf '{"backgroundImage":"thumbnails/scene.png","title":"ANIMALS"}' > "projects/$ID/thumb.props.json"
+npx remotion still src/index.ts Thumbnail "projects/$ID/thumbnail.png" --props="projects/$ID/thumb.props.json"
+
+printf '{"backgroundImage":"backgrounds/scene.png"}' > "projects/$ID/podcast.props.json"
+npx remotion render Podcast "projects/$ID/podcast.mp4" --props="projects/$ID/podcast.props.json"
+
+printf '{"backgroundImage":"backgrounds/scene-vertical.png"}' > "projects/$ID/pv.props.json"
+npx remotion render PodcastVertical "projects/$ID/podcast-portrait.mp4" --props="projects/$ID/pv.props.json"
+
+# 7) Gom + đặt tên từ khóa + tạo .srt + metadata
+node scripts/finalize-project.mjs "$ID"        # hoặc kèm từ khóa: "$ID" "learn english animals"
 ```
 
-Mở Remotion Studio, chọn `LandscapeVideo` hoặc `PortraitVideo`. Dữ liệu mẫu
-trong `data/script.json` chạy được ngay (không tiếng) để bạn xem bố cục.
+Xem trước trực quan: `npm run dev` (Remotion Studio).
 
-## Pipeline đầy đủ
+## Compositions
 
-1. **Sinh nội dung** (cần `ANTHROPIC_API_KEY`):
-   ```bash
-   npm run generate:script -- --topic "travel" --level B1 --count 15
-   ```
-
-2. **Sinh giọng đọc** — chọn nhà cung cấp qua `TTS_PROVIDER`:
-   - `manual` (mặc định): tự thu/đặt file vào `public/audio/<id>.mp3`
-   - `openai`: cần `OPENAI_API_KEY`
-   - `elevenlabs`: cần `ELEVENLABS_API_KEY` + `ELEVENLABS_VOICE_ID`
-   ```bash
-   npm run generate:audio
-   ```
-
-   **Khuyến nghị (Windows, offline, có highlight từng từ):** dùng giọng SAPI có
-   sẵn của Windows. Script này sinh `wav` + tự điền `words[]` (mốc thời gian từng
-   từ) vào `script.json`, nên bạn có ngay hiệu ứng karaoke mà không cần API/Whisper:
-   ```bash
-   npm run generate:audio:sapi
-   # chọn giọng/tốc độ khác:
-   # powershell -File scripts/tts-sapi.ps1 -Voice "Microsoft David Desktop" -Rate -2
-   ```
-
-3. **Đo độ dài audio** (cập nhật timing chính xác):
-   ```bash
-   npm run measure
-   ```
-
-   Hoặc chạy gộp cả 3 bước:
-   ```bash
-   npm run build:content -- --topic "travel" --level B1 --count 15
-   ```
-
-4. **Render**:
-   ```bash
-   npm run render:landscape   # out/landscape.mp4 (1920x1080)
-   npm run render:portrait    # out/portrait.mp4 (1080x1920)
-   npm run render:all
-   ```
-
-## Highlight từng từ (karaoke)
-
-Mỗi câu trong `script.json` có thể chứa mảng `words[]`:
-
-```json
-"words": [
-  { "text": "Could", "startSec": 0.151, "endSec": 0.426 },
-  { "text": "you",   "startSec": 0.426, "endSec": 0.606 }
-]
-```
-
-`Subtitle` sẽ tô sáng từ đang được đọc theo thời gian (reset lại ở mỗi lần lặp,
-tắt trong khoảng nghỉ cuối). Nếu câu **không** có `words[]` thì hiển thị nguyên
-câu, không highlight.
-
-- Cách tạo `words[]` dễ nhất: `npm run generate:audio:sapi` (mục trên).
-- Dấu câu cuối (vd "?") do SAPI không tạo mốc nên có thể không hiển thị trong
-  phần highlight — chỉnh tay trong `words[]` nếu cần.
-
-## Tùy biến
-
-- **Nhạc nền**: đặt file vào `public/bgm/`, mở comment `bgm:` trong `src/Root.tsx`.
-- **Nền**: sửa `src/components/Background.tsx` (gradient hoặc ảnh tĩnh).
-- **Số lần lặp / khoảng nghỉ**: chỉnh `repeat`, `gapBetweenRepeatsSec`,
-  `pauseAfterSec` trong `data/script.json`.
-- **Cỡ chữ, màu, bố cục phụ đề**: `src/components/Subtitle.tsx`.
+| ID | Mô tả |
+|---|---|
+| `Podcast` / `PodcastVertical` | **Chính** — 1 ảnh tĩnh + sóng âm + transcript EN highlight (`data/dialogue.json`) |
+| `Thumbnail` | Ảnh đại diện 1280×720 (ảnh Canva + overlay chữ) |
+| `LandscapeVideo` / `PortraitVideo` | Phụ — câu đơn lặp lại nghe thụ động (`data/script.json`) |
 
 ## Cấu trúc
 
 ```
-data/script.json          nội dung + timing
-public/audio|bgm|backgrounds   tài nguyên media
-scripts/                  tự động hóa (Claude, TTS, đo độ dài)
-src/Root.tsx              đăng ký 2 composition (ngang + dọc)
-src/ListeningVideo.tsx    composition chính
-src/components/           SentenceScene, Subtitle, ProgressBar, Background
-src/timing.ts             tính số frame theo audio
+data/                 dialogue.json (podcast), script.json (câu đơn)
+public/               audio/ (wav), backgrounds/, thumbnails/, bgm/, characters/
+scripts/              new-project, tts-dialogue (SAPI), align_whisper, finalize-project, ...
+src/podcast/          SimplePodcast + components (Caption, Speaker, ...)
+src/                  Root.tsx, Thumbnail.tsx, components/ (AudioWaveform, ...)
+projects/             [git-ignored] mỗi video một folder kết quả
+.claude/skills/english-podcast-video/   skill tự động hoá cả pipeline
 ```
+
+## Giọng đọc chất lượng cao (tùy chọn)
+
+SAPI miễn phí nhưng hơi máy móc. Để xuất bản nghiêm túc, cắm OpenAI/ElevenLabs
+(adapter trong `scripts/generate-audio.ts`) rồi dùng Whisper lấy lại `words[]`.
+Xem `.claude/skills/english-podcast-video/references/better-tts.md`.
+
+## Tự động hoá bằng skill
+
+Pipeline trên được đóng gói thành skill Claude Code tại
+`.claude/skills/english-podcast-video/`. Trong phiên Claude với thư mục này, chỉ
+cần yêu cầu *"tạo video [chủ đề] [cấp độ] [độ dài]"* là chạy trọn bộ.
+
+## Ghi chú
+
+- `projects/`, `node_modules/`, `out/`, `public/audio/*.wav` không đưa lên git.
+- `@remotion/media-utils`/`media-parser` có thể cần license cho mục đích thương
+  mại — xem https://remotion.dev/license.

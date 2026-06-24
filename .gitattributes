@@ -1,0 +1,22 @@
+# Chuẩn hoá: text tự nhận, chuẩn LF trong repo
+* text=auto eol=lf
+
+# Script PowerShell nên giữ CRLF khi checkout trên Windows
+*.ps1 text eol=crlf
+
+# File nhị phân — không đụng line-ending, không diff
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.mp4   binary
+*.mov   binary
+*.wav   binary
+*.mp3   binary
+*.m4a   binary
+*.woff  binary
+*.woff2 binary
+*.ttf   binary
+*.otf   binary
+*.ico   binary
