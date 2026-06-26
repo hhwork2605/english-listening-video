@@ -13,7 +13,8 @@ description: >-
   tiếng Anh bằng Remotion, hoặc đưa một chủ đề + cấp độ và nhờ tạo video — kể cả
   khi họ không nói rõ chữ "Remotion", "Canva" hay "skill". Có thêm biến thể phụ:
   "2 nhân vật + phụ đề Anh-Việt + badge" và "câu đơn lặp lại để nghe thụ động"
-  (một giọng).
+  (một giọng). LUÔN hỏi trước xem người dùng đã có sẵn kịch bản chưa — nếu có,
+  dùng kịch bản đó và TỰ suy ra chủ đề + cấp độ (CEFR) phù hợp, không hỏi lại.
 ---
 
 # English Podcast Video
@@ -58,28 +59,45 @@ npm install     # chỉ lần đầu mỗi project; mất ~1 phút
 `<SKILL_DIR>` là thư mục chứa file SKILL.md này. Nếu người dùng đã có sẵn một
 project tạo từ template trước đó, dùng lại, bỏ qua bước copy + install.
 
-Sau đó tạo **project folder cho video lần này** (lấy id để dùng ở bước render):
+**Sau khi đã biết chủ đề** (người dùng cung cấp, hoặc bạn suy ra từ kịch bản ở
+bước 2) mới tạo **project folder** (slug lấy từ chủ đề):
 ```bash
 ID=$(npm run --silent project:new -- "<chủ đề>")   # vd: animals_20260624-1340
 ```
 
-### 2. Hỏi thông số (ngắn gọn, gộp 1 lần)
-- **Chủ đề** (vd "Talking About Your Favorite Food", "Dealing With Stress").
+### 2. Hỏi ĐẦU TIÊN: đã có kịch bản chưa?
+Hỏi người dùng: **"Bạn đã có sẵn kịch bản chưa, hay để mình viết?"** Rẽ 2 nhánh:
+
+**A) ĐÃ CÓ kịch bản** (người dùng dán nội dung / đưa file):
+- **KHÔNG hỏi chủ đề và cấp độ** — TỰ suy ra từ chính kịch bản:
+  - `topic`: cụm ngắn mô tả nội dung (vd "Talking About Money Habits").
+  - `level`: cấp độ CEFR phù hợp, đánh giá theo độ khó từ vựng/ngữ pháp/độ dài câu
+    (A2 / B1 / B1-B2 / B2 / B2-C1 / C1). Nói rõ cấp độ bạn suy ra cho người dùng biết.
+- Chuyển kịch bản thành `turns` (xem bước 3, nhánh "đã có").
+- Độ dài = theo kịch bản (không hỏi). Vẫn tự sinh `youtubeTitle`/`youtubeDescription`/`tags`.
+- Chỉ còn hỏi (nếu cần): **định dạng** (ngang/dọc/cả hai) và xác nhận **giọng** mặc định.
+
+**B) CHƯA CÓ** — hỏi gọn (gộp 1 lần):
+- **Chủ đề** (vd "Talking About Your Favorite Food").
 - **Cấp độ** (mặc định `B1-B2`).
-- **Độ dài** mong muốn theo phút (mặc định ~10 phút). Ước lượng:
-  **~12 lượt thoại ≈ 1 phút** (giọng SAPI, mỗi lượt ~4–5s + nghỉ). Vậy
-  10 phút ≈ 120 lượt, 15 phút ≈ 180 lượt.
-- **Giọng 2 người** (mặc định Zira nữ / David nam — chỉ là giọng đọc, không
-  hiện trên màn hình ở định dạng chính).
-- **Ảnh nền tĩnh**: mặc định **tự tạo bằng Canva** hợp chủ đề (bước 5). Chỉ hỏi
-  người dùng nếu họ muốn mô tả nhân vật riêng hoặc đã có sẵn ảnh.
-- **Định dạng**: ngang, dọc, hay cả hai.
+- **Độ dài** theo phút (mặc định ~10 phút). Ước lượng **~12 lượt ≈ 1 phút**
+  (giọng SAPI ~4–5s/lượt + nghỉ): 10 phút ≈ 120 lượt, 15 phút ≈ 180 lượt.
+- **Giọng** (mặc định Zira nữ / David nam) và **định dạng** (ngang/dọc/cả hai).
 
 Ở định dạng chính, màn hình **chỉ hiện transcript tiếng Anh** — không cần tiếng
 Việt. (Trường `vi` là tùy chọn, chỉ dùng nếu sau này muốn biến thể Anh-Việt.)
 
-### 3. Viết kịch bản hội thoại → `data/dialogue.json`
-**Bạn tự viết** nội dung (không cần API key — bạn chính là model sinh nội dung).
+### 3. Dựng `data/dialogue.json`
+
+**Nhánh A — đã có kịch bản người dùng đưa:** chuyển thành `turns`, **giữ nguyên
+câu chữ** của họ (chỉ chuẩn hoá nhẹ nếu khó đọc TTS).
+- Nếu kịch bản có nhãn người nói (A/B, tên, "—"…) → map xen kẽ A/B theo đúng.
+- Nếu là đoạn văn liền → tự tách thành các lượt hợp lý, gán A/B xen kẽ.
+- Điền `topic`, `level` (đã suy ra ở bước 2), và sinh `youtubeTitle`/
+  `youtubeDescription`/`tags` từ nội dung. Để `audio`/`durationInSec`/`words` trống.
+- Bỏ qua phần "tự viết" bên dưới, sang thẳng bước 4.
+
+**Nhánh B — chưa có, bạn tự viết** (không cần API key — bạn là model sinh nội dung).
 Đây là phần quyết định chất lượng, hãy đầu tư:
 - Hội thoại tự nhiên, đời thường, **luân phiên A/B**, bắt đầu bằng A.
 - Mỗi lượt 1–2 câu, đúng cấp độ, dùng từ/cụm thông dụng; có câu hỏi nối để
