@@ -37,6 +37,30 @@ npm run dialogue:audio:eleven -- --data "projects/<id>/dialogue.json"
   thẳng vào file project. Sau đó: `project:use` → render như bình thường.
 - Mặc định đọc tuần tự (an toàn rate limit); ~vài phút cho video 10 phút.
 
+## aivideoauto / gommo TTS cho HỘI THOẠI (nhiều model, gồm Eleven V3)
+Adapter `scripts/tts-gommo.mjs` (npm: `dialogue:audio:gommo`) gọi API nền tảng
+**`https://v2.api.gommo.net`** — cung cấp sẵn nhiều model TTS nên KHÔNG cần key
+ElevenLabs riêng (trả bằng credit nền tảng).
+
+- **Endpoint**: tạo job `POST /ai/jobs/tts/{model}` → poll `POST /ai/jobs/{id}` →
+  tải URL audio. Liệt kê model/giọng: `GET /ai/models?type=tts`.
+- **Model** (env `GOMMO_TTS_MODEL`, mặc định `eleven_v3`): `eleven_v3`,
+  `eleven_flash_v2_5`, `minimax_speech_2_8_hd|turbo`, `minimax_speech_2_6_hd|turbo`,
+  `omnivoice_v1` (voice design/clone), `autoai_speech_1`.
+- **Auth**: cần `GOMMO_ACCESS_TOKEN` (+ thường `GOMMO_DOMAIN`) trong `.env` — lấy
+  từ tài khoản nền tảng. Giọng: `gommoVoiceId` cho từng speaker, hoặc env
+  `GOMMO_VOICE_A`/`GOMMO_VOICE_B`.
+
+```bash
+npm run dialogue:audio:gommo -- --data "projects/<id>/dialogue.json"   # --verbose nếu cần dò
+npm run dialogue:align -- --data "projects/<id>/dialogue.json"          # Whisper -> words[] (karaoke)
+```
+- API này **bất đồng bộ** (create→poll) và (theo khảo sát) **không trả mốc từng
+  từ** → chạy `dialogue:align` (Whisper) sau để có `words[]`.
+- `enTts` (tag cảm xúc) vẫn được ưu tiên gửi khi dùng model `eleven_v3`.
+- Lưu ý: body tạo job/response mỗi deployment có thể khác; script dùng deep-search
+  để bắt job id + URL audio, chạy `--verbose` để xem raw và chỉnh `CONFIG` nếu cần.
+
 ## Áp dụng OpenAI cho hội thoại
 `generate-audio.ts` hiện xử lý `script.json` (câu đơn). Muốn dùng OpenAI cho
 hội thoại thì viết một biến thể đọc `dialogue.json` tương tự script ElevenLabs ở

@@ -201,7 +201,12 @@ npm run dialogue:audio:eleven -- --data "projects/$ID/dialogue.json"
 Script gọi endpoint `with-timestamps` nên trả LUÔN `words[]` khớp tuyệt đối → **bỏ
 qua bước 4b (align)**. Audio ghi `.mp3` (Remotion + sóng âm đọc bình thường). Chọn
 giọng: thêm `elevenVoiceId` cho từng speaker trong `dialogue.json`, hoặc env
-`ELEVEN_VOICE_A`/`ELEVEN_VOICE_B`. Chi tiết: `references/better-tts.md`. Giọng có sẵn trên Windows thường là
+`ELEVEN_VOICE_A`/`ELEVEN_VOICE_B`. Chi tiết: `references/better-tts.md`.
+
+**Hoặc — aivideoauto/gommo TTS** (`npm run dialogue:audio:gommo`): nhiều model
+sẵn (gồm `eleven_v3`, minimax, omnivoice) qua API nền tảng, KHÔNG cần key
+ElevenLabs riêng (cần `GOMMO_ACCESS_TOKEN`). API bất đồng bộ + không trả mốc từ
+→ chạy bước 4b (align) để có karaoke. Chi tiết: `references/better-tts.md`. Giọng có sẵn trên Windows thường là
 `Microsoft David Desktop` (nam) và `Microsoft Zira Desktop` (nữ) — kiểm tra
 bằng lệnh trong `references/voices.md` nếu cần.
 

@@ -20,6 +20,7 @@
 | `name` | Tên hiển thị (vd "Emma"). |
 | `voice` | Giọng SAPI, vd `"Microsoft Zira Desktop"` / `"Microsoft David Desktop"`. |
 | `elevenVoiceId` | (tùy chọn) Voice ID ElevenLabs, dùng khi chạy `dialogue:audio:eleven`. |
+| `gommoVoiceId` | (tùy chọn) Voice ID nền tảng aivideoauto/gommo, dùng khi chạy `dialogue:audio:gommo`. |
 | `side` | `"left"` hoặc `"right"` — vị trí trên sân khấu. |
 | `color` | Mã màu nhấn (badge, viền khi đang nói, dải phụ đề). |
 | `image` | (tùy chọn) ảnh nhân vật trong public/, vd `"characters/emma.png"`. |
