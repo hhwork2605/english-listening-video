@@ -36,16 +36,20 @@ dùng Chrome Headless do Remotion tự tải.
 # 1) Tạo project folder cho video
 ID=$(node scripts/new-project.mjs "Talking About Animals")
 
-# 2) Soạn data/dialogue.json (Claude viết: turns + youtubeTitle/Description/tags)
+# 2) Soạn projects/$ID/dialogue.json (Claude viết: turns + youtubeTitle/Description/tags)
+#    (data/ chỉ là vùng đệm render; nguồn thật nằm trong project folder)
 
-# 3) Giọng đọc 2 người + mốc từ
-npm run dialogue:audio
+# 3) Giọng đọc 2 người + mốc từ (ghi words[] vào file project)
+npm run dialogue:audio -- -Data "projects/$ID/dialogue.json"
 
 # 4) Khớp tuyệt đối (mốc từng từ thật)
-npm run dialogue:align
+npm run dialogue:align -- --data "projects/$ID/dialogue.json"
 
 # 5) Ảnh nền (Canva hoặc tự cung cấp) -> public/backgrounds/scene.png,
 #    public/backgrounds/scene-vertical.png, public/thumbnails/scene.png
+
+# 5b) Nạp dữ liệu nguồn của project vào data/ để Remotion render
+node scripts/use-project.mjs "$ID"
 
 # 6) Render vào project folder (ảnh nền/tiêu đề qua --props)
 printf '{"backgroundImage":"thumbnails/scene.png","title":"ANIMALS"}' > "projects/$ID/thumb.props.json"
@@ -74,12 +78,12 @@ Xem trước trực quan: `npm run dev` (Remotion Studio).
 ## Cấu trúc
 
 ```
-data/                 dialogue.json (podcast), script.json (câu đơn)
+data/                 vùng đệm render (Remotion đọc ở đây); project:use nạp vào
 public/               audio/ (wav), backgrounds/, thumbnails/, bgm/, characters/
-scripts/              new-project, tts-dialogue (SAPI), align_whisper, finalize-project, ...
+scripts/              new-project, use-project, tts-dialogue (SAPI), align_whisper, finalize-project, ...
 src/podcast/          SimplePodcast + components (Caption, Speaker, ...)
 src/                  Root.tsx, Thumbnail.tsx, components/ (AudioWaveform, ...)
-projects/             [git-ignored] mỗi video một folder kết quả
+projects/             [git-ignored] mỗi video một folder: dialogue.json NGUỒN + kết quả
 .claude/skills/english-podcast-video/   skill tự động hoá cả pipeline
 ```
 

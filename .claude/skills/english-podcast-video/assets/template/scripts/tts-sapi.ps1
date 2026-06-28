@@ -11,6 +11,7 @@
     powershell -ExecutionPolicy Bypass -File scripts/tts-sapi.ps1 -Voice "Microsoft David Desktop" -Rate -2
 #>
 param(
+  [string]$Data = "data/script.json",
   [string]$Voice = "Microsoft Zira Desktop",
   [int]$Rate = -1
 )
@@ -18,7 +19,7 @@ param(
 Add-Type -AssemblyName System.Speech
 
 $root = Split-Path -Parent $PSScriptRoot
-$scriptPath = Join-Path $root "data\script.json"
+$scriptPath = Join-Path $root $Data
 $audioDir = Join-Path $root "public\audio"
 New-Item -ItemType Directory -Force -Path $audioDir | Out-Null
 
@@ -72,4 +73,4 @@ foreach ($item in $data.items) {
 $synth.Dispose()
 
 $data | ConvertTo-Json -Depth 10 | Set-Content $scriptPath -Encoding UTF8
-Write-Host "Da cap nhat data/script.json (audio + words). Gio render duoc roi."
+Write-Host "Da cap nhat $Data (audio + words). Gio render duoc roi."

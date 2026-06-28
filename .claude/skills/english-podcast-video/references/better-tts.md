@@ -18,13 +18,30 @@ $env:ELEVENLABS_API_KEY="..."; $env:ELEVENLABS_VOICE_ID="..."; $env:TTS_PROVIDER
 npm run generate:audio
 ```
 
-## Áp dụng cho hội thoại (dialogue.json)
-`generate-audio.ts` hiện xử lý `script.json`. Để dùng cho hội thoại, hoặc:
-1. Viết một biến thể đọc `dialogue.json` (lặp qua `turns`, chọn giọng theo
-   `speakers[turn.speaker]`, ghi `public/audio/d<id>.<ext>` rồi cập nhật
-   `audio`/`durationInSec`), hoặc
-2. Tạo audio bằng công cụ bên ngoài rồi đặt thủ công vào `public/audio/` và điền
-   trường `audio` cho từng lượt.
+## ElevenLabs cho HỘI THOẠI (dialogue.json) — tích hợp sẵn ⭐
+Đã có script chuyên dụng `scripts/tts-elevenlabs.mjs` (npm: `dialogue:audio:eleven`).
+Nó gọi endpoint **`/text-to-speech/{voice}/with-timestamps`** nên trả LUÔN mốc
+thời gian từng ký tự → tự dựng `words[]` khớp tuyệt đối, **không cần Whisper align**.
+
+```bash
+# 1) Đặt khoá trong .env ở gốc (xem .env.example)
+#    ELEVENLABS_API_KEY=sk_...
+# 2) Sinh giọng + mốc từ cho file nguồn của project:
+npm run dialogue:audio:eleven -- --data "projects/<id>/dialogue.json"
+# tuỳ chọn: --model eleven_turbo_v2_5   --format mp3_44100_128
+```
+- **Chọn giọng**: thêm `elevenVoiceId` cho từng speaker trong `dialogue.json`,
+  hoặc đặt env `ELEVEN_VOICE_A` (nữ/A) và `ELEVEN_VOICE_B` (nam/B). Mặc định:
+  Rachel `21m00Tcm4TlvDq8ikWAM` (nữ), Adam `pNInz6obpgDQGcFmaJgB` (nam).
+- Audio ghi `public/audio/d<id>.mp3`; `audio`/`durationInSec`/`words` được điền
+  thẳng vào file project. Sau đó: `project:use` → render như bình thường.
+- Mặc định đọc tuần tự (an toàn rate limit); ~vài phút cho video 10 phút.
+
+## Áp dụng OpenAI cho hội thoại
+`generate-audio.ts` hiện xử lý `script.json` (câu đơn). Muốn dùng OpenAI cho
+hội thoại thì viết một biến thể đọc `dialogue.json` tương tự script ElevenLabs ở
+trên (lặp `turns`, chọn giọng theo `speakers[turn.speaker]`), rồi dùng Whisper
+(bước 4b) để lấy `words[]`.
 
 ## Highlight từng từ khi dùng TTS đám mây
 TTS đám mây thường không trả mốc từ như SAPI. Để có `words[]`:

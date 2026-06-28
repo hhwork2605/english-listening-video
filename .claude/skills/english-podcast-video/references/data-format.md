@@ -19,6 +19,7 @@
 |---|---|
 | `name` | Tên hiển thị (vd "Emma"). |
 | `voice` | Giọng SAPI, vd `"Microsoft Zira Desktop"` / `"Microsoft David Desktop"`. |
+| `elevenVoiceId` | (tùy chọn) Voice ID ElevenLabs, dùng khi chạy `dialogue:audio:eleven`. |
 | `side` | `"left"` hoặc `"right"` — vị trí trên sân khấu. |
 | `color` | Mã màu nhấn (badge, viền khi đang nói, dải phụ đề). |
 | `image` | (tùy chọn) ảnh nhân vật trong public/, vd `"characters/emma.png"`. |
@@ -28,7 +29,8 @@
 |---|---|---|
 | `id` | bạn | `"001"`, `"002"`… |
 | `speaker` | bạn | `"A"` hoặc `"B"`, luân phiên. |
-| `en` | bạn | Câu tiếng Anh. |
+| `en` | bạn | Câu tiếng Anh (SẠCH, không tag) — hiện trên phụ đề/karaoke/.srt. |
+| `enTts` | bạn | (tùy chọn, ElevenLabs v3) Bản `en` có chèn audio tag cảm xúc (`[laughs]`, `[excited]`…) để TTS đọc. `dialogue:audio:eleven` ưu tiên dùng trường này; tag được lọc khỏi `words[]`. |
 | `vi` | bạn | Nghĩa tiếng Việt. |
 | `pauseAfterSec` | bạn | Nghỉ sau lượt (mặc định `0.4`). |
 | `audio` | TTS | `"audio/d001.wav"`. |

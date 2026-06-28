@@ -4,11 +4,10 @@
  *
  * Dùng:  node scripts/finalize-project.mjs <id>
  *
- * Giả định trước khi gọi: đã render vào projects/<id>/ (podcast.mp4, thumbnail.png…)
- * và các file làm việc đang ở vị trí chuẩn:
- *   data/dialogue.json, public/backgrounds/scene.png, public/thumbnails/scene.png,
- *   public/audio/d*.wav
- * Script copy chúng vào projects/<id>/ và ghi project.json (metadata).
+ * Giả định trước khi gọi: đã render vào projects/<id>/ (podcast.mp4, thumbnail.png…),
+ * dialogue.json NGUỒN nằm ở projects/<id>/dialogue.json, và các file làm việc ở:
+ *   public/backgrounds/scene.png, public/thumbnails/scene.png, public/audio/d*.wav
+ * Script gom ảnh/audio + tạo .srt/metadata vào projects/<id>/ và ghi project.json.
  */
 import {
   mkdirSync,
@@ -62,10 +61,15 @@ const copy = (src, dst) => {
 
 const meta = { id, createdAt: new Date().toISOString() };
 
-const dialoguePath = resolve(ROOT, "data", "dialogue.json");
+// Nguồn dialogue = file trong project (nguồn thật của pipeline). Fallback
+// data/dialogue.json cho project cũ chưa có file riêng (copy vào project luôn).
+let dialoguePath = join(proj, "dialogue.json");
+if (!existsSync(dialoguePath)) {
+  const legacy = resolve(ROOT, "data", "dialogue.json");
+  if (existsSync(legacy)) copyFileSync(legacy, dialoguePath);
+}
 let doc = null;
 if (existsSync(dialoguePath)) {
-  copyFileSync(dialoguePath, join(proj, "dialogue.json"));
   try {
     doc = JSON.parse(readFileSync(dialoguePath, "utf-8").replace(/^﻿/, ""));
     meta.title = doc.title;

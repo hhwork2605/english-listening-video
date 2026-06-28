@@ -65,6 +65,13 @@ bước 2) mới tạo **project folder** (slug lấy từ chủ đề):
 ID=$(npm run --silent project:new -- "<chủ đề>")   # vd: animals_20260624-1340
 ```
 
+> **Dữ liệu nguồn nằm TRONG project.** Mỗi video có file riêng
+> `projects/$ID/dialogue.json` (hoặc `projects/$ID/script.json` cho định dạng câu
+> đơn) — đây là NGUỒN THẬT. Thư mục `data/` ở gốc chỉ là **vùng đệm render**
+> (Remotion import tĩnh `data/`), giống `public/audio` hay `out/`; bước
+> `project:use` ở mục 5 sẽ tự nạp file nguồn của project vào `data/` trước khi
+> render. Nhờ vậy nhiều video không ghi đè lẫn nhau.
+
 ### 2. Hỏi ĐẦU TIÊN: đã có kịch bản chưa?
 Hỏi người dùng: **"Bạn đã có sẵn kịch bản chưa, hay để mình viết?"** Rẽ 2 nhánh:
 
@@ -87,7 +94,10 @@ Hỏi người dùng: **"Bạn đã có sẵn kịch bản chưa, hay để mìn
 Ở định dạng chính, màn hình **chỉ hiện transcript tiếng Anh** — không cần tiếng
 Việt. (Trường `vi` là tùy chọn, chỉ dùng nếu sau này muốn biến thể Anh-Việt.)
 
-### 3. Dựng `data/dialogue.json`
+### 3. Dựng `projects/$ID/dialogue.json`
+
+Viết file dialogue NGUỒN vào **`projects/$ID/dialogue.json`** (không phải
+`data/dialogue.json` — `data/` chỉ là vùng đệm render, sẽ được nạp ở bước 5).
 
 **Nhánh A — đã có kịch bản người dùng đưa:** chuyển thành `turns`, **giữ nguyên
 câu chữ** của họ (chỉ chuẩn hoá nhẹ nếu khó đọc TTS).
@@ -149,26 +159,65 @@ Bám chủ đề/cấp độ, ≤ 50 ký tự. `finalize` sẽ xuất ra `youtub
   practice", "<chủ đề> in english", "<cấp độ> english"…).
 `finalize` xuất `youtube-description.txt` + `youtube-tags.txt` (ngăn bằng dấu phẩy).
 
+### 3b. (Khuyến nghị cho video dài) Fan-out bằng subagent chuyên gia
+Thay vì tự viết tất cả trong một mạch, có thể chia cho các subagent chuyên gia
+(định nghĩa trong `.claude/agents/`) chạy **song song**, rồi nối lại:
+
+1. **Chia khía cạnh**: tách `topic` thành N khía cạnh nhỏ (vd 3–4 khía cạnh cho
+   ~120 lượt), gán mỗi khía cạnh một cụm ~30–40 lượt; xác định cụm nào mở đầu /
+   giữa / kết.
+2. **Spawn `english-dialogue-writer` song song** — mỗi agent một khía cạnh, truyền
+   `topic`, `aspect`, `level`, `turns`, `startSpeaker`, `startId` (lệch nhau để
+   `id` không trùng), `context` (vị trí cụm + tóm tắt cụm kề), `includeVi`. Mỗi
+   agent trả `{ turns: [...] }` đúng schema.
+3. **Nối** các `turns` theo thứ tự khía cạnh; đánh lại `id` liên tục 3 chữ số và
+   bảo đảm luân phiên A/B ở chỗ ghép (đảo `startSpeaker` cụm sau nếu cần).
+4. **Spawn `dialogue-cefr-reviewer`** trên mảng đã nối (truyền `level`) → nhận
+   `turns` đã chuẩn hoá đúng cấp độ + báo cáo thay đổi; xử lý `report.flags` nếu có.
+5. **Spawn `youtube-metadata-writer`** (truyền `topic`, `level`, tóm tắt/turns) →
+   điền `title`, `topic`, `youtubeTitle`, `youtubeDescription`, `tags`.
+6. Ráp tất cả vào `projects/$ID/dialogue.json` (thêm `fps`, `speakers`), rồi sang bước 4.
+
+Video ngắn (1 cụm) thì khỏi fan-out: gọi một `english-dialogue-writer`, rồi
+`dialogue-cefr-reviewer`, rồi `youtube-metadata-writer`. Không có nhu cầu đặc
+biệt vẫn có thể tự viết tay theo nhánh A/B ở trên — các agent là tùy chọn nâng
+chất lượng/tốc độ.
+
 ### 4. Sinh giọng đọc + mốc từng từ
+Trỏ TTS thẳng vào file nguồn của project (tham số `-Data`):
 ```bash
-npm run dialogue:audio
+npm run dialogue:audio -- -Data "projects/$ID/dialogue.json"
 ```
 Script `tts-dialogue.ps1` đọc mỗi lượt bằng giọng của speaker tương ứng, ghi
-`public/audio/d<id>.wav` và tự điền `durationInSec` + `words[]` (mốc thời gian
-từng từ) vào `dialogue.json`. Giọng có sẵn trên Windows thường là
+`public/audio/d<id>.wav` (vùng tạm dùng chung) và tự điền `durationInSec` +
+`words[]` (mốc thời gian từng từ) vào **`projects/$ID/dialogue.json`**.
+
+**Tuỳ chọn — giọng tự nhiên ElevenLabs (KHÔNG cần bước 4b).** SAPI miễn phí nhưng
+máy móc; cho kênh chính thức nên dùng ElevenLabs. Đặt `ELEVENLABS_API_KEY` trong
+`.env` ở gốc (xem `.env.example`), rồi thay bước 4 bằng:
+```bash
+npm run dialogue:audio:eleven -- --data "projects/$ID/dialogue.json"
+```
+Script gọi endpoint `with-timestamps` nên trả LUÔN `words[]` khớp tuyệt đối → **bỏ
+qua bước 4b (align)**. Audio ghi `.mp3` (Remotion + sóng âm đọc bình thường). Chọn
+giọng: thêm `elevenVoiceId` cho từng speaker trong `dialogue.json`, hoặc env
+`ELEVEN_VOICE_A`/`ELEVEN_VOICE_B`. Chi tiết: `references/better-tts.md`. Giọng có sẵn trên Windows thường là
 `Microsoft David Desktop` (nam) và `Microsoft Zira Desktop` (nữ) — kiểm tra
 bằng lệnh trong `references/voices.md` nếu cần.
 
 ### 4b. (Khuyến nghị) Forced-align để highlight KHỚP TUYỆT ĐỐI
+> Chỉ cần khi dùng **SAPI** ở bước 4. Nếu đã dùng **ElevenLabs** thì BỎ QUA —
+> `words[]` đã khớp tuyệt đối sẵn.
+
 SAPI chỉ cho mốc **bắt đầu** mỗi từ, không cho mốc kết thúc → highlight có thể
 "dính" sáng qua khoảng nghỉ. Để khớp chuẩn từng từ, chạy Whisper lấy mốc
 bắt đầu + kết thúc THẬT (offline, miễn phí, không cần ffmpeg/key):
 
 ```bash
 pip install faster-whisper truststore   # một lần; truststore qua proxy SSL doanh nghiệp
-npm run dialogue:align                   # ghi đè words[] bằng mốc thật
+npm run dialogue:align -- --data "projects/$ID/dialogue.json"   # ghi đè words[] bằng mốc thật
 ```
-`align_whisper.py` đọc `dialogue.json`, nhận diện lại từng file audio kèm
+`align_whisper.py` đọc file project, nhận diện lại từng file audio kèm
 word-timestamps rồi ghi đè `words[]`. `Caption` tự dùng mốc kết thúc thật này →
 highlight bám tiếng nói chính xác (lúc nghỉ không từ nào sáng). Bỏ qua bước này
 thì highlight vẫn chạy nhưng chỉ gần đúng (ước lượng độ dài từ).
@@ -176,12 +225,16 @@ thì highlight vẫn chạy nhưng chỉ gần đúng (ước lượng độ dà
 > Lưu ý: file do `dialogue:audio` ghi có BOM (PowerShell); script đã đọc bằng
 > `utf-8-sig` và ghi lại không BOM — Remotion vẫn đọc bình thường.
 
-### 5. Kiểm tra độ dài rồi render
+### 5. Nạp project vào data/ rồi kiểm tra độ dài & render
+**LUÔN nạp file nguồn của project vào `data/` trước khi render** (Remotion import
+tĩnh `data/`). Chạy lại bước này mỗi khi sửa `projects/$ID/dialogue.json`:
 ```bash
+npm run --silent project:use -- "$ID"      # copy projects/$ID/dialogue.json -> data/
 npx remotion compositions src/index.ts     # xem Podcast dài bao nhiêu giây
 ```
-Nếu lệch nhiều so với mục tiêu, thêm/bớt lượt trong `dialogue.json` rồi chạy lại
-bước 4 (chỉ các lượt mới được sinh thêm; lượt cũ vẫn giữ).
+Nếu lệch nhiều so với mục tiêu, thêm/bớt lượt trong `projects/$ID/dialogue.json`
+rồi chạy lại bước 4 (TTS) và `project:use` (chỉ các lượt mới được sinh thêm; lượt
+cũ vẫn giữ).
 
 **Gắn ảnh nền cố định** (cái tạo nên "1 ảnh xuyên suốt" giống kênh). Nếu có
 Canva MCP, tự tạo ảnh studio 2 host hợp chủ đề (xem `references/canva-bg.md`):
@@ -280,8 +333,13 @@ tác gì thêm; muốn đổi màu/độ cao thì sửa `src/components/AudioWav
 
 ## Định dạng phụ: nghe thụ động câu đơn (1 giọng)
 Project còn 2 composition `LandscapeVideo`/`PortraitVideo` cho kiểu "một câu,
-lặp lại, có khoảng nghỉ" dùng `data/script.json`. Quy trình tương tự nhưng:
-viết `script.json` → `npm run generate:audio:sapi` → `npm run render:landscape`.
+lặp lại, có khoảng nghỉ" dùng `script.json`. Cùng nguyên tắc per-project: viết
+nguồn vào `projects/$ID/script.json`, rồi:
+```bash
+npm run generate:audio:sapi -- -Data "projects/$ID/script.json"   # TTS + words[]
+npm run --silent project:use -- "$ID"                             # nạp vào data/
+npm run render:landscape
+```
 Chi tiết trong `references/data-format.md`.
 
 ## Lưu ý trung thực
