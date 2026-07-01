@@ -2,6 +2,8 @@ node_modules/
 out/
 .env
 .DS_Store
-public/audio/*.mp3
 projects/
-public/audio/*.wav
+# Audio sinh ra theo project (buffer) — giữ .gitkeep, bỏ qua phần còn lại
+public/audio/*
+!public/audio/.gitkeep
+.pw-profile/

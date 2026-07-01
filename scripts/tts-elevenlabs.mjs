@@ -26,7 +26,7 @@ import {
   readdirSync,
   rmSync,
 } from "node:fs";
-import { resolve, dirname, join } from "node:path";
+import { resolve, dirname, join, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -139,9 +139,13 @@ async function synth(text, voiceId) {
 }
 
 const dataPath = resolve(ROOT, dataRel);
-const audioDir = resolve(ROOT, "public", "audio");
+// Namespace audio theo project (thư mục chứa file --data) để KHÔNG đè file giữa
+// các project. projects/<id>/dialogue.json -> public/audio/<id>/... ; data/ giữ phẳng.
+const NS = /[\\/]projects[\\/]/i.test(dirname(dataPath)) ? basename(dirname(dataPath)) : "";
+const audioRel = (id, ext) => (NS ? `audio/${NS}/d${id}.${ext}` : `audio/d${id}.${ext}`);
+const audioDir = resolve(ROOT, "public", "audio", NS);
 mkdirSync(audioDir, { recursive: true });
-// Dọn audio hội thoại cũ (wav từ SAPI hoặc mp3 từ lần trước) cho khớp dialogue hiện tại.
+// Dọn audio hội thoại cũ CỦA RIÊNG project này (wav từ SAPI hoặc mp3 lần trước) cho khớp dialogue hiện tại.
 for (const f of readdirSync(audioDir)) {
   if (/^d.*\.(wav|mp3)$/i.test(f)) rmSync(join(audioDir, f), { force: true });
 }
@@ -158,7 +162,7 @@ for (const turn of turns) {
 
   const out = await synth(text, voiceId);
   const buf = Buffer.from(out.audio_base64, "base64");
-  const rel = `audio/d${turn.id}.${ext}`;
+  const rel = audioRel(turn.id, ext);
   writeFileSync(resolve(ROOT, "public", rel), buf);
 
   const align = out.alignment || out.normalized_alignment || {};

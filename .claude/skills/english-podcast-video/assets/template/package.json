@@ -19,6 +19,7 @@
     "dialogue:align": "python scripts/align_whisper.py",
     "project:new": "node scripts/new-project.mjs",
     "project:use": "node scripts/use-project.mjs",
+    "video:intro": "node scripts/add-intro.mjs",
     "project:finalize": "node scripts/finalize-project.mjs",
     "generate:script": "tsx scripts/generate-script.ts",
     "generate:audio": "tsx scripts/generate-audio.ts",

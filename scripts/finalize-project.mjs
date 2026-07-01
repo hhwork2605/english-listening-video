@@ -141,15 +141,19 @@ for (const f of readdirSync(proj)) {
   if (f.endsWith(".props.json")) rmSync(join(proj, f), { force: true });
 }
 
-// Metadata YouTube ra file riêng cho dễ copy khi upload.
-if (meta.youtubeTitle) {
-  writeFileSync(join(proj, "youtube-title.txt"), meta.youtubeTitle + "\n");
-}
-if (meta.youtubeDescription) {
-  writeFileSync(join(proj, "youtube-description.txt"), meta.youtubeDescription + "\n");
-}
-if (meta.tags?.length) {
-  writeFileSync(join(proj, "youtube-tags.txt"), meta.tags.join(", ") + "\n");
+// Metadata YouTube gộp vào MỘT file duy nhất, chia rõ 3 phần cho dễ copy khi upload.
+if (meta.youtubeTitle || meta.youtubeDescription || meta.tags?.length) {
+  const sections = [];
+  if (meta.youtubeTitle) {
+    sections.push("===== TITLE =====\n" + meta.youtubeTitle);
+  }
+  if (meta.youtubeDescription) {
+    sections.push("===== DESCRIPTION =====\n" + meta.youtubeDescription);
+  }
+  if (meta.tags?.length) {
+    sections.push("===== TAGS =====\n" + meta.tags.join(", "));
+  }
+  writeFileSync(join(proj, "youtube-metadata.txt"), sections.join("\n\n") + "\n");
 }
 
 writeFileSync(join(proj, "project.json"), JSON.stringify(meta, null, 2));

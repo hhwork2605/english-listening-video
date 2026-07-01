@@ -1,7 +1,8 @@
 <#
   Sinh giọng đọc tiếng Anh + mốc thời gian TỪNG TỪ bằng Windows SAPI (offline).
-  Ghi file public/audio/<id>.wav và cập nhật data/script.json:
-    - audio          -> "audio/<id>.wav"
+  Ghi file public/audio/<project-id>/<id>.wav (namespace theo project để không đè
+  file giữa các project; data/ thì giữ phẳng) và cập nhật file -Data:
+    - audio          -> "audio/<project-id>/<id>.wav"
     - durationInSec  -> độ dài thực của file
     - words[]        -> [{ text, startSec, endSec }] cho hiệu ứng highlight
 
@@ -20,7 +21,12 @@ Add-Type -AssemblyName System.Speech
 
 $root = Split-Path -Parent $PSScriptRoot
 $scriptPath = Join-Path $root $Data
-$audioDir = Join-Path $root "public\audio"
+# Namespace audio theo project (thư mục chứa file -Data) để KHÔNG đè file giữa các
+# project. projects/<id>/script.json -> public/audio/<id>/... ; data/ giữ phẳng.
+$dataDir = Split-Path -Parent $scriptPath
+$ns = ""
+if ($dataDir -match "[\\/]projects[\\/]") { $ns = Split-Path -Leaf $dataDir }
+$audioDir = if ($ns) { Join-Path $root "public\audio\$ns" } else { Join-Path $root "public\audio" }
 New-Item -ItemType Directory -Force -Path $audioDir | Out-Null
 
 $data = Get-Content $scriptPath -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -63,7 +69,8 @@ foreach ($item in $data.items) {
     $wlist[$i] | Add-Member -NotePropertyName endSec -NotePropertyValue $end -Force
   }
 
-  $item | Add-Member -NotePropertyName audio -NotePropertyValue ("audio/{0}.wav" -f $item.id) -Force
+  $rel = if ($ns) { "audio/{0}/{1}.wav" -f $ns, $item.id } else { "audio/{0}.wav" -f $item.id }
+  $item | Add-Member -NotePropertyName audio -NotePropertyValue $rel -Force
   $item | Add-Member -NotePropertyName durationInSec -NotePropertyValue $dur -Force
   $item | Add-Member -NotePropertyName words -NotePropertyValue $wlist.ToArray() -Force
 

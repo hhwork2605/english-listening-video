@@ -1,8 +1,9 @@
 <#
   Sinh giọng đọc cho hội thoại podcast bằng Windows SAPI (offline).
   Mỗi lượt thoại dùng giọng của speaker tương ứng (speakers.<id>.voice).
-  Ghi public/audio/d<id>.wav và cập nhật data/dialogue.json:
-    - audio          -> "audio/d<id>.wav"
+  Ghi public/audio/<project-id>/d<id>.wav (namespace theo project để không đè
+  file giữa các project; data/ thì giữ phẳng public/audio/) và cập nhật file -Data:
+    - audio          -> "audio/<project-id>/d<id>.wav"
     - durationInSec  -> độ dài thực
     - words[]        -> [{ text, startSec, endSec }] cho highlight
 
@@ -20,9 +21,14 @@ Add-Type -AssemblyName System.Speech
 
 $root = Split-Path -Parent $PSScriptRoot
 $dataPath = Join-Path $root $Data
-$audioDir = Join-Path $root "public\audio"
+# Namespace audio theo project (thư mục chứa file -Data) để KHÔNG đè file giữa các
+# project. projects/<id>/dialogue.json -> public/audio/<id>/... ; data/ giữ phẳng.
+$dataDir = Split-Path -Parent $dataPath
+$ns = ""
+if ($dataDir -match "[\\/]projects[\\/]") { $ns = Split-Path -Leaf $dataDir }
+$audioDir = if ($ns) { Join-Path $root "public\audio\$ns" } else { Join-Path $root "public\audio" }
 New-Item -ItemType Directory -Force -Path $audioDir | Out-Null
-# Dọn file giọng hội thoại cũ để public/audio luôn khớp dialogue hiện tại.
+# Dọn file giọng hội thoại cũ CỦA RIÊNG project này để khớp dialogue hiện tại.
 Get-ChildItem -Path $audioDir -Filter "d*.wav" -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
 
 $doc = Get-Content $dataPath -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -64,7 +70,8 @@ foreach ($turn in $doc.turns) {
     $wlist[$i] | Add-Member -NotePropertyName endSec -NotePropertyValue $end -Force
   }
 
-  $turn | Add-Member -NotePropertyName audio -NotePropertyValue ("audio/d{0}.wav" -f $turn.id) -Force
+  $rel = if ($ns) { "audio/{0}/d{1}.wav" -f $ns, $turn.id } else { "audio/d{0}.wav" -f $turn.id }
+  $turn | Add-Member -NotePropertyName audio -NotePropertyValue $rel -Force
   $turn | Add-Member -NotePropertyName durationInSec -NotePropertyValue $dur -Force
   $turn | Add-Member -NotePropertyName words -NotePropertyValue $wlist.ToArray() -Force
 

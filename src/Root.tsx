@@ -9,6 +9,7 @@ import { totalDialogueFrames } from "./podcast/timing";
 import type { Dialogue } from "./podcast/types";
 import dialogueJson from "../data/dialogue.json";
 import { Thumbnail } from "./Thumbnail";
+import { Intro } from "./Intro";
 
 const script = scriptJson as Script;
 const fps = script.fps ?? 30;
@@ -74,6 +75,20 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{
           dialogue,
           // backgroundImage: "backgrounds/scene-vertical.png",
+        }}
+      />
+
+      {/* Intro thương hiệu 6s (tự dựng, không logo bên thứ ba) */}
+      <Composition
+        id="Intro"
+        component={Intro}
+        durationInFrames={180}
+        fps={30}
+        width={1920}
+        height={1080}
+        defaultProps={{
+          channel: "The English Nook",
+          tagline: "New Lesson Every Day",
         }}
       />
 

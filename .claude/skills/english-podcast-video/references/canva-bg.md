@@ -39,10 +39,15 @@ về `public/thumbnails/<slug>.png`. Query mẫu:
 Chọn ảnh **giữa thoáng nhất, không chữ** (Canva đôi khi tự thêm chữ — loại bỏ).
 Remotion sẽ phủ pill + tiêu đề + badge lên giữa (composition `Thumbnail`).
 
+## Ảnh nền BẢN DỌC (PodcastVertical / Shorts)
+Ảnh ngang ép vào khung dọc sẽ cắt mất 2 nhân vật ở mép → cần ảnh khung dọc riêng.
+Dùng `design_type: "phone_wallpaper"` (1080×1920), mô tả 2 nhân vật ở **NỬA DƯỚI**,
+**nửa trên để trống** cho caption + sóng âm; export PNG 1080×1920, tải về
+`public/backgrounds/scene-vertical.png`. (Ở khung dọc, sóng âm tự dời lên vùng
+trống phía trên; caption ở ~16% trên.)
+
 ## Mẹo
 - Muốn xem trước candidate: export PNG rồi tải về bằng PowerShell và mở ra (link
   thumbnail trực tiếp của Canva trả 403 nếu tải ngoài phiên).
-- Bản dọc (PodcastVertical): tạo thêm một ảnh khung dọc (vd
-  `design_type: "phone_wallpaper"`) hoặc crop, lưu `scene-vertical.png`.
 - Chọn ảnh có **khoảng giữa rộng & thoáng** nhất để caption + sóng âm không đè
   lên mặt nhân vật.

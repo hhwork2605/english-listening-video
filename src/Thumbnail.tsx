@@ -18,6 +18,9 @@ export type ThumbnailProps = {
    * thì vẽ nền gradient + 2 avatar chữ cái.
    */
   backgroundImage?: string;
+  /** Logo kênh (trong public/) — LUÔN hiện ở góc PHẢI DƯỚI. Mặc định "logo.jpg".
+   *  Đặt "" để ẩn. */
+  logo?: string;
 };
 
 /**
@@ -31,6 +34,7 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
   title,
   channel = "ENGLISH PODCAST",
   backgroundImage,
+  logo = "logo.jpg",
 }) => {
   const headline = title ?? dialogue.topic;
   const ids = Object.keys(dialogue.speakers) as SpeakerId[];
@@ -136,6 +140,24 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
             <Speaker info={dialogue.speakers[rightId]} active enterFrame={0} size={300} />
           </div>
         </>
+      ) : null}
+
+      {/* Logo kênh — LUÔN ở góc phải dưới (tròn, viền trắng + đổ bóng) */}
+      {logo ? (
+        <Img
+          src={staticFile(logo)}
+          style={{
+            position: "absolute",
+            bottom: 28,
+            right: 32,
+            width: 150,
+            height: 150,
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "4px solid #fff",
+            boxShadow: "0 6px 20px rgba(0,0,0,0.45)",
+          }}
+        />
       ) : null}
     </AbsoluteFill>
   );

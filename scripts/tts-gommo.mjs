@@ -1,30 +1,30 @@
 /**
- * Sinh giọng đọc hội thoại qua API TTS của nền tảng aivideoauto / gommo
- * (base https://v2.api.gommo.net). Cung cấp sẵn nhiều model TTS, gồm eleven_v3,
- * eleven_flash_v2_5, minimax_*, omnivoice_v1, autoai_speech_1 (xem /ai/models?type=tts).
+ * Sinh giọng đọc hội thoại qua API TTS của nền tảng gommo (Create Audio).
  *
- * Khác ElevenLabs trực tiếp: API này BẤT ĐỒNG BỘ (tạo job -> poll) và (theo
- * khảo sát) KHÔNG trả mốc từng từ. Sau khi sinh audio, chạy bước 4b (Whisper)
+ * Theo tài liệu chính thức Gommo AI API:
+ *   - URL:           POST https://api.gommo.net/ai/audio
+ *   - Content-Type:  application/x-www-form-urlencoded
+ *   - Auth:          access_token + domain TRONG BODY
+ *   - action_type:   "create"
+ *   - Trả về ĐỒNG BỘ: audioInfo.file_url + audioInfo.duration (KHÔNG cần poll job).
+ *
+ * Model: eleven_v3 | eleven_flash_v2_5 (xem danh sách: action_type=create cần model hợp lệ).
+ * Giọng: speakers[X].gommoVoiceId trong dialogue.json, hoặc env GOMMO_VOICE_A/B
+ *        (phải là voice_id mà TÀI KHOẢN gommo truy cập được — xem searchVoices).
+ *
+ * API này KHÔNG trả mốc từng từ → sau khi sinh audio, chạy bước 4b (Whisper):
  *   npm run dialogue:align -- --data projects/<id>/dialogue.json
- * để có words[] cho karaoke.
  *
- * CẦN auth tài khoản nền tảng:
- *   GOMMO_ACCESS_TOKEN  (bắt buộc)
- *   GOMMO_DOMAIN        (thường bắt buộc — vd "go-mmo"; xem tài khoản của bạn)
- * Đặt trong .env ở gốc (xem .env.example).
- *
- * Giọng: speakers[X].gommoVoiceId trong dialogue.json, hoặc env GOMMO_VOICE_A/B.
- * Liệt kê giọng/model:  curl "https://v2.api.gommo.net/ai/models?type=tts"
+ * CẦN trong .env (gốc):
+ *   GOMMO_ACCESS_TOKEN  (bắt buộc; lấy tại https://gommo.net/pages/account/apikeys)
+ *   GOMMO_DOMAIN        (bắt buộc; vd "gommo.net")
+ *   GOMMO_VOICE_A / GOMMO_VOICE_B  (voice_id cho speaker A/B)
+ *   GOMMO_TTS_MODEL     (tuỳ chọn; mặc định eleven_v3)
  *
  * Cách dùng:
  *   node scripts/tts-gommo.mjs --data projects/<id>/dialogue.json
  *   npm run dialogue:audio:gommo -- --data projects/<id>/dialogue.json
- *   # tuỳ chọn: --model eleven_v3 | minimax_speech_2_8_hd | omnivoice_v1 ...
- *   #           --verbose   (in raw response để dò field nếu cần)
- *
- * LƯU Ý: body tạo job và hình dạng response của từng deployment có thể khác nhau.
- * Script dùng deep-search để bắt job id + URL audio theo nhiều dạng phổ biến;
- * nếu lần đầu chưa ăn, chạy với --verbose rồi chỉnh hằng số CONFIG bên dưới.
+ *   # tuỳ chọn: --model eleven_flash_v2_5 | --verbose
  */
 import {
   readFileSync,
@@ -34,7 +34,7 @@ import {
   readdirSync,
   rmSync,
 } from "node:fs";
-import { resolve, dirname, join } from "node:path";
+import { resolve, dirname, join, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -60,70 +60,50 @@ if (existsSync(envPath)) {
 }
 
 const CONFIG = {
-  base: getArg("--base", process.env.GOMMO_API_BASE || "https://v2.api.gommo.net"),
+  base: getArg("--base", process.env.GOMMO_API_BASE || "https://api.gommo.net"),
   model: getArg("--model", process.env.GOMMO_TTS_MODEL || "eleven_v3"),
-  format: getArg("--format", process.env.GOMMO_FORMAT || "mp3"),
   token: process.env.GOMMO_ACCESS_TOKEN || "",
-  domain: process.env.GOMMO_DOMAIN || "go-mmo",
+  domain: process.env.GOMMO_DOMAIN || "gommo.net",
+  projectId: process.env.GOMMO_PROJECT_ID || "default",
   voices: {
     A: process.env.GOMMO_VOICE_A || "",
     B: process.env.GOMMO_VOICE_B || "",
   },
-  pollMs: Number(process.env.GOMMO_POLL_MS || 3000),
-  pollMax: Number(process.env.GOMMO_POLL_MAX || 100), // số lần poll tối đa / lượt
 };
 
 if (!CONFIG.token) {
   console.error(
-    "Thieu GOMMO_ACCESS_TOKEN. Dat trong .env (GOMMO_ACCESS_TOKEN=...) + GOMMO_DOMAIN.\n" +
-      "Xem token trong tai khoan nen tang aivideoauto/gommo."
+    "Thieu GOMMO_ACCESS_TOKEN. Dat trong .env (GOMMO_ACCESS_TOKEN=...) + GOMMO_DOMAIN=gommo.net.\n" +
+      "Lay token tai https://gommo.net/pages/account/apikeys."
   );
   process.exit(1);
 }
 
 const round3 = (n) => Math.round((Number(n) || 0) * 1000) / 1000;
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-// Tìm sâu giá trị đầu tiên khớp predicate (theo key hoặc theo value).
-function deepFind(obj, pred, seen = new Set()) {
+// Tìm sâu URL audio đầu tiên trong response (phòng khi key đổi tên).
+const isAudioUrl = (s) =>
+  typeof s === "string" && /^https?:\/\/\S+\.(mp3|wav|m4a|ogg|aac)(\?|#|$)/i.test(s);
+function deepFindAudioUrl(obj, seen = new Set()) {
   if (obj == null || typeof obj !== "object" || seen.has(obj)) return undefined;
   seen.add(obj);
-  for (const [k, v] of Object.entries(obj)) {
-    const hit = pred(k, v);
-    if (hit !== undefined) return hit;
+  for (const v of Object.values(obj)) {
+    if (isAudioUrl(v)) return v;
     if (v && typeof v === "object") {
-      const r = deepFind(v, pred, seen);
-      if (r !== undefined) return r;
+      const r = deepFindAudioUrl(v, seen);
+      if (r) return r;
     }
   }
   return undefined;
 }
-const isAudioUrl = (s) =>
-  typeof s === "string" && /^https?:\/\/\S+\.(mp3|wav|m4a|ogg|aac)(\?|#|$)/i.test(s);
-const findJobId = (o) =>
-  deepFind(o, (k, v) =>
-    /^(id_base|job_id|jobId|id)$/i.test(k) && (typeof v === "string" || typeof v === "number")
-      ? String(v)
-      : undefined
-  );
-const findStatus = (o) =>
-  deepFind(o, (k, v) => (/^(status|state)$/i.test(k) && typeof v === "string" ? v.toUpperCase() : undefined));
-const findAudioUrl = (o) => deepFind(o, (_k, v) => (isAudioUrl(v) ? v : undefined));
 
-function authHeaders() {
-  // Gửi cả Authorization: Bearer lẫn header token tuỳ deployment chấp nhận.
-  return {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${CONFIG.token}`,
-    "x-access-token": CONFIG.token,
-  };
-}
-
-async function apiPost(path, body) {
+// POST application/x-www-form-urlencoded -> JSON
+async function apiPost(path, params) {
+  const body = new URLSearchParams(params).toString();
   const res = await fetch(CONFIG.base + path, {
     method: "POST",
-    headers: authHeaders(),
-    body: JSON.stringify(body),
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body,
   });
   const text = await res.text();
   let json;
@@ -137,42 +117,43 @@ async function apiPost(path, body) {
   return json;
 }
 
-async function createTtsJob(text, voiceId) {
-  // domain + access_token kèm trong body (API yêu cầu domain; access_token cho chắc).
-  const body = {
-    text,
-    domain: CONFIG.domain,
+// Create Audio (TTS) — trả về audioInfo { status, duration, file_url }.
+async function createAudio(text, voiceId) {
+  const params = {
     access_token: CONFIG.token,
-    format: CONFIG.format,
+    domain: CONFIG.domain,
+    action_type: "create",
+    model: CONFIG.model,
+    text,
+    project_id: CONFIG.projectId,
   };
-  if (voiceId) body.voice_id = voiceId;
-  return apiPost(`/ai/jobs/tts/${CONFIG.model}`, body);
-}
+  if (voiceId) params.voice_id = voiceId;
+  const json = await apiPost("/ai/audio", params);
 
-async function pollJob(id) {
-  for (let i = 0; i < CONFIG.pollMax; i++) {
-    const j = await apiPost(`/ai/jobs/${id}?media=tts`, {
-      domain: CONFIG.domain,
-      access_token: CONFIG.token,
-    });
-    const status = findStatus(j) || "";
-    const url = findAudioUrl(j);
-    if (url) return url;
-    if (/(FAIL|ERROR|CANCEL)/.test(status)) throw new Error(`Job ${id} ${status}: ${JSON.stringify(j).slice(0, 200)}`);
-    await sleep(CONFIG.pollMs);
+  // Lỗi: { error: true|1, message: "..." }
+  if (json.error) {
+    const detail = json.data ? ` ${JSON.stringify(json.data).slice(0, 200)}` : "";
+    throw new Error(`gommo create audio loi: ${json.message || "unknown"}.${detail}`);
   }
-  throw new Error(`Job ${id}: het thoi gian poll (${CONFIG.pollMax} lan) ma chua co audio url.`);
-}
-
-function estimateMp3Duration(buf) {
-  // mp3 CBR ~128kbps mặc định; ước lượng đủ dùng (chạy align để chính xác).
-  return round3((buf.length * 8) / (128 * 1000));
+  const info = json.audioInfo || json;
+  const url = info.file_url || deepFindAudioUrl(json);
+  if (!url) {
+    throw new Error(
+      `Khong tim thay file_url trong response. Chay --verbose de xem. ${JSON.stringify(json).slice(0, 250)}`
+    );
+  }
+  return { url, duration: Number(info.duration) || 0 };
 }
 
 // --- chạy ---
 const dataPath = resolve(ROOT, dataRel);
-const audioDir = resolve(ROOT, "public", "audio");
+// Namespace audio theo project (thư mục chứa file --data) để KHÔNG đè file giữa
+// các project. projects/<id>/dialogue.json -> public/audio/<id>/... ; data/ giữ phẳng.
+const NS = /[\\/]projects[\\/]/i.test(dirname(dataPath)) ? basename(dirname(dataPath)) : "";
+const audioRel = (id, ext = "wav") => (NS ? `audio/${NS}/d${id}.${ext}` : `audio/d${id}.${ext}`);
+const audioDir = resolve(ROOT, "public", "audio", NS);
 mkdirSync(audioDir, { recursive: true });
+// Dọn audio cũ CỦA RIÊNG project này (thư mục namespace) cho khớp dialogue hiện tại.
 for (const f of readdirSync(audioDir)) {
   if (/^d.*\.(wav|mp3)$/i.test(f)) rmSync(join(audioDir, f), { force: true });
 }
@@ -185,25 +166,20 @@ for (const turn of turns) {
   const voiceId = sp.gommoVoiceId || CONFIG.voices[turn.speaker] || "";
   const text = turn.enTts || turn.en; // enTts (kèm tag cảm xúc) ưu tiên cho v3
 
-  const created = await createTtsJob(text, voiceId);
-  let url = findAudioUrl(created);
-  if (!url) {
-    const id = findJobId(created);
-    if (!id) throw new Error(`Khong tim thay job id trong response tao job. Chay --verbose de xem. ${JSON.stringify(created).slice(0, 200)}`);
-    url = await pollJob(id);
-  }
+  const { url, duration } = await createAudio(text, voiceId);
 
   const ab = await fetch(url);
   if (!ab.ok) throw new Error(`Tai audio that bai ${ab.status}: ${url}`);
   const buf = Buffer.from(await ab.arrayBuffer());
   const ext = /\.wav(\?|#|$)/i.test(url) ? "wav" : "mp3";
-  const rel = `audio/d${turn.id}.${ext}`;
+  const rel = audioRel(turn.id, ext);
   writeFileSync(resolve(ROOT, "public", rel), buf);
 
   turn.audio = rel;
-  turn.durationInSec = estimateMp3Duration(buf);
+  // duration THẬT từ API; nếu thiếu thì ước lượng từ kích thước mp3 (~128kbps).
+  turn.durationInSec = duration > 0 ? round3(duration) : round3((buf.length * 8) / (128 * 1000));
   turn.words = []; // chạy dialogue:align (Whisper) để lấy mốc từng từ
-  console.log(`d${turn.id}.${ext}  [${turn.speaker}]  ~${turn.durationInSec}s  (model ${CONFIG.model}${voiceId ? ", voice " + voiceId : ""})`);
+  console.log(`d${turn.id}.${ext}  [${turn.speaker}]  ${turn.durationInSec}s  (model ${CONFIG.model}${voiceId ? ", voice " + voiceId : ""})`);
 }
 
 writeFileSync(dataPath, JSON.stringify(doc, null, 2), "utf8");

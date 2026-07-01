@@ -16,9 +16,12 @@
     "dialogue:audio": "powershell -ExecutionPolicy Bypass -File scripts/tts-dialogue.ps1",
     "dialogue:audio:eleven": "node scripts/tts-elevenlabs.mjs",
     "dialogue:audio:gommo": "node scripts/tts-gommo.mjs",
+    "dialogue:audio:gemini": "node scripts/tts-gemini.mjs",
+    "dialogue:audio:aistudio": "node scripts/tts-aistudio.mjs",
     "dialogue:align": "python scripts/align_whisper.py",
     "project:new": "node scripts/new-project.mjs",
     "project:use": "node scripts/use-project.mjs",
+    "video:intro": "node scripts/add-intro.mjs",
     "project:finalize": "node scripts/finalize-project.mjs",
     "generate:script": "tsx scripts/generate-script.ts",
     "generate:audio": "tsx scripts/generate-audio.ts",
@@ -27,6 +30,7 @@
     "build:content": "tsx scripts/build.ts"
   },
   "dependencies": {
+    "@google/genai": "^2.10.0",
     "@remotion/cli": "4.0.290",
     "@remotion/media-parser": "4.0.290",
     "@remotion/media-utils": "4.0.290",
@@ -37,6 +41,7 @@
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
     "@types/react": "19.0.0",
+    "playwright": "^1.61.1",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0"
   }

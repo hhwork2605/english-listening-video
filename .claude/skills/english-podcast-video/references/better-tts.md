@@ -61,6 +61,45 @@ npm run dialogue:align -- --data "projects/<id>/dialogue.json"          # Whispe
 - Lưu ý: body tạo job/response mỗi deployment có thể khác; script dùng deep-search
   để bắt job id + URL audio, chạy `--verbose` để xem raw và chỉnh `CONFIG` nếu cần.
 
+## Thẻ cảm xúc cho Gemini / AI Studio (KHÁC ElevenLabs)
+`tts-gemini.mjs` và `tts-aistudio.mjs` gửi `turn.enTts` nếu có (fallback `turn.en`),
+nên bạn có thể chèn tag cảm xúc vào `enTts` — GIỮ `turn.en` SẠCH (phụ đề `.srt`
+dùng `turn.en`). Google điều khiển biểu cảm KHÁC ElevenLabs:
+
+- **Kênh chính = style prompt**, không phải tag. Ở AI Studio đó là chip
+  **Style / Accent / Pace** (script set sẵn Newscaster / American / Natural). Cảm
+  xúc tổng thể nên đặt ở đây, không nhét vào từng câu.
+- **Tag inline `[...]` tự do** (chấp cả `[speaking slowly]`, `[like a cartoon dog]`),
+  nhưng hành vi chia 4 nhóm — chỉ 3 nhóm đầu AN TOÀN, nhóm cảm-xúc-tính-từ dễ bị
+  **đọc to** thay vì diễn:
+
+| Nhóm | Ví dụ tag | An toàn? |
+|---|---|---|
+| Âm phi lời (chèn tiếng) | `[sigh]` `[laughs]` `[giggles]` `[gasp]` `[clears throat]` `[uhm]` | ✅ |
+| Style/delivery | `[whispering]` `[shouting]` `[speaking slowly]` `[extremely fast]` `[robotic]` `[sarcasm]` | ✅ |
+| Nghỉ | `[short pause]` `[medium pause]` `[long pause]` | ✅ |
+| Cảm xúc (tính từ) | `[scared]` `[curious]` `[bored]` `[excited]` `[angry]` `[serious]` | ⚠️ dễ bị đọc to → dùng style prompt thay thế |
+
+- **Không làm được**: `[crowd laughing]` / tiếng môi trường; chèn file audio.
+- **SSML** (`<break>`, `<prosody>`, `<emphasis>`, `<phoneme ipa>`…) chỉ chạy trên
+  **Google Cloud TTS**; bề mặt Gemini API / AI Studio (các script này) KHÔNG hỗ trợ
+  → chỉ dùng tag `[...]` + style prompt.
+### Thời gian tag phải được tính vào highlight (QUAN TRỌNG)
+Tag tạo âm (cười/thở/`[long pause]`) chiếm thời gian THẬT trong audio. Highlight
+(`Caption.tsx`) hiển thị `turn.words[].text` và bám timing của `words[]`, mà `words[]`
+LUÔN dựng từ audio thật → thời gian cảm xúc tự động được tính:
+- **ElevenLabs**: `buildWords` lấy mốc từng ký tự thật rồi mới lọc tag → từ sau tiếng
+  cười bắt đầu đúng sau khi cười xong (khoảng cười nằm giữa 2 từ).
+- **Gemini/AI Studio/gommo**: `dialogue:align` (Whisper) đặt mỗi từ vào đúng vị trí
+  vang lên; tiếng cười/pause là khoảng trống → lúc đó KHÔNG từ nào sáng (đúng ý).
+
+Vì vậy: **LUÔN chạy `dialogue:align` sau khi sinh bằng `enTts`** (trừ ElevenLabs đã có
+mốc thật). Bỏ align → `words[]` rỗng → mất karaoke (không sai giờ nhưng không highlight).
+KHÔNG được chia đều thời gian theo `turn.en` (sẽ lệch vì bỏ qua thời lượng tag).
+Phụ đề `.srt` vẫn lấy từ `turn.en` sạch nên không dính tag.
+
+(ElevenLabs v3 dùng bộ tag riêng, ổn định hơn và tự lọc tag khỏi `words[]` — xem mục trên.)
+
 ## Áp dụng OpenAI cho hội thoại
 `generate-audio.ts` hiện xử lý `script.json` (câu đơn). Muốn dùng OpenAI cho
 hội thoại thì viết một biến thể đọc `dialogue.json` tương tự script ElevenLabs ở
