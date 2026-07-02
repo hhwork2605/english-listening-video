@@ -4,3 +4,4 @@ out/
 public/audio/*.wav
 public/audio/*.mp3
 projects/
+.pw-profile/

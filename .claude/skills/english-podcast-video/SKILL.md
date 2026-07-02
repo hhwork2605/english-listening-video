@@ -96,9 +96,9 @@ mỗi tiêu chí một câu, mỗi câu vài phương án bấm chọn):
 - **Độ dài**: ~5 phút / **~10 phút (Recommended)** / ~15 phút… (ước lượng
   **~12 lượt ≈ 1 phút** → 10 phút ≈ 120 lượt).
 - **Định dạng**: cả hai / chỉ ngang / chỉ dọc.
-- **Dùng TTS nào**: SAPI (Zira/David) / AI Studio / ElevenLabs / Gemini / gommo.
+- **Dùng TTS nào**: SAPI (Zira/David) / AI Studio / ElevenLabs / Gemini / aivideoauto (web).
   **KHÔNG hỏi "giọng nào"** — mỗi TTS đã cấu hình sẵn giọng trong `.env`
-  (vd `AISTUDIO_VOICE_A/_B`, `ELEVEN_VOICE_A/_B`, `GEMINI_VOICE_A/_B`…); chỉ cần
+  (vd `AISTUDIO_VOICE_A/_B`, `ELEVEN_VOICE_A/_B`, `GEMINI_VOICE_A/_B`, `AIVA_VOICE_A/_B`…); chỉ cần
   người dùng chọn adapter, giọng tự lấy từ `.env` (xem bước 4).
 
 ### 3. Dựng `projects/$ID/dialogue.json`
@@ -167,7 +167,9 @@ npm run dialogue:audio -- -Data "projects/$ID/dialogue.json"
 - `dialogue:audio:gemini` — Gemini TTS free (cần `GEMINI_API_KEY`).
 - `dialogue:audio:aistudio -- ... --cdp 9222` — lái web AI Studio, không tốn quota
   (cần Chrome mở cổng debug + đã đăng nhập; xem đầu `scripts/tts-aistudio.mjs`).
-- `dialogue:audio:gommo` — nhiều model qua nền tảng (cần `GOMMO_ACCESS_TOKEN`).
+- `dialogue:audio:aiva` — lái web aivideoauto Voice Studio bằng Playwright, nhiều
+  model (Eleven V3, Minimax, Omnivoice; trả bằng credit nền tảng). Đăng nhập tay
+  1 lần khi chạy headed, hoặc `--cdp 9222` với Chrome đã đăng nhập.
 
 Trừ ElevenLabs, các adapter còn lại **không trả mốc từ → chạy bước 4b**. Kiểm tra
 giọng SAPI có sẵn: `references/voices.md`.
@@ -178,7 +180,7 @@ giọng SAPI có sẵn: `references/voices.md`.
 > `references/better-tts.md`.
 
 ### 4b. (Khuyến nghị) Forced-align để highlight khớp tuyệt đối
-> Chỉ cần khi TTS không trả `words[]` (SAPI/Gemini/gommo/aistudio). ElevenLabs thì BỎ QUA.
+> Chỉ cần khi TTS không trả `words[]` (SAPI/Gemini/aivideoauto/aistudio). ElevenLabs thì BỎ QUA.
 
 SAPI chỉ cho mốc bắt đầu → highlight có thể "dính" qua khoảng nghỉ. Whisper lấy
 mốc bắt đầu + kết thúc THẬT (offline, miễn phí):
@@ -320,6 +322,6 @@ Chi tiết: `references/data-format.md`.
 ## Tham khảo
 - `references/data-format.md` — đầy đủ trường của `dialogue.json` và `script.json`.
 - `references/voices.md` — chọn & cài giọng SAPI.
-- `references/better-tts.md` — ElevenLabs / Gemini / gommo / OpenAI cho giọng thật.
+- `references/better-tts.md` — ElevenLabs / Gemini / aivideoauto / OpenAI cho giọng thật.
 - `references/canva-bg.md` — tạo ảnh nền studio + thumbnail bằng Canva MCP.
 - `references/youtube-metadata.md` — công thức title / description / tags.

@@ -15,7 +15,7 @@
     "generate:dialogue": "tsx scripts/generate-dialogue.ts",
     "dialogue:audio": "powershell -ExecutionPolicy Bypass -File scripts/tts-dialogue.ps1",
     "dialogue:audio:eleven": "node scripts/tts-elevenlabs.mjs",
-    "dialogue:audio:gommo": "node scripts/tts-gommo.mjs",
+    "dialogue:audio:aiva": "node scripts/tts-aivideoauto.mjs",
     "dialogue:audio:gemini": "node scripts/tts-gemini.mjs",
     "dialogue:audio:aistudio": "node scripts/tts-aistudio.mjs",
     "dialogue:align": "python scripts/align_whisper.py",

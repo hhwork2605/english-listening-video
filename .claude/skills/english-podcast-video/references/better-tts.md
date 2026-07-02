@@ -37,29 +37,35 @@ npm run dialogue:audio:eleven -- --data "projects/<id>/dialogue.json"
   thẳng vào file project. Sau đó: `project:use` → render như bình thường.
 - Mặc định đọc tuần tự (an toàn rate limit); ~vài phút cho video 10 phút.
 
-## aivideoauto / gommo TTS cho HỘI THOẠI (nhiều model, gồm Eleven V3)
-Adapter `scripts/tts-gommo.mjs` (npm: `dialogue:audio:gommo`) gọi API nền tảng
-**`https://v2.api.gommo.net`** — cung cấp sẵn nhiều model TTS nên KHÔNG cần key
+## aivideoauto Voice Studio cho HỘI THOẠI (lái web bằng Playwright, gồm Eleven V3)
+Adapter `scripts/tts-aivideoauto.mjs` (npm: `dialogue:audio:aiva`) **LÁI WEB
+`https://aivideoauto.com/audio`** (tab "Văn bản thành giọng nói") bằng Playwright —
+API gommo cũ đã ngừng hoạt động nên chuyển sang tự động hoá UI; vẫn KHÔNG cần key
 ElevenLabs riêng (trả bằng credit nền tảng).
 
-- **Endpoint**: tạo job `POST /ai/jobs/tts/{model}` → poll `POST /ai/jobs/{id}` →
-  tải URL audio. Liệt kê model/giọng: `GET /ai/models?type=tts`.
-- **Model** (env `GOMMO_TTS_MODEL`, mặc định `eleven_v3`): `eleven_v3`,
-  `eleven_flash_v2_5`, `minimax_speech_2_8_hd|turbo`, `minimax_speech_2_6_hd|turbo`,
-  `omnivoice_v1` (voice design/clone), `autoai_speech_1`.
-- **Auth**: cần `GOMMO_ACCESS_TOKEN` (+ thường `GOMMO_DOMAIN`) trong `.env` — lấy
-  từ tài khoản nền tảng. Giọng: `gommoVoiceId` cho từng speaker, hoặc env
-  `GOMMO_VOICE_A`/`GOMMO_VOICE_B`.
+- **Provider/model** (env `AIVA_PROVIDER` / `AIVA_MODEL`, mặc định
+  `ElevenLabs` / `Eleven V3`; tên đúng như dropdown trên web) — giới hạn ký tự/lượt:
+  Omnivoice (10.000) · Eleven V3 (1.500) · Eleven V2.5 (3.000) · Auto TTS v1 (5.000) ·
+  Minimax v2.8 HD (5.000) / v2.8 Turbo (10.000) / v2.6 HD·Turbo (3.000).
+  Script tự kiểm giới hạn trước khi tốn credit.
+- **Đăng nhập**: lần đầu chạy headed → cửa sổ trình duyệt mở ra, đăng nhập tay
+  (phiên lưu vào `.pw-profile/`, các lần sau tự vào); hoặc gắn vào Chrome thật đã
+  đăng nhập: `--cdp 9222` (mở Chrome với `--remote-debugging-port=9222`).
+- **Giọng**: env `AIVA_VOICE_A`/`AIVA_VOICE_B` (ưu tiên) hoặc `aivaVoice` cho từng
+  speaker trong `dialogue.json` — là TỪ KHÓA TÌM trong "Thư viện giọng" (tên hoặc
+  ID). ⚠ Giọng PHẢI khớp provider (dùng bộ lọc "Nguồn" trong thư viện để xem),
+  không thì web báo lỗi kiểu "Upload reference audio lên OmniVoice thất bại".
 
 ```bash
-npm run dialogue:audio:gommo -- --data "projects/<id>/dialogue.json"   # --verbose nếu cần dò
-npm run dialogue:align -- --data "projects/<id>/dialogue.json"          # Whisper -> words[] (karaoke)
+npm run dialogue:audio:aiva -- --data "projects/<id>/dialogue.json"   # --verbose để dò UI
+npm run dialogue:align -- --data "projects/<id>/dialogue.json"        # Whisper -> words[] (karaoke)
 ```
-- API này **bất đồng bộ** (create→poll) và (theo khảo sát) **không trả mốc từng
-  từ** → chạy `dialogue:align` (Whisper) sau để có `words[]`.
-- `enTts` (tag cảm xúc) vẫn được ưu tiên gửi khi dùng model `eleven_v3`.
-- Lưu ý: body tạo job/response mỗi deployment có thể khác; script dùng deep-search
-  để bắt job id + URL audio, chạy `--verbose` để xem raw và chỉnh `CONFIG` nếu cần.
+- Tự **RESUME** các lượt còn thiếu; `--fresh` làm lại từ đầu, `--limit N` để test
+  vài lượt trước khi chạy cả video.
+- **Không trả mốc từng từ** → luôn chạy `dialogue:align` (Whisper) sau để có `words[]`.
+- `enTts` (tag cảm xúc) vẫn được ưu tiên gửi khi dùng model Eleven V3.
+- Selector bám theo text tiếng Việt + role (trang không có id/data-testid ổn định);
+  UI đổi thì chạy `--verbose` và chỉnh các hàm `select*` trong script.
 
 ## Thẻ cảm xúc cho Gemini / AI Studio (KHÁC ElevenLabs)
 `tts-gemini.mjs` và `tts-aistudio.mjs` gửi `turn.enTts` nếu có (fallback `turn.en`),
@@ -90,7 +96,7 @@ Tag tạo âm (cười/thở/`[long pause]`) chiếm thời gian THẬT trong au
 LUÔN dựng từ audio thật → thời gian cảm xúc tự động được tính:
 - **ElevenLabs**: `buildWords` lấy mốc từng ký tự thật rồi mới lọc tag → từ sau tiếng
   cười bắt đầu đúng sau khi cười xong (khoảng cười nằm giữa 2 từ).
-- **Gemini/AI Studio/gommo**: `dialogue:align` (Whisper) đặt mỗi từ vào đúng vị trí
+- **Gemini/AI Studio/aivideoauto**: `dialogue:align` (Whisper) đặt mỗi từ vào đúng vị trí
   vang lên; tiếng cười/pause là khoảng trống → lúc đó KHÔNG từ nào sáng (đúng ý).
 
 Vì vậy: **LUÔN chạy `dialogue:align` sau khi sinh bằng `enTts`** (trừ ElevenLabs đã có
