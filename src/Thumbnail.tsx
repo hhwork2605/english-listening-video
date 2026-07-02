@@ -156,6 +156,7 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
             objectFit: "cover",
             border: "4px solid #fff",
             boxShadow: "0 6px 20px rgba(0,0,0,0.45)",
+            opacity: 0.5, // mờ 1 nửa cho đỡ chói/đỡ đè
           }}
         />
       ) : null}

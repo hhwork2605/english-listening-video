@@ -13,6 +13,8 @@ export type SimplePodcastProps = {
   waveColor?: string;
   bgm?: string;
   bgmVolume?: number;
+  /** Logo kênh (trong public/) — watermark mờ góc PHẢI DƯỚI suốt video. "" để tắt. */
+  logo?: string;
 };
 
 /** Nền dự phòng khi chưa có ảnh — gợi nhắc người dùng thả ảnh studio vào. */
@@ -41,6 +43,7 @@ export const SimplePodcast: React.FC<SimplePodcastProps> = ({
   waveColor = "#d7e7f0",
   bgm,
   bgmVolume = 0.08,
+  logo = "logo.jpg",
 }) => {
   const { fps, width } = useVideoConfig();
   const isPortrait = width < 1200;
@@ -97,6 +100,25 @@ export const SimplePodcast: React.FC<SimplePodcastProps> = ({
           </Series.Sequence>
         ))}
       </Series>
+
+      {/* Logo kênh — watermark mờ, góc phải dưới suốt video (giống Thumbnail) */}
+      {logo ? (
+        <Img
+          src={staticFile(logo)}
+          style={{
+            position: "absolute",
+            bottom: isPortrait ? 24 : 28,
+            right: isPortrait ? 24 : 32,
+            width: isPortrait ? 96 : 110,
+            height: isPortrait ? 96 : 110,
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: "3px solid rgba(255,255,255,0.85)",
+            boxShadow: "0 4px 14px rgba(0,0,0,0.35)",
+            opacity: 0.5, // mờ như watermark, đồng bộ với Thumbnail
+          }}
+        />
+      ) : null}
     </AbsoluteFill>
   );
 };

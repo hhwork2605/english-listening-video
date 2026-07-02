@@ -71,7 +71,12 @@ const getArg = (n, d) => {
   const i = argv.indexOf(n);
   return i >= 0 && argv[i + 1] ? argv[i + 1] : d;
 };
-const dataRel = getArg("--data", "data/dialogue.json");
+const dataRel = getArg("--data", "");
+if (!dataRel) {
+  console.error("LỖI: thiếu --data <path>. Truyền rõ file của project, vd: --data projects/<id>/dialogue.json");
+  console.error("(Không còn default data/dialogue.json — buffer đó thường chứa project CŨ, chạy nhầm là tốn credit TTS.)");
+  process.exit(1);
+}
 const VERBOSE = has("--verbose");
 const FRESH = has("--fresh");
 const HEADLESS = has("--headless");
@@ -141,6 +146,14 @@ if (FRESH && !LIMIT) {
 }
 
 const doc = JSON.parse(readFileSync(dataPath, "utf8").replace(/^﻿/, ""));
+console.log(`Nguồn kịch bản: ${dataRel} — "${doc.title || "?"}" | topic: ${doc.topic || "?"} | ${(doc.turns || []).length} lượt`);
+const BUFFER_PATH = resolve(ROOT, "data/dialogue.json"); // buffer render của Remotion
+function saveDoc(d) {
+  const body = JSON.stringify(d, null, 2);
+  writeFileSync(dataPath, body, "utf8");
+  // tự đè buffer: data/ luôn là project đang làm, không cần chờ project:use
+  if (dataPath !== BUFFER_PATH) { try { writeFileSync(BUFFER_PATH, body, "utf8"); } catch {} }
+}
 let turns = doc.turns || [];
 if (LIMIT) turns = turns.slice(0, LIMIT);
 
@@ -426,13 +439,13 @@ async function main() {
         turn.words = []; // chạy dialogue:align (Whisper) để lấy mốc từng từ
         made++;
         // Lưu dần sau từng lượt — lỗi giữa chừng không mất tiến độ (credit là tiền thật).
-        writeFileSync(dataPath, JSON.stringify(doc, null, 2), "utf8");
+        saveDoc(doc);
         console.log(`d${turn.id}.${ext}  [${spk}]  ~${turn.durationInSec}s  (${made} moi${skipped ? `, ${skipped} bo qua` : ""})`);
         await sleep(CONFIG.paceMs);
       }
     }
 
-    writeFileSync(dataPath, JSON.stringify(doc, null, 2), "utf8");
+    saveDoc(doc);
     console.log(`\nDa cap nhat ${dataRel} (audio tu aivideoauto ${CONFIG.provider}/${CONFIG.model}; ${made} moi, ${skipped} bo qua).`);
     console.log("Tiep theo: chay Whisper de co karaoke ->  npm run dialogue:align -- --data " + dataRel);
   } finally {

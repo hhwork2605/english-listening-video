@@ -38,7 +38,12 @@ const getArg = (name, def) => {
   const i = argv.indexOf(name);
   return i >= 0 && argv[i + 1] ? argv[i + 1] : def;
 };
-const dataRel = getArg("--data", "data/dialogue.json");
+const dataRel = getArg("--data", "");
+if (!dataRel) {
+  console.error("LỖI: thiếu --data <path>. Truyền rõ file của project, vd: --data projects/<id>/dialogue.json");
+  console.error("(Không còn default data/dialogue.json — buffer đó thường chứa project CŨ, chạy nhầm là tốn credit TTS.)");
+  process.exit(1);
+}
 const model = getArg("--model", process.env.ELEVENLABS_MODEL || "eleven_v3");
 const outputFormat = getArg("--format", process.env.ELEVENLABS_FORMAT || "mp3_44100_128");
 // Độ ổn định v3: 0.0 = Creative (biểu cảm nhất), 0.5 = Natural (mặc định), 1.0 = Robust.
@@ -152,6 +157,14 @@ for (const f of readdirSync(audioDir)) {
 
 const ext = outputFormat.startsWith("pcm") ? "wav" : "mp3";
 const doc = JSON.parse(readFileSync(dataPath, "utf8").replace(/^﻿/, ""));
+console.log(`Nguồn kịch bản: ${dataRel} — "${doc.title || "?"}" | topic: ${doc.topic || "?"} | ${(doc.turns || []).length} lượt`);
+const BUFFER_PATH = resolve(ROOT, "data/dialogue.json"); // buffer render của Remotion
+function saveDoc(d) {
+  const body = JSON.stringify(d, null, 2);
+  writeFileSync(dataPath, body, "utf8");
+  // tự đè buffer: data/ luôn là project đang làm, không cần chờ project:use
+  if (dataPath !== BUFFER_PATH) { try { writeFileSync(BUFFER_PATH, body, "utf8"); } catch {} }
+}
 const turns = doc.turns || [];
 let missingTimings = 0;
 
@@ -177,7 +190,7 @@ for (const turn of turns) {
   console.log(`d${turn.id}.${ext}  [${turn.speaker}]  ${dur}s  ${words.length} tu  (voice ${voiceId})`);
 }
 
-writeFileSync(dataPath, JSON.stringify(doc, null, 2), "utf8");
+saveDoc(doc);
 console.log(`Da cap nhat ${dataRel} (audio + words tu ElevenLabs ${model}). Gio render duoc roi.`);
 if (missingTimings) {
   console.warn(

@@ -37,6 +37,37 @@ npm run dialogue:audio:eleven -- --data "projects/<id>/dialogue.json"
   thẳng vào file project. Sau đó: `project:use` → render như bình thường.
 - Mặc định đọc tuần tự (an toàn rate limit); ~vài phút cho video 10 phút.
 
+## ElevenLabs WEB cho HỘI THOẠI (lái web elevenlabs.io, Eleven v3) — KHUYẾN NGHỊ ⭐
+Adapter `scripts/tts-elevenlabs-web.mjs` (npm: `dialogue:audio:eleven:web`) **LÁI WEB
+`elevenlabs.io/app/speech-synthesis/text-to-speech`** bằng Playwright — dùng CREDIT
+của tài khoản web (kể cả gói free), KHÔNG cần API key. Tự chọn model **Eleven v3**
+(hỗ trợ audio tag `[laughs]` `[whispers]`…), tự chọn giọng, tự đóng popup.
+
+```bash
+# 1) Mở Chrome profile riêng + cổng debug (đăng nhập elevenlabs.io MỘT lần; các cờ
+#    phía sau cho phép Chrome chạy MINIMIZED — không cần giữ cửa sổ active):
+& "C:\Program Files\Google\Chrome\Application\chrome.exe" `
+  --remote-debugging-port=9223 --user-data-dir="$env:USERPROFILE\eleven-chrome" `
+  --disable-backgrounding-occluded-windows --disable-renderer-backgrounding `
+  --disable-background-timer-throttling --disable-features=CalculateNativeWinOcclusion
+# 2) Sinh giọng (test 2 lượt đầu bằng --limit 2 trước cho đỡ tốn credit):
+npm run dialogue:audio:eleven:web -- --data "projects/<id>/dialogue.json" --cdp 9223
+npm run dialogue:align -- --data "projects/<id>/dialogue.json"   # Whisper -> words[] (karaoke)
+```
+- **Giọng = TÊN HIỂN THỊ trên web** (khác API dùng voice ID): env `ELEVEN_WEB_VOICE_A/_B`
+  (ưu tiên) hoặc `elevenWebVoice` từng speaker trong `dialogue.json`, vd
+  `"Victoria - Warm, Trustworthy, and Relatable"`. Script search ở tab Explore
+  (My Voices thường trống); giọng premium (modal Upgrade) → giữ giọng cũ + cảnh báo.
+- Model qua `ELEVEN_WEB_MODEL` (mặc định `Eleven v3`); tuỳ chọn
+  `ELEVEN_WEB_STABILITY=Creative|Natural|Robust`, `ELEVEN_WEB_FORMAT="MP3 44.1 kHz (192kbps)"`.
+- Audio lấy từ thẻ `<audio>` (data:/blob:) hoặc nút Download — download được chuyển
+  hướng vào thư mục tạm, KHÔNG rơi vào Downloads. Mỗi speaker 1 tab, tái sử dụng tab
+  giữa các lần chạy; tự RESUME lượt thiếu, `--fresh` làm lại, `--limit N` để test.
+- **Không trả mốc từng từ** → LUÔN chạy `dialogue:align` sau. `enTts` (tag cảm xúc)
+  được ưu tiên gửi. Mỗi lượt generate TỐN CREDIT theo số ký tự (retry cũng tốn).
+- KHÔNG thao tác trong cửa sổ Chrome automation lúc script chạy (script tự đảo tab);
+  thu nhỏ cửa sổ / làm việc app khác thì thoải mái.
+
 ## aivideoauto Voice Studio cho HỘI THOẠI (lái web bằng Playwright, gồm Eleven V3)
 Adapter `scripts/tts-aivideoauto.mjs` (npm: `dialogue:audio:aiva`) **LÁI WEB
 `https://aivideoauto.com/audio`** (tab "Văn bản thành giọng nói") bằng Playwright —
@@ -94,12 +125,12 @@ dùng `turn.en`). Google điều khiển biểu cảm KHÁC ElevenLabs:
 Tag tạo âm (cười/thở/`[long pause]`) chiếm thời gian THẬT trong audio. Highlight
 (`Caption.tsx`) hiển thị `turn.words[].text` và bám timing của `words[]`, mà `words[]`
 LUÔN dựng từ audio thật → thời gian cảm xúc tự động được tính:
-- **ElevenLabs**: `buildWords` lấy mốc từng ký tự thật rồi mới lọc tag → từ sau tiếng
+- **ElevenLabs API**: `buildWords` lấy mốc từng ký tự thật rồi mới lọc tag → từ sau tiếng
   cười bắt đầu đúng sau khi cười xong (khoảng cười nằm giữa 2 từ).
-- **Gemini/AI Studio/aivideoauto**: `dialogue:align` (Whisper) đặt mỗi từ vào đúng vị trí
-  vang lên; tiếng cười/pause là khoảng trống → lúc đó KHÔNG từ nào sáng (đúng ý).
+- **ElevenLabs web/Gemini/AI Studio/aivideoauto**: `dialogue:align` (Whisper) đặt mỗi từ
+  vào đúng vị trí vang lên; tiếng cười/pause là khoảng trống → lúc đó KHÔNG từ nào sáng (đúng ý).
 
-Vì vậy: **LUÔN chạy `dialogue:align` sau khi sinh bằng `enTts`** (trừ ElevenLabs đã có
+Vì vậy: **LUÔN chạy `dialogue:align` sau khi sinh bằng `enTts`** (trừ ElevenLabs API đã có
 mốc thật). Bỏ align → `words[]` rỗng → mất karaoke (không sai giờ nhưng không highlight).
 KHÔNG được chia đều thời gian theo `turn.en` (sẽ lệch vì bỏ qua thời lượng tag).
 Phụ đề `.srt` vẫn lấy từ `turn.en` sạch nên không dính tag.

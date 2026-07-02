@@ -19,8 +19,10 @@
 |---|---|
 | `name` | Tên hiển thị (vd "Emma"). |
 | `voice` | Giọng SAPI, vd `"Microsoft Zira Desktop"` / `"Microsoft David Desktop"`. |
-| `elevenVoiceId` | (tùy chọn) Voice ID ElevenLabs, dùng khi chạy `dialogue:audio:eleven`. |
+| `elevenVoiceId` | (tùy chọn) Voice ID ElevenLabs, dùng khi chạy `dialogue:audio:eleven` (API). |
+| `elevenWebVoice` | (tùy chọn) TÊN hiển thị giọng trên web ElevenLabs (vd `"Victoria - Warm, Trustworthy, and Relatable"`), dùng khi chạy `dialogue:audio:eleven:web`. |
 | `aivaVoice` | (tùy chọn) Từ khóa/tên/ID giọng trong "Thư viện giọng" aivideoauto, dùng khi chạy `dialogue:audio:aiva` (giọng phải khớp provider). |
+| `geminiVoice` / `aistudioVoice` | (tùy chọn) Tên giọng Google (Kore/Puck/Erinome…), dùng khi chạy `dialogue:audio:gemini` / `dialogue:audio:aistudio`. Env `GEMINI_VOICE_*`/`AISTUDIO_VOICE_*` được ưu tiên hơn. |
 | `side` | `"left"` hoặc `"right"` — vị trí trên sân khấu. |
 | `color` | Mã màu nhấn (badge, viền khi đang nói, dải phụ đề). |
 | `image` | (tùy chọn) ảnh nhân vật trong public/, vd `"characters/emma.png"`. |

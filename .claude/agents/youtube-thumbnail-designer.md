@@ -35,9 +35,10 @@ kế MỘT concept thumbnail vừa hợp nội dung vừa tối ưu tỉ lệ nh
    với `title`.
 3. **Tag kênh (`channel`)**: mặc định `ENGLISH PODCAST` (góc trên phải). Giữ ngắn.
 4. **Logo kênh**: composition `Thumbnail` LUÔN tự phủ `public/logo.jpg` ở **góc PHẢI
-   DƯỚI** (tròn, viền trắng ~150px). BẠN KHÔNG cần thêm logo — nhưng PHẢI thiết kế
-   sao cho **góc phải dưới của ảnh nền tương đối thoáng** (đừng để mặt host/đạo cụ
-   quan trọng nằm ngay đó bị logo che).
+   DƯỚI** (tròn, viền trắng ~150px, **opacity 0.5 — mờ như watermark**, đã set trong
+   `src/Thumbnail.tsx`). BẠN KHÔNG cần thêm logo — nhưng PHẢI thiết kế sao cho
+   **góc phải dưới của ảnh nền tương đối thoáng** (đừng để mặt host/đạo cụ quan
+   trọng nằm ngay đó bị logo che; logo mờ nên nền quá rối sẽ nuốt mất logo).
 5. **Bố cục ảnh nền Canva**: 2 host ở **hai mép** (nữ trái / nam phải) hướng vào
    giữa, đeo tai nghe + mic; **GIỮA để trống hoàn toàn** cho pill + title + badge;
    đạo cụ đúng chủ đề rải ở kệ/mép; nền sáng, tương phản cao. **TUYỆT ĐỐI không có

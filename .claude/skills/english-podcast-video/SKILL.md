@@ -47,7 +47,9 @@ cp -r "<SKILL_DIR>/assets/template" "<TARGET_DIR>" && cd "<TARGET_DIR>" && npm i
 ID=$(npm run --silent project:new -- "<chủ đề>")                                         # 1) tạo folder
 # 2) HỎI: đã có kịch bản chưa?   3) viết projects/$ID/dialogue.json (+ topic/level/metadata)
 npm run dialogue:audio    -- -Data  "projects/$ID/dialogue.json"    # 4)  TTS (SAPI mặc định)
-npm run dialogue:align    -- --data "projects/$ID/dialogue.json"    # 4b) karaoke (bỏ nếu dùng ElevenLabs)
+npm run dialogue:align    -- --data "projects/$ID/dialogue.json"    # 4b) karaoke (bỏ nếu dùng ElevenLabs API)
+npm run dialogue:speed    -- --data "projects/$ID/dialogue.json"    # 4b2) tốc độ giọng theo level (A1 0.8 … B2+ giữ nguyên)
+# 4c) BẮT BUỘC: spawn agent audio-script-verifier → PASS mới được render (bắt đọc đôi/thiếu/sai)
 npm run --silent project:use -- "$ID"                              # 5)  nạp buffer data/
 npx remotion render Podcast "projects/$ID/podcast.mp4" --props="projects/$ID/podcast.props.json"       # 5)
 npx remotion still src/index.ts Thumbnail "projects/$ID/thumbnail.png" --props="projects/$ID/thumb.props.json"  # 6)
@@ -96,10 +98,12 @@ mỗi tiêu chí một câu, mỗi câu vài phương án bấm chọn):
 - **Độ dài**: ~5 phút / **~10 phút (Recommended)** / ~15 phút… (ước lượng
   **~12 lượt ≈ 1 phút** → 10 phút ≈ 120 lượt).
 - **Định dạng**: cả hai / chỉ ngang / chỉ dọc.
-- **Dùng TTS nào**: SAPI (Zira/David) / AI Studio / ElevenLabs / Gemini / aivideoauto (web).
+- **Dùng TTS nào**: ElevenLabs web (v3, lái Chrome — Recommended) / SAPI (Zira/David) /
+  AI Studio / ElevenLabs API / Gemini / aivideoauto (web).
   **KHÔNG hỏi "giọng nào"** — mỗi TTS đã cấu hình sẵn giọng trong `.env`
-  (vd `AISTUDIO_VOICE_A/_B`, `ELEVEN_VOICE_A/_B`, `GEMINI_VOICE_A/_B`, `AIVA_VOICE_A/_B`…); chỉ cần
-  người dùng chọn adapter, giọng tự lấy từ `.env` (xem bước 4).
+  (vd `ELEVEN_WEB_VOICE_A/_B`, `AISTUDIO_VOICE_A/_B`, `ELEVEN_VOICE_A/_B`,
+  `GEMINI_VOICE_A/_B`, `AIVA_VOICE_A/_B`…); chỉ cần người dùng chọn adapter,
+  giọng tự lấy từ `.env` (xem bước 4).
 
 ### 3. Dựng `projects/$ID/dialogue.json`
 Viết file NGUỒN vào **`projects/$ID/dialogue.json`** (KHÔNG phải `data/`).
@@ -147,7 +151,8 @@ Chia việc cho các subagent trong `.claude/agents/` chạy **song song** rồi
    `context`, `includeVi`. Trả `{ turns: [...] }`.
 3. **Nối** theo thứ tự; đánh lại `id` liên tục 3 chữ số; bảo đảm luân phiên A/B ở chỗ ghép.
 4. **Spawn `dialogue-cefr-reviewer`** (truyền `level`) → `turns` chuẩn hoá + báo cáo.
-5. **Spawn `youtube-metadata-writer`** → điền `title`, `topic`, metadata YouTube.
+5. **Spawn `youtube-metadata-writer`** → điền `title`, `topic`, metadata YouTube
+   + `fileKeywords` (cụm từ khóa tiếng Anh đặt tên file — dùng ở bước 7).
 6. Ráp vào `projects/$ID/dialogue.json` (+ `fps`, `speakers`) → bước 4.
 
 Video ngắn: gọi lần lượt `english-dialogue-writer` → `dialogue-cefr-reviewer` →
@@ -161,9 +166,27 @@ npm run dialogue:audio -- -Data "projects/$ID/dialogue.json"
 `public/audio/$ID/d<id>.wav` (**namespace theo project — không đè project khác**) và
 điền `durationInSec` + `words[]` vào `projects/$ID/dialogue.json`.
 
+> **BẮT BUỘC `--data`/`-Data`:** mọi script TTS + `dialogue:align` KHÔNG còn default
+> `data/dialogue.json` (buffer đó thường chứa project CŨ) — thiếu tham số là script
+> thoát lỗi ngay. Các script cũng KHÔNG có cờ `--help` — đừng chạy thử để xem usage
+> (usage nằm ở comment đầu file); khi chạy, script in banner `Nguồn kịch bản: <path>
+> — <title> | topic | số lượt` — liếc dòng này để chắc đúng project.
+>
+> **Buffer `data/` tự đồng bộ:** khi `--data` trỏ vào `projects/<id>/…`, các script
+> TTS + align sau mỗi lần lưu sẽ TỰ ghi đè bản mới nhất lên `data/dialogue.json`
+> (SAPI script.json → `data/script.json`). Ngoài ra, NGAY SAU khi viết xong
+> `projects/$ID/dialogue.json` (bước 3), chạy luôn `npm run --silent project:use --
+> "$ID"` để buffer là project hiện tại từ sớm. `project:use` trước render VẪN là
+> quy tắc bắt buộc (chốt chặn cuối).
+
 **Giọng tự nhiên hơn** (thay bước 4 — chi tiết `references/better-tts.md`):
-- `dialogue:audio:eleven` — ElevenLabs, trả LUÔN `words[]` khớp tuyệt đối → **bỏ
-  qua 4b**. Cần `ELEVENLABS_API_KEY`. Khuyến nghị cho kênh chính thức.
+- `dialogue:audio:eleven:web -- ... --cdp 9223` — **lái web ElevenLabs (Eleven v3,
+  KHUYẾN NGHỊ)**: dùng credit tài khoản web thay API key, hỗ trợ audio tag cảm xúc.
+  Cần Chrome mở cổng debug 9223 + đã đăng nhập (chạy được khi Chrome minimized —
+  lệnh mở Chrome kèm cờ: xem đầu `scripts/tts-elevenlabs-web.mjs`). Giọng theo TÊN
+  hiển thị (`ELEVEN_WEB_VOICE_A/_B`). KHÔNG trả mốc từ → chạy 4b.
+- `dialogue:audio:eleven` — ElevenLabs API, trả LUÔN `words[]` khớp tuyệt đối →
+  **bỏ qua 4b**. Cần `ELEVENLABS_API_KEY` còn hạn mức.
 - `dialogue:audio:gemini` — Gemini TTS free (cần `GEMINI_API_KEY`).
 - `dialogue:audio:aistudio -- ... --cdp 9222` — lái web AI Studio, không tốn quota
   (cần Chrome mở cổng debug + đã đăng nhập; xem đầu `scripts/tts-aistudio.mjs`).
@@ -171,16 +194,17 @@ npm run dialogue:audio -- -Data "projects/$ID/dialogue.json"
   model (Eleven V3, Minimax, Omnivoice; trả bằng credit nền tảng). Đăng nhập tay
   1 lần khi chạy headed, hoặc `--cdp 9222` với Chrome đã đăng nhập.
 
-Trừ ElevenLabs, các adapter còn lại **không trả mốc từ → chạy bước 4b**. Kiểm tra
-giọng SAPI có sẵn: `references/voices.md`.
+Trừ ElevenLabs **API**, các adapter còn lại (kể cả ElevenLabs **web**) **không trả
+mốc từ → chạy bước 4b**. Kiểm tra giọng SAPI có sẵn: `references/voices.md`.
 
-> **Thẻ cảm xúc:** ElevenLabs, Gemini và AI Studio đều nhận `turn.enTts` (bản có
-> tag `[...]`) nếu có, giữ `turn.en` sạch cho `.srt`. Bộ tag của Google KHÁC
+> **Thẻ cảm xúc:** ElevenLabs (API + web), Gemini và AI Studio đều nhận `turn.enTts`
+> (bản có tag `[...]`) nếu có, giữ `turn.en` sạch cho `.srt`. Bộ tag của Google KHÁC
 > ElevenLabs và một số tag dễ bị đọc to — chỉ dùng nhóm an toàn, xem
 > `references/better-tts.md`.
 
 ### 4b. (Khuyến nghị) Forced-align để highlight khớp tuyệt đối
-> Chỉ cần khi TTS không trả `words[]` (SAPI/Gemini/aivideoauto/aistudio). ElevenLabs thì BỎ QUA.
+> Chỉ cần khi TTS không trả `words[]` (SAPI/Gemini/aivideoauto/aistudio/ElevenLabs **web**).
+> ElevenLabs **API** thì BỎ QUA.
 
 SAPI chỉ cho mốc bắt đầu → highlight có thể "dính" qua khoảng nghỉ. Whisper lấy
 mốc bắt đầu + kết thúc THẬT (offline, miễn phí):
@@ -190,6 +214,30 @@ npm run dialogue:align -- --data "projects/$ID/dialogue.json"   # ghi đè words
 ```
 Bỏ bước này thì highlight vẫn chạy nhưng chỉ gần đúng.
 > `dialogue:audio` (PowerShell) ghi file có BOM; align đọc `utf-8-sig` + ghi lại không BOM.
+
+### 4b2. Tốc độ giọng theo CẤP ĐỘ (chạy SAU align, TRƯỚC verify)
+Level thấp phải nghe chậm hơn. Sau khi có `words[]`, chỉnh tốc độ bằng một lệnh
+(ffmpeg atempo — giữ cao độ, dùng được cho MỌI adapter TTS; tự scale
+`durationInSec` + `words[]`, KHÔNG cần align lại):
+```bash
+npm run dialogue:speed -- --data "projects/$ID/dialogue.json"   # tempo tự theo doc.level
+```
+| Level | A1 | A2 | B1 | B1-B2 | B2 / B2-C1 / C1 |
+|---|---|---|---|---|---|
+| Tempo | 0.80 | 0.85 | 0.90 | 0.95 | 1.00 (script tự bỏ qua) |
+
+Muốn ghi đè: `--tempo 0.9`. Script idempotent (`doc.speedTempo`) — không chạy
+chồng được; đổi tốc độ thì sinh lại TTS. Với SAPI có thể thay bằng `-Rate` gốc
+(vd A2 = `-Rate -3`) ngay từ bước 4 rồi BỎ bước này.
+
+### 4c. (BẮT BUỘC) Verify audio khớp kịch bản — TRƯỚC khi render
+Spawn subagent **`audio-script-verifier`** (truyền `data: projects/$ID/dialogue.json`
+— cần chạy SAU 4b để có `words[]`). Agent đối chiếu từng lượt: đủ file, không đọc
+đôi, không dính câu lượt trước, nội dung đúng, duration hợp lý → trả JSON
+`verdict PASS/FAIL + issues[]` kèm mốc cắt ffmpeg / danh sách lượt cần sinh lại.
+**FAIL thì sửa theo `issues` rồi chạy lại agent đến khi PASS mới được render**
+(lỗi thật đã gặp: ElevenLabs web làm ~1/3 lượt bị đọc 2-4 lần). Sau khi render +
+ghép intro cũng NÊN gọi lại agent với `video:` để verify bản final trước finalize.
 
 ### 5. Nạp project vào data/ rồi render
 **LUÔN `project:use` trước khi render** (Remotion import tĩnh `data/`); chạy lại
@@ -217,6 +265,11 @@ printf '{"backgroundImage":"backgrounds/scene-vertical.png"}' > "projects/$ID/po
 npx remotion render PodcastVertical "projects/$ID/podcast-portrait.mp4" --props="projects/$ID/podcast-vertical.props.json"
 ```
 
+**Logo kênh trong VIDEO**: `Podcast`/`PodcastVertical` **LUÔN tự phủ `public/logo.jpg`**
+làm watermark mờ (opacity 0.5, tròn viền trắng) ở góc PHẢI DƯỚI suốt video — không
+cần truyền gì; đặt `"logo":""` trong props để ẩn. Đồng bộ với logo trên thumbnail
+(bước 6). Vì vậy ảnh nền video cũng nên **chừa góc phải dưới tương đối thoáng**.
+
 ### 6. Thumbnail (LUÔN tạo mỗi video)
 Thumbnail = ảnh 2 nhân vật (chừa giữa trống) + Remotion phủ chữ + **logo kênh góc
 phải dưới**. **Khuyến nghị: spawn subagent `youtube-thumbnail-designer`** (truyền
@@ -230,8 +283,9 @@ printf '{"backgroundImage":"thumbnails/scene.png","title":"FOOD & DRINK","kicker
 npx remotion still src/index.ts Thumbnail "projects/$ID/thumbnail.png" --props="projects/$ID/thumb.props.json"
 ```
 - **Logo kênh**: composition `Thumbnail` **LUÔN tự phủ `public/logo.jpg`** ở góc PHẢI
-  DƯỚI (tròn, viền trắng) — không cần truyền gì; đặt `"logo":""` trong props để ẩn.
-  Vì vậy concept/ảnh nền phải **chừa góc phải dưới thoáng** (agent đã lo trong query).
+  DƯỚI (tròn, viền trắng, **mờ opacity 0.5 như watermark** — giống trong video) —
+  không cần truyền gì; đặt `"logo":""` trong props để ẩn. Vì vậy concept/ảnh nền phải
+  **chừa góc phải dưới thoáng** (agent đã lo trong query).
 - `title` = danh từ chính của chủ đề (vd "Talking About Your Weekend" → `YOUR WEEKEND`),
   tránh lặp pill `kicker`. Không có Canva → bỏ `backgroundImage`, `Thumbnail` tự vẽ nền
   gradient + 2 avatar chữ cái (logo vẫn hiện).
@@ -250,9 +304,15 @@ intro/outro về đúng độ phân giải/fps/SAR + audio 48k stereo rồi nố
 Không có `public/intro.mp4` → báo người dùng đặt file vào đó rồi mới finalize.
 
 ### 7. Gom mọi thứ + đặt tên theo từ khóa
+**QUY TẮC ĐẶT TÊN FILE (bắt buộc):** mọi file đầu ra cho người dùng (mp4, thumbnail,
+srt…) phải có tên **TIẾNG ANH, có ý nghĩa, theo chủ đề** dạng slug SEO (vd
+`learn-english-food-and-drink-a2-conversation.mp4`) — YouTube đọc tên file khi
+upload nên tên tốt giúp metadata/SEO tốt. KHÔNG để tên chung chung (`podcast.mp4`,
+`output.mp4`, `video1.mp4`) lọt vào bộ file cuối. LUÔN truyền cụm từ khóa SEO
+(tiếng Anh, chứa chủ đề + cấp độ) cho `finalize`:
 ```bash
 npm run --silent project:finalize -- "$ID"                                  # tên = slug(chủ đề + cấp độ)
-npm run --silent project:finalize -- "$ID" "learn english animals conversation"  # hoặc từ khóa SEO riêng
+npm run --silent project:finalize -- "$ID" "learn english animals conversation"  # từ khóa SEO riêng (khuyến nghị — dùng `fileKeywords` từ youtube-metadata-writer)
 ```
 Việc này: copy dialogue + ảnh nền + thumbnail-bg + `audio/` (chỉ file đang dùng) +
 `project.json`; **đổi tên** kết quả sang slug tiếng Anh không dấu (`<slug>.mp4`,
@@ -262,6 +322,15 @@ mỗi lượt 1 cue — LUÔN tạo, đính kèm khi upload để YouTube phân 
 TAGS =====`; dọn `*.props.json` tạm.
 
 Báo lại: đường dẫn folder, tên file, tiêu đề/mô tả/tags, và nhắc đính kèm `.srt`.
+
+### 7b. (BẮT BUỘC) Kiểm duyệt YouTube trước khi đăng
+Sau finalize, spawn subagent **`youtube-policy-checker`** (truyền `project:
+projects/$ID/`). Agent rà title/description/tags (giới hạn ký tự, ≤15 hashtag,
+tag stuffing, metadata gây hiểu lầm), XEM thumbnail + vài frame video, quét kịch
+bản theo advertiser-friendly, cảnh báo bản quyền (nhạc intro, gói ElevenLabs) và
+rủi ro chính sách nội dung lặp (kênh TTS), khuyến nghị cờ Made-for-Kids → trả
+JSON `PASS/WARN/FAIL`. `FAIL` → sửa blocker rồi chạy lại; `WARN` → báo user
+quyết định. Đính kèm `uploadChecklist` của agent vào báo cáo cuối cho user.
 
 ### 8. (Hỏi cuối cùng) Upload lên Google Drive
 Sau khi `finalize` xong, **HỎI người dùng: "Bạn có muốn upload kết quả lên Google

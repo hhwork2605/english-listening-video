@@ -12,6 +12,7 @@ Cách dùng:
 """
 import json
 import os
+import shutil
 import sys
 import argparse
 
@@ -35,7 +36,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--data", default="data/dialogue.json")
+    ap.add_argument("--data", required=True)  # bắt buộc — tránh chạy nhầm buffer project cũ
     ap.add_argument("--model", default="base.en", help="tiny.en|base.en|small.en|medium.en")
     args = ap.parse_args()
 
@@ -86,6 +87,10 @@ def main():
 
     with open(data_path, "w", encoding="utf-8") as f:
         json.dump(doc, f, ensure_ascii=False, indent=2)
+    # tự đè buffer render: data/ luôn là project đang làm
+    buffer_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "dialogue.json"))
+    if os.path.abspath(data_path) != buffer_path:
+        shutil.copyfile(data_path, buffer_path)
     print(f"Da ghi moc thuc te vao {args.data}. Gio render lai la khop tuyet doi.")
 
 

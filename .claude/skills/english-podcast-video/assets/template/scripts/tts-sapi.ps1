@@ -11,7 +11,7 @@
     powershell -ExecutionPolicy Bypass -File scripts/tts-sapi.ps1 -Voice "Microsoft David Desktop" -Rate -2
 #>
 param(
-  [string]$Data = "data/script.json",
+  [Parameter(Mandatory=$true)][string]$Data,  # BẮT BUỘC — tránh chạy nhầm buffer project cũ
   [string]$Voice = "Microsoft Zira Desktop",
   [int]$Rate = -1
 )
@@ -73,4 +73,7 @@ foreach ($item in $data.items) {
 $synth.Dispose()
 
 $data | ConvertTo-Json -Depth 10 | Set-Content $scriptPath -Encoding UTF8
+# tự đè buffer render: data/ luôn là project đang làm
+$bufferPath = Join-Path $root "datascript.json"
+if ($scriptPath -ne $bufferPath) { Copy-Item $scriptPath $bufferPath -Force }
 Write-Host "Da cap nhat $Data (audio + words). Gio render duoc roi."

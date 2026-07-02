@@ -21,6 +21,7 @@ import {
 } from "node:fs";
 import { resolve, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { execFileSync } from "node:child_process";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
@@ -121,14 +122,39 @@ meta.files = {
 // Remotion: mỗi lượt = (durationInSec + pauseAfterSec) frame). Mỗi lượt 1 cue.
 if (doc?.turns?.length) {
   const fps = doc.fps || 30;
+  // Video final có thể ĐÃ GHÉP INTRO ở đầu (video:intro --replace chạy trước
+  // finalize) -> mọi cue phải dịch thêm đúng độ dài intro. Suy offset = duration
+  // video thật (ffprobe) - duration timeline dialogue; gap > 0.5s coi như intro.
+  let offsetSec = 0;
+  try {
+    const vf = join(proj, meta.files.landscape);
+    if (existsSync(vf)) {
+      const vd = parseFloat(
+        execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", vf]).toString()
+      );
+      const timelineFrames = doc.turns.reduce(
+        (s, t) =>
+          s + Math.max(1, Math.round((Math.max(0.3, t.durationInSec || 0) + (t.pauseAfterSec || 0)) * fps)),
+        0
+      );
+      const gap = vd - timelineFrames / fps;
+      if (Number.isFinite(gap) && gap > 0.5) {
+        offsetSec = gap;
+        console.log(`SRT: dich moi cue +${gap.toFixed(2)}s (video co intro o dau).`);
+      }
+    }
+  } catch {
+    /* không có ffprobe -> giữ offset 0 */
+  }
+  const offF = Math.round(offsetSec * fps);
   let acc = 0; // frame tích lũy
   const cues = [];
   doc.turns.forEach((turn, i) => {
     const dur = Math.max(0.3, turn.durationInSec || 0);
     const turnFrames = Math.max(1, Math.round((dur + (turn.pauseAfterSec || 0)) * fps));
     const lead = turn.words?.[0]?.startSec ?? 0;
-    const startF = acc + Math.round(lead * fps);
-    const endF = acc + Math.round(dur * fps);
+    const startF = offF + acc + Math.round(lead * fps);
+    const endF = offF + acc + Math.round(dur * fps);
     cues.push(`${i + 1}\n${srtTime(startF / fps)} --> ${srtTime(endF / fps)}\n${turn.en}\n`);
     acc += turnFrames;
   });

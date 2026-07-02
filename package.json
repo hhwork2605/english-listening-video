@@ -15,6 +15,7 @@
     "generate:dialogue": "tsx scripts/generate-dialogue.ts",
     "dialogue:audio": "powershell -ExecutionPolicy Bypass -File scripts/tts-dialogue.ps1",
     "dialogue:audio:eleven": "node scripts/tts-elevenlabs.mjs",
+    "dialogue:audio:eleven:web": "node scripts/tts-elevenlabs-web.mjs",
     "dialogue:audio:aiva": "node scripts/tts-aivideoauto.mjs",
     "dialogue:audio:gemini": "node scripts/tts-gemini.mjs",
     "dialogue:audio:aistudio": "node scripts/tts-aistudio.mjs",
@@ -27,7 +28,8 @@
     "generate:audio": "tsx scripts/generate-audio.ts",
     "generate:audio:sapi": "powershell -ExecutionPolicy Bypass -File scripts/tts-sapi.ps1",
     "measure": "tsx scripts/measure-duration.ts",
-    "build:content": "tsx scripts/build.ts"
+    "build:content": "tsx scripts/build.ts",
+    "dialogue:speed": "node scripts/adjust-speed.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",

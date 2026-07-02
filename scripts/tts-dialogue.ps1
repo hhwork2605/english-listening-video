@@ -13,7 +13,7 @@
     powershell -File scripts/tts-dialogue.ps1 -Data data/dialogue.json -Rate 0
 #>
 param(
-  [string]$Data = "data/dialogue.json",
+  [Parameter(Mandatory=$true)][string]$Data,  # BẮT BUỘC — không default để tránh chạy nhầm buffer project cũ
   [int]$Rate = -1
 )
 
@@ -80,4 +80,7 @@ foreach ($turn in $doc.turns) {
 
 $synth.Dispose()
 $doc | ConvertTo-Json -Depth 12 | Set-Content $dataPath -Encoding UTF8
+# tự đè buffer render: data/ luôn là project đang làm
+$bufferPath = Join-Path $root "datadialogue.json"
+if ($dataPath -ne $bufferPath) { Copy-Item $dataPath $bufferPath -Force }
 Write-Host "Da cap nhat $Data (audio + words). Gio render duoc roi."

@@ -6,4 +6,6 @@ projects/
 # Audio sinh ra theo project (buffer) — giữ .gitkeep, bỏ qua phần còn lại
 public/audio/*
 !public/audio/.gitkeep
-.pw-profile/
+# Profile trình duyệt Playwright/Chrome (chứa cookie/phiên đăng nhập — KHÔNG commit)
+.pw-profile*/
+__pycache__/

@@ -4,4 +4,5 @@ out/
 public/audio/*.wav
 public/audio/*.mp3
 projects/
-.pw-profile/
+# Profile trình duyệt Playwright/Chrome (chứa cookie/phiên đăng nhập — KHÔNG commit)
+.pw-profile*/
