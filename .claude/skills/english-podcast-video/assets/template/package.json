@@ -29,7 +29,8 @@
     "generate:audio:sapi": "powershell -ExecutionPolicy Bypass -File scripts/tts-sapi.ps1",
     "measure": "tsx scripts/measure-duration.ts",
     "build:content": "tsx scripts/build.ts",
-    "dialogue:speed": "node scripts/adjust-speed.mjs"
+    "dialogue:speed": "node scripts/adjust-speed.mjs",
+    "ledger": "node scripts/ledger.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",

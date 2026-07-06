@@ -72,6 +72,7 @@ Xem trước trực quan: `npm run dev` (Remotion Studio).
 | ID | Mô tả |
 |---|---|
 | `Podcast` / `PodcastVertical` | **Chính** — 1 ảnh tĩnh + sóng âm + transcript EN highlight (`data/dialogue.json`) |
+| `ReelDialogueList` / `ReelComicScene` / `Reel` | **Shorts/TikTok dọc** — 3 dạng reel: (A) danh sách hội thoại tô sáng từng câu, (B) cảnh tĩnh + bong bóng thoại + end-card Subscribe, (C) micro-lesson 1 idiom (hook→phrase→nghĩa→ví dụ→CTA); skill `english-reel-video` |
 | `Thumbnail` | Ảnh đại diện 1280×720 (ảnh Canva + overlay chữ) |
 | `LandscapeVideo` / `PortraitVideo` | Phụ — câu đơn lặp lại nghe thụ động (`data/script.json`) |
 

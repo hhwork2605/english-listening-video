@@ -1,0 +1,28 @@
+{
+  "title": "English Reel | Break the ice",
+  "level": "B1",
+  "topic": "Break the ice",
+  "phrase": "BREAK THE ICE",
+  "phonetic": "/breɪk ðə aɪs/",
+  "hook": "Do you know this phrase?",
+  "kicker": "PHRASE OF THE DAY",
+  "cta": "Follow for daily English!",
+  "accent": "#ffd23f",
+  "youtubeTitle": "Break the ice — English idiom in 30s",
+  "youtubeDescription": "Learn the idiom \"break the ice\" with real examples. New phrase every day! #shorts #learnenglish #idioms",
+  "tags": ["learn english", "english shorts", "idioms", "b1 english", "english phrases"],
+  "fps": 30,
+  "speakers": {
+    "A": { "name": "Emma", "voice": "Microsoft Zira Desktop", "side": "left", "color": "#f48fb1" },
+    "B": { "name": "Mike", "voice": "Microsoft David Desktop", "side": "right", "color": "#64b5f6" }
+  },
+  "turns": [
+    { "id": "001", "role": "hook", "speaker": "A", "en": "Do you know this phrase?", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "002", "role": "phrase", "speaker": "A", "en": "Break the ice.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.4 },
+    { "id": "003", "role": "meaning", "speaker": "A", "en": "It means to start a conversation in a relaxed, friendly way.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.4 },
+    { "id": "004", "role": "example", "speaker": "B", "en": "He told a joke to break the ice.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.4 },
+    { "id": "005", "role": "example", "speaker": "B", "en": "Let's play a game to break the ice at the party.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.4 },
+    { "id": "006", "role": "tip", "speaker": "A", "en": "You can use it at work, at school, or at any party.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.4 },
+    { "id": "007", "role": "cta", "speaker": "A", "en": "Follow for a new phrase every day!", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.5 }
+  ]
+}

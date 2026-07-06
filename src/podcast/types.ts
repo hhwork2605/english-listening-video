@@ -19,7 +19,8 @@ export type DialogueTurn = {
   id: string;
   speaker: SpeakerId;
   en: string;
-  vi: string;
+  /** Nghĩa tiếng Việt — chỉ dùng cho biến thể Anh-Việt; định dạng chính bỏ trống. */
+  vi?: string;
   /** File audio trong public/ (tts-dialogue.ps1 tự điền). */
   audio: string;
   /** Độ dài audio (giây) — tts/measure tự điền. */

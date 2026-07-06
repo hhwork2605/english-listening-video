@@ -1,0 +1,29 @@
+{
+  "title": "English Conversation Practice",
+  "level": "A2",
+  "topic": "Outside Tom's House",
+  "youtubeTitle": "English Conversation Practice | Outside Tom's House",
+  "youtubeDescription": "Practice everyday English with this short conversation. Listen and read along! #shorts #learnenglish #englishconversation",
+  "tags": ["learn english", "english conversation", "english practice", "a2 english", "english shorts"],
+  "fps": 30,
+  "speakers": {
+    "A": { "name": "Lisa", "voice": "Microsoft Zira Desktop", "side": "left", "color": "#e0457b" },
+    "B": { "name": "Tom", "voice": "Microsoft David Desktop", "side": "right", "color": "#2f7bd6" }
+  },
+  "turns": [
+    { "id": "001", "speaker": "A", "en": "Hi Tom! How are you today?", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "002", "speaker": "B", "en": "Hi Lisa. I'm fine, but a bit worried.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "003", "speaker": "A", "en": "Why are you worried?", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "004", "speaker": "B", "en": "My father is not well.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "005", "speaker": "A", "en": "Oh no! What happened to him?", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "006", "speaker": "B", "en": "He has a fever and a bad cough.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "007", "speaker": "A", "en": "Did you take him to the doctor?", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "008", "speaker": "B", "en": "Yes, we went to the doctor yesterday.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "009", "speaker": "A", "en": "What did the doctor say?", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "010", "speaker": "B", "en": "The doctor said it's the flu.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "011", "speaker": "A", "en": "Does he feel better now?", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "012", "speaker": "B", "en": "A little better, but still weak.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "013", "speaker": "A", "en": "Is he resting at home?", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.3 },
+    { "id": "014", "speaker": "B", "en": "Yes, he is resting in bed.", "audio": "", "durationInSec": 0, "pauseAfterSec": 0.5 }
+  ]
+}

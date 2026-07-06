@@ -45,7 +45,10 @@ Anh** hiện theo cụm, **làm sáng từ đang đọc** (composition `Podcast`
 ```bash
 cp -r "<SKILL_DIR>/assets/template" "<TARGET_DIR>" && cd "<TARGET_DIR>" && npm install  # 1) chỉ lần đầu
 ID=$(npm run --silent project:new -- "<chủ đề>")                                         # 1) tạo folder
-# 2) HỎI: đã có kịch bản chưa?   3) viết projects/$ID/dialogue.json (+ topic/level/metadata)
+# 2) HỎI: đã có kịch bản chưa?
+npm run --silent ledger -- check --tab video                        # 3a) chống trùng -> avoid
+# 3) viết projects/$ID/dialogue.json (+ topic/level/metadata)
+npm run --silent ledger -- dupe --tab video --data "projects/$ID/dialogue.json"  # 3b) too-similar? -> viết lại
 npm run dialogue:audio    -- -Data  "projects/$ID/dialogue.json"    # 4)  TTS (SAPI mặc định)
 npm run dialogue:align    -- --data "projects/$ID/dialogue.json"    # 4b) karaoke (bỏ nếu dùng ElevenLabs API)
 npm run dialogue:speed    -- --data "projects/$ID/dialogue.json"    # 4b2) tốc độ giọng theo level (A1 0.8 … B2+ giữ nguyên)
@@ -55,7 +58,9 @@ npx remotion render Podcast "projects/$ID/podcast.mp4" --props="projects/$ID/pod
 npx remotion still src/index.ts Thumbnail "projects/$ID/thumbnail.png" --props="projects/$ID/thumb.props.json"  # 6)
 npm run video:intro -- --video "projects/$ID/podcast.mp4" --intro public/intro.mp4 --replace   # 6b) BẮT BUỘC: ghép intro TRƯỚC finalize (không hỏi)
 npm run --silent project:finalize -- "$ID"                        # 7)  gom + .srt + metadata
-# 9) HỎI upload Google Drive → dùng Google Drive MCP
+# 7b) BẮT BUỘC: spawn youtube-policy-checker
+npm run --silent ledger -- append --tab video --data "projects/$ID/dialogue.json" --theme "<bucket>" --situation "<mô tả>"  # 7c) ghi sổ chống trùng
+# 8) HỎI upload Google Drive → dùng Google Drive MCP
 ```
 
 > Biến thể phụ "2 nhân vật + phụ đề Anh-Việt + badge" (`PodcastVideo`, không đăng ký
@@ -108,6 +113,14 @@ mỗi tiêu chí một câu, mỗi câu vài phương án bấm chọn):
 ### 3. Dựng `projects/$ID/dialogue.json`
 Viết file NGUỒN vào **`projects/$ID/dialogue.json`** (KHÔNG phải `data/`).
 
+**CHỐNG TRÙNG (đọc SỔ NỘI DUNG — tab `video`):** trước khi viết, chạy
+`npm run --silent ledger -- check --tab video` để lấy `avoid` (topics/openings/…đã
+làm) và né lặp. Sau khi ráp xong dialogue.json, kiểm:
+`npm run --silent ledger -- dupe --tab video --data "projects/$ID/dialogue.json"` —
+`too-similar` (cùng chủ đề / opening trùng / overlap ≥ 0.4) thì đổi góc, viết lại.
+Nguồn chuẩn = Google Sheet online (fallback cache local); cần webhook đã cài
+(`scripts/ledger-webhook.gs` + `ledger/webhook.json`).
+
 **Nhánh A — đã có kịch bản:** chuyển thành `turns`, **giữ nguyên câu chữ** (chỉ
 chuẩn hoá nhẹ nếu khó đọc TTS). Có nhãn người nói → map A/B đúng; đoạn văn liền →
 tự tách lượt, gán A/B xen kẽ. Điền `topic`, `level`, và metadata YouTube. Để
@@ -148,7 +161,8 @@ Chia việc cho các subagent trong `.claude/agents/` chạy **song song** rồi
    cụm ~30–40 lượt; xác định cụm mở đầu / giữa / kết.
 2. **Spawn `english-dialogue-writer` song song** — mỗi agent một khía cạnh, truyền
    `topic`, `aspect`, `level`, `turns`, `startSpeaker`, `startId` (lệch nhau),
-   `context`, `includeVi`. Trả `{ turns: [...] }`.
+   `context`, `includeVi`, **`avoid`** (từ `ledger check --tab video` ở bước 3 — để
+   né trùng NGAY khi viết). Trả `{ turns: [...] }`.
 3. **Nối** theo thứ tự; đánh lại `id` liên tục 3 chữ số; bảo đảm luân phiên A/B ở chỗ ghép.
 4. **Spawn `dialogue-cefr-reviewer`** (truyền `level`) → `turns` chuẩn hoá + báo cáo.
 5. **Spawn `youtube-metadata-writer`** → điền `title`, `topic`, metadata YouTube
@@ -331,6 +345,14 @@ bản theo advertiser-friendly, cảnh báo bản quyền (nhạc intro, gói El
 rủi ro chính sách nội dung lặp (kênh TTS), khuyến nghị cờ Made-for-Kids → trả
 JSON `PASS/WARN/FAIL`. `FAIL` → sửa blocker rồi chạy lại; `WARN` → báo user
 quyết định. Đính kèm `uploadChecklist` của agent vào báo cáo cuối cho user.
+
+### 7c. (BẮT BUỘC) Ghi SỔ NỘI DUNG (chống trùng lần sau)
+Sau finalize + kiểm duyệt, ghi 1 dòng vào tab `video` (idempotent theo `id`, tự đẩy
+lên Google Sheet nếu đã cài webhook; luôn lưu cache local):
+```bash
+npm run --silent ledger -- append --tab video --data "projects/$ID/dialogue.json" \
+  --theme "<bucket: money/health/travel/…>" --situation "<mô tả ngắn>"
+```
 
 ### 8. (Hỏi cuối cùng) Upload lên Google Drive
 Sau khi `finalize` xong, **HỎI người dùng: "Bạn có muốn upload kết quả lên Google

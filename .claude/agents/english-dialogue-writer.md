@@ -38,6 +38,10 @@ Prompt sẽ cung cấp:
   định dạng chính chỉ hiện tiếng Anh).
 - `emotive` — true (MẶC ĐỊNH) để thêm trường `enTts` (bản đọc kèm audio tag cảm
   xúc cho ElevenLabs v3). Đặt false nếu sẽ đọc bằng SAPI (SAPI không hiểu tag).
+- `avoid` — (CHỐNG TRÙNG) dữ liệu các video ĐÃ LÀM để KHÔNG lặp lại, gồm bất kỳ:
+  `topics` (chủ đề đã dùng), `openings` (câu mở đầu đã dùng), `lines`/`recentLines`
+  (một số câu tiêu biểu đã dùng). Điều phối đọc từ SỔ NỘI DUNG (`npm run ledger --
+  check --tab video`) rồi truyền vào đây — hãy chọn góc/câu mở đầu/câu thoại KHÁC.
 
 Nếu thiếu trường nào, dùng mặc định ở trên và nêu rõ giả định trong phần ghi chú.
 

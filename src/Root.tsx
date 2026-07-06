@@ -10,6 +10,10 @@ import type { Dialogue } from "./podcast/types";
 import dialogueJson from "../data/dialogue.json";
 import { Thumbnail } from "./Thumbnail";
 import { Intro } from "./Intro";
+import { Reel } from "./reel/Reel";
+import type { Reel as ReelData } from "./reel/types";
+import { ReelDialogueList } from "./reel/ReelDialogueList";
+import { ReelComicScene, ENDCARD_FRAMES } from "./reel/ReelComicScene";
 
 const script = scriptJson as Script;
 const fps = script.fps ?? 30;
@@ -18,6 +22,11 @@ const durationInFrames = Math.max(1, totalDurationInFrames(script));
 const dialogue = dialogueJson as Dialogue;
 const podcastFps = dialogue.fps ?? 30;
 const podcastFrames = Math.max(1, totalDialogueFrames(dialogue));
+
+// Reel micro-lesson dùng chung data/dialogue.json (Reel là superset của Dialogue).
+const reel = dialogueJson as ReelData;
+const reelFps = reel.fps ?? 30;
+const reelFrames = Math.max(1, totalDialogueFrames(reel));
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -75,6 +84,48 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={{
           dialogue,
           // backgroundImage: "backgrounds/scene-vertical.png",
+        }}
+      />
+
+      {/* Reel micro-lesson dọc 1080×1920 (Shorts/TikTok) — 1 idiom/phrase mỗi video */}
+      <Composition
+        id="Reel"
+        component={Reel}
+        durationInFrames={reelFrames}
+        fps={reelFps}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          reel,
+          // backgroundImage + accent truyền qua --props lúc render (tùy chọn)
+        }}
+      />
+
+      {/* Reel dạng A — danh sách hội thoại đọc theo (nền trơn + tô sáng câu) */}
+      <Composition
+        id="ReelDialogueList"
+        component={ReelDialogueList}
+        durationInFrames={podcastFrames}
+        fps={podcastFps}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          dialogue,
+          // header / background / accent truyền qua --props (tùy chọn)
+        }}
+      />
+
+      {/* Reel dạng B — cảnh hoạt hình tĩnh + bong bóng thoại + end-card Subscribe */}
+      <Composition
+        id="ReelComicScene"
+        component={ReelComicScene}
+        durationInFrames={podcastFrames + ENDCARD_FRAMES}
+        fps={podcastFps}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          dialogue,
+          // backgroundImage (ảnh cảnh) truyền qua --props
         }}
       />
 

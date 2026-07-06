@@ -9,3 +9,6 @@ public/audio/*
 # Profile trình duyệt Playwright/Chrome (chứa cookie/phiên đăng nhập — KHÔNG commit)
 .pw-profile*/
 __pycache__/
+# Webhook Sheet (chứa token) — không commit
+ledger/webhook.json
+ledger/.post.json
