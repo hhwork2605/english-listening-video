@@ -1,17 +1,19 @@
 /**
- * SỔ NỘI DUNG chống trùng kịch bản — LOCAL, không cần connector Google.
- * Lưu mỗi video/reel đã làm thành 1 dòng CSV để: (a) bước writer tránh lặp,
- * (b) chấm điểm trùng trước khi render. Mở/nhập CSV vào Google Sheet bất cứ lúc nào.
+ * SỔ NỘI DUNG chống trùng kịch bản — ONLINE, nguồn duy nhất = Google Sheet
+ * (qua webhook Apps Script, KHÔNG cần MCP connector). Mỗi video/reel = 1 dòng
+ * trên tab Sheet để: (a) bước writer tránh lặp, (b) chấm điểm trùng trước render.
  *
- * Lưu tại: ledger/<tab>.csv  (tab = "reels" | "video")
+ * BẮT BUỘC có webhook: ledger/webhook.json { url, token } (cài: scripts/ledger-webhook.gs).
+ * Không có webhook / mất mạng → lệnh BÁO LỖI, không fallback offline.
  * Cột: date,id,format,level,topic,theme,situation,key_phrase,opening_line,youtube_title,script
  *
  * Dùng:
  *   node scripts/ledger.mjs check  --tab reels
  *   node scripts/ledger.mjs dupe   --tab reels --data projects/<id>/dialogue.json
  *   node scripts/ledger.mjs append --tab reels --data projects/<id>/dialogue.json [--format B] [--theme workplace] [--situation "job interview Q&A"] [--id <id>]
+ *   node scripts/ledger.mjs push   --tab reels   # seed 1 lần từ CSV cũ (nếu còn)
  */
-import { readFileSync, writeFileSync, existsSync, mkdirSync, appendFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { resolve, dirname, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
@@ -29,8 +31,8 @@ const tab = getArg("--tab", "reels");
 const HEADER = ["date", "id", "format", "level", "topic", "theme", "situation", "key_phrase", "opening_line", "youtube_title", "script"];
 const ledgerPath = resolve(ROOT, "ledger", `${tab}.csv`);
 
-// Webhook Google Sheet (tùy chọn) — cấu hình qua ledger/webhook.json {url,token},
-// hoặc env LEDGER_WEBHOOK_URL/_TOKEN, hoặc cờ --url/--token. Không có -> chỉ lưu local.
+// Webhook Google Sheet (BẮT BUỘC) — cấu hình qua ledger/webhook.json {url,token},
+// hoặc env LEDGER_WEBHOOK_URL/_TOKEN, hoặc cờ --url/--token.
 const webhookCfg = (() => {
   const p = resolve(ROOT, "ledger", "webhook.json");
   if (existsSync(p)) { try { return JSON.parse(readFileSync(p, "utf8")); } catch { return {}; } }
@@ -38,7 +40,6 @@ const webhookCfg = (() => {
 })();
 const WEBHOOK_URL = getArg("--url") || process.env.LEDGER_WEBHOOK_URL || webhookCfg.url || "";
 const WEBHOOK_TOKEN = getArg("--token") || process.env.LEDGER_WEBHOOK_TOKEN || webhookCfg.token || "";
-const noSync = argv.includes("--no-sync");
 
 // Gọi HTTP qua PowerShell Invoke-WebRequest (dùng cert hệ điều hành → qua được
 // proxy/cert doanh nghiệp; node fetch và curl-Git hay bị chặn TLS ở môi trường này).
@@ -69,17 +70,22 @@ const sheetIds = () => {
   const rows = sheetRows();
   return rows ? new Set(rows.map((r) => String(r.id))) : null;
 };
-const writeLocalRows = (rows) => {
-  mkdirSync(dirname(ledgerPath), { recursive: true });
-  const out = [HEADER.join(",")].concat(rows.map((r) => HEADER.map((h) => csvEscape(r[h])).join(",")));
-  writeFileSync(ledgerPath, out.join("\n") + "\n", "utf8");
+// Nguồn DUY NHẤT = Google Sheet (online). Không có webhook / không đọc được
+// Sheet → lỗi cứng, không fallback offline.
+const requireWebhook = () => {
+  if (!WEBHOOK_URL) {
+    console.error("LỖI: ledger chạy online-only, cần webhook. Tạo ledger/webhook.json {url,token} — cài đặt: xem đầu file scripts/ledger-webhook.gs.");
+    process.exit(1);
+  }
 };
-// Nguồn CHUẨN = Google Sheet (online). Đọc được thì dùng + làm mới cache local;
-// mất mạng/webhook thì fallback CSV local.
 const loadRows = () => {
+  requireWebhook();
   const online = sheetRows();
-  if (online) { try { writeLocalRows(online); } catch { /* cache lỗi -> kệ */ } return { rows: online, source: "sheet" }; }
-  return { rows: readRows(), source: WEBHOOK_URL ? "local (sheet unreachable)" : "local" };
+  if (online === null) {
+    console.error("LỖI: không đọc được Google Sheet (mạng/webhook?). Ledger online-only — thử lại khi có mạng.");
+    process.exit(1);
+  }
+  return { rows: online, source: "sheet" };
 };
 
 const norm = (s) => String(s || "").toLowerCase().replace(/\s+/g, " ").trim();
@@ -149,7 +155,9 @@ if (cmd === "check") {
   const recentLines = uniq(
     rows.slice(-8).flatMap((r) => String(r.script || "").split("|").map(norm))
   ).slice(-60);
-  console.log(JSON.stringify({ status: rows.length ? "ok" : "empty", source, tab, count: rows.length, avoid: { topics, situations, phrases, openings, recentLines } }, null, 2));
+  // 3 reel gần nhất dùng format gì (tầng chống-repetitive đọc từ đây, không mở CSV)
+  const recentFormats = rows.slice(-3).map((r) => ({ id: r.id, format: r.format, theme: r.theme }));
+  console.log(JSON.stringify({ status: rows.length ? "ok" : "empty", source, tab, count: rows.length, recentFormats, avoid: { topics, situations, phrases, openings, recentLines } }, null, 2));
 } else if (cmd === "dupe") {
   const d = loadDialogue();
   const { rows, source } = loadRows();
@@ -168,9 +176,8 @@ if (cmd === "check") {
   const tooSimilar = topicClash || openingClash || worst.overlap >= 0.4;
   console.log(JSON.stringify({ verdict: tooSimilar ? "too-similar" : "ok", source, topicClash, openingClash, maxOverlap: worst.overlap, worstMatchId: worst.id, hint: tooSimilar ? "Đổi chủ đề/tình huống/câu mở đầu rồi viết lại." : "Không trùng đáng kể." }, null, 2));
 } else if (cmd === "append") {
+  requireWebhook();
   const d = loadDialogue();
-  mkdirSync(dirname(ledgerPath), { recursive: true });
-  if (!existsSync(ledgerPath)) writeFileSync(ledgerPath, HEADER.join(",") + "\n", "utf8");
   const today = getArg("--date") || new Date().toISOString().slice(0, 10);
   const row = {
     date: today,
@@ -185,21 +192,17 @@ if (cmd === "check") {
     youtube_title: d.doc.youtubeTitle || "",
     script: d.lines.join(" | "),
   };
-  // Idempotent theo id: chỉ ghi local nếu id chưa có trong CSV.
-  const inLocal = readRows().some((r) => r.id === row.id);
-  if (!inLocal) appendFileSync(ledgerPath, HEADER.map((h) => csvEscape(row[h])).join(",") + "\n", "utf8");
-  // Đồng bộ lên Google Sheet qua webhook (bỏ qua nếu id đã có trên Sheet).
-  let sync = !WEBHOOK_URL ? "skipped (no webhook)" : noSync ? "skipped (--no-sync)" : "pending";
-  if (WEBHOOK_URL && !noSync) {
-    const ids = sheetIds();
-    if (ids === null) sync = "sheet unreachable";
-    else if (ids.has(String(row.id))) sync = "already in sheet (skip)";
-    else {
-      const j = postJson(WEBHOOK_URL, { token: WEBHOOK_TOKEN, tab, row });
-      sync = j.status === "appended" ? "synced to sheet" : j.status === "exists" ? "already in sheet (skip)" : `sheet: ${j.status} ${j.error || ""}`.trim();
-    }
+  // Ghi thẳng lên Google Sheet (idempotent theo id — Apps Script tự bỏ qua nếu đã có).
+  const ids = sheetIds();
+  if (ids === null) { console.error("LỖI: không đọc được Google Sheet — append thất bại, chạy lại khi có mạng."); process.exit(1); }
+  let status;
+  if (ids.has(String(row.id))) status = "exists";
+  else {
+    const j = postJson(WEBHOOK_URL, { token: WEBHOOK_TOKEN, tab, row });
+    if (j.status !== "appended" && j.status !== "exists") { console.error(`LỖI: Sheet trả ${j.status} ${j.error || ""}`.trim()); process.exit(1); }
+    status = j.status;
   }
-  console.log(JSON.stringify({ status: inLocal ? "exists-local" : "appended", tab, id: row.id, topic: row.topic, ledger: `ledger/${tab}.csv`, sync }, null, 2));
+  console.log(JSON.stringify({ status, tab, id: row.id, topic: row.topic, source: "sheet" }, null, 2));
 } else if (cmd === "push") {
   // Đẩy MỌI dòng local hiện có lên Google Sheet (đồng bộ ban đầu). KHÔNG tự chống
   // trùng trên Sheet — chỉ chạy một lần khi Sheet đang trống.
@@ -222,16 +225,7 @@ if (cmd === "check") {
   if (!WEBHOOK_URL) { console.error("Cần webhook."); process.exit(1); }
   const j = getJson(`${WEBHOOK_URL}?action=dedupe&tab=${encodeURIComponent(tab)}&token=${encodeURIComponent(WEBHOOK_TOKEN)}`);
   console.log(JSON.stringify(j, null, 2));
-} else if (cmd === "pull") {
-  // Kéo mọi dòng từ Google Sheet về ghi đè CSV local (khi bạn thêm dòng tay trên Sheet).
-  if (!WEBHOOK_URL) { console.error("Cần webhook (ledger/webhook.json hoặc --url/--token)."); process.exit(1); }
-  const url = `${WEBHOOK_URL}?tab=${encodeURIComponent(tab)}&token=${encodeURIComponent(WEBHOOK_TOKEN)}`;
-  const j = getJson(url);
-  if (j.status !== "ok") { console.error("Sheet trả lỗi: " + JSON.stringify(j)); process.exit(1); }
-  const rows = j.rows || [];
-  writeLocalRows(rows);
-  console.log(JSON.stringify({ status: "pulled", tab, count: rows.length, ledger: `ledger/${tab}.csv` }, null, 2));
 } else {
-  console.error("Dùng: node scripts/ledger.mjs <check|dupe|append> --tab reels [--data ...] [--format B] [--theme ...] [--situation ...]");
+  console.error("Dùng: node scripts/ledger.mjs <check|dupe|append|push|dedupe> --tab reels [--data ...] [--format B] [--theme ...] [--situation ...]");
   process.exit(1);
 }

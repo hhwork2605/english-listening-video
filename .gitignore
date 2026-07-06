@@ -12,3 +12,4 @@ __pycache__/
 # Webhook Sheet (chứa token) — không commit
 ledger/webhook.json
 ledger/.post.json
+public/backgrounds/*

@@ -1,17 +1,19 @@
 ---
 name: english-reel-video
 description: >-
-  Tạo REEL / YouTube Shorts học tiếng Anh dọc 1080×1920 bằng Remotion, có 3 định
-  dạng: (A) DANH SÁCH HỘI THOẠI đọc theo — nền trơn + tiêu đề + cả hội thoại 2
-  người dạng list, tô sáng từng câu; (B) CẢNH HOẠT HÌNH + BONG BÓNG THOẠI — 1 ảnh
-  cảnh tĩnh, bong bóng đổi câu theo lượt, end-card Subscribe; (C) MICRO-LESSON —
-  dạy 1 idiom/phrase theo hook → phrase → nghĩa → ví dụ (karaoke) → CTA. Giọng TTS
-  2 người + sóng âm/logo kênh. DÙNG khi người dùng muốn làm reel/short/tiktok tiếng
-  Anh, video hội thoại ngắn, "phrase of the day", conversation practice, hay cắt
-  nội dung học tiếng Anh thành clip dọc ≤60s — kể cả khi không nói rõ "Remotion".
-  Tái dùng TOÀN BỘ pipeline của english-podcast-video (TTS, align, speed, finalize),
-  chỉ khác composition hiển thị. Fan-out việc cho các agent chuyên trách. LUÔN hỏi
-  đã có nội dung chưa; nếu có thì tự suy topic + level.
+  Tạo REEL / YouTube Shorts học tiếng Anh dọc 1080×1920 bằng Remotion, có 2 định
+  dạng: (A) STORYBOOK — ảnh cảnh hoạt hình 3D trên cùng ĐỔI THEO DIỄN BIẾN hội
+  thoại (kiểu "Easy English Conversation") + cả hội thoại 2 người dạng list, câu
+  tô màu theo người nói, font serif viền trắng; (B) CẢNH HOẠT HÌNH + BONG BÓNG
+  THOẠI — 1 ảnh cảnh tĩnh, bong bóng đổi câu theo lượt, end-card Subscribe. Giọng
+  TTS 2 người + logo kênh. DÙNG khi người dùng muốn làm reel/short/tiktok tiếng
+  Anh, video hội thoại ngắn, conversation practice, hay cắt nội dung học tiếng Anh
+  thành clip dọc ≤60s — kể cả khi không nói rõ "Remotion". Tái dùng TOÀN BỘ
+  pipeline của english-podcast-video (TTS, align, speed, finalize), chỉ khác
+  composition hiển thị. Fan-out việc cho các agent chuyên trách. MẶC ĐỊNH TỰ VIẾT
+  nội dung (KHÔNG hỏi "đã có nội dung chưa") và TỰ GỢI Ý chủ đề chưa làm (dựa
+  ledger) cho người dùng bấm chọn; nếu người dùng ĐƯA sẵn nội dung thì dùng nó và
+  tự suy topic + level.
 ---
 
 # English Reel Video (YouTube Shorts / TikTok)
@@ -24,57 +26,89 @@ project folder. Việc chuyên môn giao cho **agent** (như skill `english-podc
 > `dialogue:align`, `dialogue:speed`, `project:use`, `project:finalize`. Reel chỉ
 > khác **composition render**.
 
-## 3 định dạng (hỏi người dùng chọn ở bước 2)
-| # | Composition | Mô tả | Data | Cần ảnh cảnh? |
+## 2 định dạng (hỏi người dùng chọn ở bước 2)
+| # | Composition | Mô tả | Data | Ảnh cảnh |
 |---|---|---|---|---|
-| **A** | `ReelDialogueList` | Nền trơn + tiêu đề + **cả hội thoại dạng list, tô sáng CÂU đang đọc**. Dễ làm hàng loạt. | dialogue.json chuẩn (KHÔNG cần `role`) | Không |
-| **B** | `ReelComicScene` | **1 ảnh cảnh tĩnh + bong bóng thoại** đổi câu theo lượt + **end-card Subscribe**. | dialogue.json chuẩn | **Có** (Canva) |
-| **C** | `Reel` | **Micro-lesson** 1 idiom/phrase: hook → phrase → nghĩa → ví dụ (karaoke) → CTA. | dialogue.json + `role` mỗi lượt | Không |
+| **A** | `ReelDialogueList` (`preset:"storybook"`) | **Ảnh cảnh hoạt hình trên cùng ĐỔI THEO DIỄN BIẾN hội thoại** + cả hội thoại dạng list, câu tô màu đen/đỏ theo người nói, font serif viền trắng (kiểu "Easy English Conversation"). | dialogue.json chuẩn | **2–4 ảnh** (Canva) |
+| **B** | `ReelComicScene` | **1 ảnh cảnh tĩnh + bong bóng thoại** đổi câu theo lượt + **end-card Subscribe**. | dialogue.json chuẩn | **1 ảnh** (Canva) |
 
-A/B dùng dialogue.json **giống hệt podcast** (2 giọng, `turns` có `speaker`/`en`).
+Cả hai dùng dialogue.json **giống hệt podcast** (2 giọng, `turns` có `speaker`/`en`,
+KHÔNG cần `role`).
 
 ## Các agent dùng trong pipeline (bộ agent RIÊNG cho reel + 1 dùng chung)
-- **`reel-dialogue-writer`** — viết turns cho reel (A/B hội thoại ngắn, hoặc C micro-lesson). *(bước 3)*
+- **`reel-dialogue-writer`** — viết turns hội thoại ngắn cho reel (A/B). *(bước 3)*
 - **`reel-scene-designer`** — thiết kế query Canva + `heads` cho ảnh cảnh dạng B. *(bước 5, chỉ B)*
-- **`reel-cefr-reviewer`** — rà cấp độ/tự nhiên/độ ngắn gọn; giữ `role` cho dạng C. *(bước 3, tùy chọn)*
-- **`reel-metadata-writer`** — title/description/tags tối ưu Shorts (+ `#Shorts`) + fileKeywords. *(bước 3)*
+- **`reel-cefr-reviewer`** — rà cấp độ/tự nhiên/độ ngắn gọn. *(bước 3, tùy chọn)*
+- **`reel-metadata-writer`** — title/description/tags tối ưu Shorts (+ `#shorts`; hashtag TOÀN chữ thường) + fileKeywords. *(bước 3)*
 - **`reel-policy-checker`** — kiểm duyệt Shorts trước đăng (thumbnail tùy chọn, không auto-flag hoạt hình). *(bước 7b, BẮT BUỘC)*
-- **Chống trùng = `npm run ledger`** (qua webhook Apps Script, KHÔNG cần MCP connector): `check` (lấy `avoid` NGAY Ở BƯỚC WRITER), `dupe` (chấm điểm trùng sau khi viết), `append` (ghi sau khi xong, idempotent theo `id`). **Nguồn chuẩn = Google Sheet online** (tab `reels`); `ledger/reels.csv` chỉ là **cache dự phòng** khi mất mạng. Cài webhook: `scripts/ledger-webhook.gs` + `ledger/webhook.json`.
+- **Chống trùng = `npm run ledger`** (qua webhook Apps Script, KHÔNG cần MCP connector): `check` (lấy `avoid` NGAY Ở BƯỚC WRITER), `dupe` (chấm điểm trùng sau khi viết), `append` (ghi sau khi xong, idempotent theo `id`). **ONLINE-ONLY: nguồn duy nhất = Google Sheet** (tab `reels`) — thiếu webhook/mất mạng thì lệnh báo lỗi, KHÔNG có fallback offline. Cấu hình: `ledger/webhook.json` (cài lần đầu: `scripts/ledger-webhook.gs`).
 - **`audio-script-verifier`** — verify audio khớp kịch bản, bắt đọc đôi. *DÙNG CHUNG với podcast* (thuần dữ liệu, không phụ thuộc định dạng). *(bước 4c, BẮT BUỘC)*
 
 ## Pipeline (TL;DR)
 ```bash
 ID=$(npm run --silent project:new -- "<chủ đề reel>")               # 1) tạo folder
-# 2) HỎI: đã có nội dung chưa? + ĐỊNH DẠNG (A/B/C) + topic/level
-npm run --silent ledger -- check --tab reels                       # 3a) avoid (chống trùng)
+npm run --silent ledger -- check --tab reels                       # 2) avoid (chống trùng) — chạy TRƯỚC để gợi ý chủ đề
+# 2) KHÔNG hỏi nội dung — mặc định TỰ viết; GỢI Ý 3-4 chủ đề chưa làm (né avoid) + hỏi ĐỊNH DẠNG (A/B)/level/TTS
+#    (2 reel trước đều A -> Recommended chuyển sang B — xen kẽ chống repetitive)
 # 3) spawn reel-dialogue-writer(+avoid) (+ reel-metadata-writer) -> ráp projects/$ID/dialogue.json
+#    GenMax: chọn cặp giọng từ assets/genmax-voice-pool.json KHÁC reel trước -> speakers[X].genmaxVoiceId
 npm run --silent ledger -- dupe --tab reels --data "projects/$ID/dialogue.json"  # 3b) too-similar? -> viết lại
 npm run --silent project:use -- "$ID"                               # nạp buffer sớm
 npm run dialogue:audio -- -Data  "projects/$ID/dialogue.json"       # 4)  TTS
 npm run dialogue:align -- --data "projects/$ID/dialogue.json"       # 4b) words[] (bỏ nếu ElevenLabs API)
 npm run dialogue:speed -- --data "projects/$ID/dialogue.json"       # 4b2) tốc độ theo level
 # 4c) BẮT BUỘC: spawn audio-script-verifier -> PASS mới render
-# 5) (chỉ B) spawn reel-scene-designer -> tạo ảnh cảnh Canva -> public/backgrounds/<scene>.png (+ heads)
+# 5) ẢNH CẢNH: A = tách hội thoại thành 2-4 cảnh theo diễn biến -> tạo ảnh Canva từng cảnh (xem mục render);
+#              B = spawn reel-scene-designer -> 1 ảnh cảnh Canva -> public/backgrounds/<scene>.png (+ heads)
 npm run --silent project:use -- "$ID"                               # 5) nạp buffer
 # 5) RENDER theo định dạng (LUÔN xuất podcast-portrait.mp4):
-#   A) printf '{"header":"<Tiêu đề>"}'                                    > "projects/$ID/reel.props.json"; npx remotion render ReelDialogueList "projects/$ID/podcast-portrait.mp4" --props="projects/$ID/reel.props.json"
+#   A) printf '{"preset":"storybook","header":"","sceneImages":["backgrounds/<slug>-s1.png",...],"sceneTurns":[0,...],"sceneHeight":600}' > "projects/$ID/reel.props.json"; npx remotion render ReelDialogueList "projects/$ID/podcast-portrait.mp4" --props="projects/$ID/reel.props.json"
 #   B) printf '{"backgroundImage":"backgrounds/<scene>.png","heads":{...}}'> "projects/$ID/reel.props.json"; npx remotion render ReelComicScene   "projects/$ID/podcast-portrait.mp4" --props="projects/$ID/reel.props.json"
-#   C) printf '{"accent":"#ffd23f"}'                                      > "projects/$ID/reel.props.json"; npx remotion render Reel             "projects/$ID/podcast-portrait.mp4" --props="projects/$ID/reel.props.json"
 npm run --silent project:finalize -- "$ID" "learn english <chủ đề> shorts"   # 7) gom + .srt + metadata -> <slug>-shorts.mp4
 # 7b) BẮT BUỘC: spawn reel-policy-checker
-npm run --silent ledger -- append --tab reels --data "projects/$ID/dialogue.json" --format B --theme "<bucket>" --situation "<tình huống>"  # 7c) ghi sổ chống trùng
+npm run --silent ledger -- append --tab reels --data "projects/$ID/dialogue.json" --format A --theme "<bucket>" --situation "<tình huống>"  # 7c) ghi sổ chống trùng
 # 8) HỎI upload Google Drive
 ```
 
 ## Nguyên tắc bất biến
 1. **Mỗi reel = 1 project folder** `projects/$ID/`. Nguồn thật = `projects/$ID/dialogue.json`.
 2. `data/` chỉ là buffer → **LUÔN `project:use` trước render** và sau mỗi lần sửa dialogue.
-3. **Hỏi TRƯỚC: đã có nội dung chưa.** Có → tự suy `topic` + `level` (nói rõ mức CEFR đã suy).
+3. **KHÔNG hỏi "đã có nội dung chưa" — mặc định TỰ VIẾT.** Chỉ khi người dùng ĐƯA
+   sẵn nội dung thì dùng nó → tự suy `topic` + `level` (nói rõ mức CEFR đã suy).
+   Chủ đề: TỰ tra ledger + GỢI Ý phương án chưa làm cho người dùng bấm chọn.
 4. Reel **NGẮN**, mục tiêu **≤ 60s** (≈ 6–14 lượt).
 5. Màn hình **chỉ tiếng Anh** (trừ khi user yêu cầu song ngữ).
 6. Tham số hiển thị (header, backgroundImage, heads, accent) truyền qua `--props` — **KHÔNG sửa code mỗi video**.
 7. Bản quyền: chỉ ảnh tự tạo/của user; giọng TTS theo gói đang dùng.
 8. **Theo dõi tiến độ trong `projects/$ID/PROGRESS.md`** (`project:new` tạo sẵn); tick `[x]` khi xong.
+9. **CHỐNG "REPETITIVE CONTENT"** (YPP soi kênh TTS + layout lặp): mỗi reel phải
+   KHÁC các reel gần nhất ít nhất ở tầng hình (bộ ảnh cảnh riêng theo chủ đề) +
+   tầng giọng (cặp voice) — xem mục "Chống repetitive content" bên dưới.
+
+## Chống "repetitive content" (BẮT BUỘC — nhất là dạng A)
+
+YouTube không phạt vì 1 video, mà phạt khi **cả kênh nhìn như máy dập khuôn**.
+Ba tầng phải biến hóa, làm TỰ ĐỘNG không cần hỏi user:
+
+**Tầng hình:** dạng A mỗi reel có BỘ ẢNH CẢNH riêng theo chủ đề nên tầng hình tự
+khác nhau — nhưng ĐỪNG để các reel liên tiếp trùng cả tông nền: đảo nhẹ
+`background` (hồng nhạt #fdeaea ↔ kem #fbf6e9 ↔ xanh nhạt #eef6fb…) và
+`speakerColors` giữa các reel (xem `background` trong `reel.props.json` của 2
+reel trước: `ls -t projects/*/reel.props.json | head -3`). Dạng B đổi ảnh cảnh +
+bố cục nhân vật. KHÔNG tái dùng đúng một bộ ảnh cho 2 reel liên tiếp.
+
+**Tầng giọng (TTS GenMax/ElevenLabs):** đừng video nào cũng đúng 1 cặp giọng.
+Đọc `assets/genmax-voice-pool.json`, chọn cặp A/B khác cặp reel gần nhất, ghi
+override vào dialogue.json: `speakers.A.genmaxVoiceId` / `speakers.B.genmaxVoiceId`.
+Giọng `tested:false` PHẢI thử `--limit 1` nghe OK mới chạy cả bài (lỗi → về cặp
+default, cập nhật `tested` sau khi xác nhận). Đổi cả **tên nhân vật** giữa các video.
+
+**Tầng kênh:** xem `recentFormats` trong output `ledger check` (3 reel gần nhất,
+kèm format + theme) — nếu 2 reel liền trước đều là **A** thì ở bước 2 đổi
+Recommended sang **B** (ghi rõ lý do "xen kẽ định dạng chống repetitive" trong
+option description). Kịch bản và
+title cũng phải đổi khuôn — đã cài vào agent `reel-dialogue-writer` (nhịp/số lượt/
+kiểu kết) và `reel-metadata-writer` (xoay công thức title), không cần làm thêm.
 
 ## Quy trình chi tiết
 
@@ -84,19 +118,33 @@ ID=$(npm run --silent project:new -- "<chủ đề reel>")   # vd: coffee-shop_2
 ```
 Mở rộng `PROGRESS.md` thành việc nhỏ cho reel này, tick dần.
 
-### 2. Hỏi ĐẦU TIÊN (dùng `AskUserQuestion`, dạng LỰA CHỌN, gộp 1 lần gọi)
-- **Đã có nội dung chưa?** *Đã có* | *Chưa, để Claude viết*.
-- **Định dạng?** **A — danh sách hội thoại (Recommended)** | B — cảnh + bong bóng | C — micro-lesson.
-- Nếu **chưa có**: **chủ đề/ngữ cảnh** (quán cà phê / khách sạn / sân bay / bác sĩ / phỏng vấn…),
-  **cấp độ** (**A2 Recommended** / B1 / B1-B2 / B2), **dùng TTS nào** (ElevenLabs web Recommended / SAPI / …).
+### 2. Nội dung: MẶC ĐỊNH TỰ VIẾT — KHÔNG hỏi "đã có nội dung chưa"
+**Không hỏi người dùng đã có nội dung hay chưa.** Mặc định = bạn (Claude) tự viết.
+Chỉ khi người dùng **chủ động đưa** nội dung (dán/file) → dùng nguyên văn, KHÔNG
+hỏi topic/level (tự suy, nói rõ mức CEFR đã suy), chỉ hỏi định dạng + TTS nếu thiếu.
 
-**ĐÃ CÓ** → KHÔNG hỏi topic/level, tự suy, giữ nguyên câu chữ.
+**TỰ TÌM & GỢI Ý CHỦ ĐỀ:** chạy `npm run --silent ledger -- check --tab reels`
+TRƯỚC khi hỏi (kết quả `avoid` dùng lại cho bước 3, không cần chạy lần nữa) →
+nghĩ 3–4 chủ đề/tình huống **CHƯA có trong `avoid`**, ưu tiên tình huống đời
+thường dễ viral (quán cà phê / khách sạn / sân bay / bác sĩ / phỏng vấn / mua
+sắm / small talk…), đưa làm phương án bấm chọn.
+
+Hỏi 1 lần `AskUserQuestion` (dạng LỰA CHỌN, mặc định lên đầu + "(Recommended)";
+thông số nào người dùng ĐÃ nói trong tin nhắn thì KHÔNG hỏi lại):
+- **Chủ đề?** 3–4 gợi ý từ ledger ở trên (+ "Other" tự nhập).
+- **Định dạng?** **A — storybook: ảnh cảnh đổi theo hội thoại (Recommended)** | B — cảnh + bong bóng.
+  NGOẠI LỆ: nếu 2 reel liền trước (xem `recentFormats` của `ledger check`) đều là A →
+  chuyển Recommended sang B (xen kẽ định dạng chống repetitive — nêu lý do trong description).
+- **Cấp độ?** **A2 (Recommended)** / B1 / B1-B2 / B2.
+- **Dùng TTS nào?** ElevenLabs web (Recommended) / SAPI / AI Studio / ElevenLabs API /
+  Gemini / aivideoauto / GenMax API (giọng tự lấy từ `.env`, không hỏi giọng).
+
+Chọn xong → TỰ viết ở bước 3, không cần người dùng duyệt nháp trước.
 
 ### 3. Viết `projects/$ID/dialogue.json` (fan-out AGENT)
-- **CHỐNG TRÙNG trước (đọc Google Sheet online; fallback cache local):**
-  ```bash
-  npm run --silent ledger -- check --tab reels    # -> avoid + "source":"sheet" (hoặc "local" nếu mất mạng)
-  ```
+- **CHỐNG TRÙNG:** dùng lại `avoid` từ `ledger check` đã chạy ở bước 2 (nếu chưa
+  chạy thì chạy ngay: `npm run --silent ledger -- check --tab reels` — đọc thẳng
+  Google Sheet online).
 - **Spawn `reel-dialogue-writer`** (truyền `format`, `topic`, `level`, `turns`,
   `speakerNames`, `emotive`, **`avoid`** = kết quả `check`): trả `{ turns, [reelFields], notes }`.
   Agent sẽ chọn tình huống/khuôn/câu mở đầu KHÁC những gì đã có trong `avoid`.
@@ -106,14 +154,22 @@ Mở rộng `PROGRESS.md` thành việc nhỏ cho reel này, tick dần.
   ```
   `verdict:"too-similar"` (cùng topic / opening trùng / overlap ≥ 0.4) → yêu cầu
   `reel-dialogue-writer` viết lại góc khác rồi kiểm lại tới khi `ok`.
-  - Dạng **A/B**: turns hội thoại 2 người, KHÔNG `role`. Ráp `speakers` (A trái /
-    B phải, đặt `color` cho tên dạng A, `side` cho bong bóng dạng B), `topic` (tiêu đề dạng A).
-  - Dạng **C**: turns có `role`; đưa `reelFields` (`phrase`/`phonetic`/`hook`/`cta`/`kicker`) lên cấp document.
-- (Tùy chọn) **`reel-cefr-reviewer`** rà lại turns theo `level` (giữ `role` cho dạng C).
-- **`reel-metadata-writer`** → `youtubeTitle`/`youtubeDescription`/`tags` + `fileKeywords` (tối ưu Shorts, có `#Shorts`).
+  - Turns hội thoại 2 người, KHÔNG `role`. Ráp `speakers` (A trái / B phải,
+    `side` cho bong bóng dạng B), `topic` (dùng cho metadata; dạng A storybook
+    thường ẨN header). Câu nên NGẮN (≤ ~9 từ) để dạng A mỗi câu 1–2 dòng.
+- (Tùy chọn) **`reel-cefr-reviewer`** rà lại turns theo `level`.
+- **`reel-metadata-writer`** → `youtubeTitle`/`youtubeDescription`/`tags` + `fileKeywords`
+  (tối ưu Shorts, có `#shorts`; MỌI hashtag chữ thường). Agent tự chạy `scripts/keyword-suggest.mjs`
+  (YouTube/Google autocomplete, `--format shorts`) để tra cụm từ khóa đang được
+  tìm thật rồi mới viết. Truyền kèm `youtubeTitle` của 1–2 reel gần nhất (lấy từ
+  `projects/*/dialogue.json` mới nhất) để agent xoay công thức title KHÁC khuôn cũ.
 - Ráp tất cả vào `projects/$ID/dialogue.json` (+ `fps`, `speakers`). Để
-  `audio`/`durationInSec`/`words` trống. Mẫu: `assets/reel-conversation-example.json`
-  (A/B), `assets/reel-example.json` (C); trường đầy đủ: `references/reel-format.md`.
+  `audio`/`durationInSec`/`words` trống. Mẫu: `assets/reel-conversation-example.json`;
+  trường đầy đủ: `references/reel-format.md`.
+- **Xoay giọng (TTS GenMax):** chọn cặp voice từ `assets/genmax-voice-pool.json`
+  KHÁC cặp reel gần nhất, ghi `speakers.A.genmaxVoiceId` / `speakers.B.genmaxVoiceId`
+  vào dialogue.json (giọng `tested:false` → thử `--limit 1` trước; xem mục
+  "Chống repetitive content"). TTS khác giữ giọng theo `.env` như cũ.
 - Chạy `npm run --silent project:use -- "$ID"` để buffer sớm.
 
 ### 4. TTS + align + tốc độ (GIỐNG podcast)
@@ -123,19 +179,14 @@ npm run dialogue:align -- --data "projects/$ID/dialogue.json"   # words[] (bỏ 
 npm run dialogue:speed -- --data "projects/$ID/dialogue.json"   # tempo theo doc.level
 ```
 Adapter TTS + thẻ cảm xúc: `../english-podcast-video/references/better-tts.md`; giọng SAPI:
-`../english-podcast-video/references/voices.md`. Karaoke: A tô mức câu, C tô từng từ (nên có words), B không cần words.
+`../english-podcast-video/references/voices.md`. Cả A lẫn B đều tô theo CÂU/lượt
+(không cần `words[]`) — vẫn chạy `dialogue:align` để chuẩn `durationInSec`.
 
 ### 4c. (BẮT BUỘC) Verify audio — TRƯỚC render
 Spawn **`audio-script-verifier`** (`data: projects/$ID/dialogue.json`, sau align).
 FAIL → sửa (cắt ffmpeg / sinh lại lượt) rồi chạy lại tới khi PASS.
 
-### 5. (Chỉ định dạng B) Ảnh cảnh + Nạp + Render
-**Ảnh cảnh (B):** trước hết xem thư viện `assets/scenes/` — có sẵn cảnh hợp thì copy
-vào `public/backgrounds/`. Nếu chưa: **spawn `reel-scene-designer`** (truyền `topic`,
-`speakers`) → nhận `{ canvaQuery, sceneName, heads, props }`. Dùng `canvaQuery` tạo
-ảnh Canva (`design_type: phone_wallpaper`, 1080×1920), tải về
-`public/backgrounds/<sceneName>.png`, lưu bản gốc vào `assets/scenes/<sceneName>.png`.
-Luồng Canva chi tiết: `../english-podcast-video/references/canva-bg.md`.
+### 5. Ảnh cảnh + Nạp + Render
 
 **Nạp buffer + render** (LUÔN `project:use` trước; xuất `podcast-portrait.mp4`):
 ```bash
@@ -143,26 +194,56 @@ npm run --silent project:use -- "$ID"
 npx remotion compositions src/index.ts     # xem composition -> số giây (nên ≤ 60s)
 ```
 
-**A) `ReelDialogueList`:**
+**A) `ReelDialogueList` (storybook):** ảnh cảnh hoạt hình trên cùng ĐỔI THEO
+DIỄN BIẾN hội thoại + KHÔNG hiện tên người nói (cả câu tô màu đen/đỏ theo người
+nói), font serif viền trắng, nền hồng nhạt, không band tô sáng. Luồng làm:
+
+1. **Tách cảnh:** đọc `turns` và chia hội thoại thành 2–4 cảnh theo diễn biến
+   (vd Hotel Check-in 12 lượt: ①0–3 tới quầy chào hỏi ②4–6 phòng view biển
+   ③7–8 bữa sáng ④9–11 trả thẻ nhận chìa khóa). Ghi lại index lượt bắt đầu mỗi
+   cảnh → `sceneTurns` (vd `[0,4,7,9]`).
+2. **Tạo ảnh mỗi cảnh bằng Canva** (`generate-design`, `design_type:
+   "youtube_thumbnail"` — tỉ lệ 1280×720 ≈ vùng cảnh 1080×600 nên gần như không
+   phải crop). Prompt: "3D Pixar-style animated movie still" + tả cảnh đúng nội
+   dung lượt thoại + **MÔ TẢ NHÂN VẬT GIỐNG HỆT NHAU trong mọi cảnh** (tóc, áo,
+   đạo cụ — để 4 ảnh nhìn như 1 phim) + "NO text, NO words, NO logo".
+   `create-design-from-candidate` → `export-design` png 1280×720 → tải bằng
+   PowerShell → `ffmpeg -vf "scale=1080:608,crop=1080:600:0:4"` →
+   `public/backgrounds/<slug>-s<N>.png`, lưu bản gốc vào `assets/scenes/`.
+   **Trước khi tạo mới, xem `assets/scenes/` có cảnh tái dùng được không.**
+   *Quota:* Canva AI hết lượt khá nhanh (gọi TUẦN TỰ, không song song); hết thì
+   fallback: Gemini API image (thường KHÔNG có free quota → 429 mọi model) →
+   AI Studio web qua CDP (xem tts-aistudio.mjs) → tạm 1 ảnh + Ken Burns.
+3. **Render:**
 ```bash
-printf '{"header":"At the Coffee Shop"}' > "projects/$ID/reel.props.json"
+printf '{"preset":"storybook","header":"","sceneImages":["backgrounds/<slug>-s1.png","backgrounds/<slug>-s2.png","backgrounds/<slug>-s3.png","backgrounds/<slug>-s4.png"],"sceneTurns":[0,4,7,9],"sceneHeight":600}' > "projects/$ID/reel.props.json"
 npx remotion render ReelDialogueList "projects/$ID/podcast-portrait.mp4" --props="projects/$ID/reel.props.json"
 ```
-Props: `header` (bỏ trống → `dialogue.topic`), `headerEmoji` (👉), `background`, `headerColor`, `textColor`, `highlightColor`, `logo`. Cỡ chữ tự co theo số lượt.
 
-**B) `ReelComicScene`:**
+Props riêng: `preset:"storybook"`, `sceneImages[]` (public/), `sceneTurns[]`
+(lượt bắt đầu mỗi cảnh, 0-based, phần tử đầu = 0; bỏ trống → chia đều thời
+lượng), `sceneVideos[]` (clip mp4/webm CHUYỂN ĐỘNG — ưu tiên hơn sceneImages;
+tắt tiếng, tự LẶP nếu ngắn hơn khúc của nó; clip phải do mình tạo, KHÔNG cắt từ
+video người khác), `sceneHeight` (px, mặc định 640), `showNames`,
+`highlightMode` (`"band"`/`"none"`), `textStroke`, `speakerColors` (vd
+`{"A":"#1f1c1c","B":"#e0234e"}`). Mọi giá trị đều override được — preset chỉ đổi
+mặc định (đảo `background`/`speakerColors` giữa các reel — xem mục "Chống
+repetitive content"). Câu nên NGẮN (≤ ~9 từ) để mỗi câu 1–2 dòng như mẫu. Ảnh
+tĩnh có sẵn zoom chậm Ken Burns trong từng cảnh; muốn chuyển động thật thì dùng
+`sceneVideos`.
+
+**B) `ReelComicScene`:** ảnh cảnh — trước hết xem thư viện `assets/scenes/`, có
+cảnh hợp thì copy vào `public/backgrounds/`. Nếu chưa: **spawn
+`reel-scene-designer`** (truyền `topic`, `speakers`) → nhận `{ canvaQuery,
+sceneName, heads, props }`. Dùng `canvaQuery` tạo ảnh Canva (`design_type:
+phone_wallpaper`, 1080×1920), tải về `public/backgrounds/<sceneName>.png`, lưu
+bản gốc vào `assets/scenes/`. Luồng Canva chi tiết:
+`../english-podcast-video/references/canva-bg.md`.
 ```bash
 printf '{"backgroundImage":"backgrounds/<scene>.png","heads":{"leftXPct":24,"leftYPct":45,"rightXPct":77,"rightYPct":50}}' > "projects/$ID/reel.props.json"
 npx remotion render ReelComicScene "projects/$ID/podcast-portrait.mp4" --props="projects/$ID/reel.props.json"
 ```
 Props: `backgroundImage` (NÊN có), **`heads`** (canh bong bóng lên đầu — số từ `reel-scene-designer`, tinh chỉnh bằng render still), `accent` (màu end-card), `endcard` (mặc định true), `logo`. Mũi bong bóng theo `speakers[].side`.
-
-**C) `Reel`:**
-```bash
-printf '{"accent":"#ffd23f"}' > "projects/$ID/reel.props.json"
-npx remotion render Reel "projects/$ID/podcast-portrait.mp4" --props="projects/$ID/reel.props.json"
-```
-Props: `accent` (#RRGGBB), `backgroundImage` (nếu muốn nền ảnh), `logo`.
 
 > Kiểm tra nhanh: `npx remotion still src/index.ts <Comp> "$env:TEMP/check.png" --frame=45 --props=...`.
 > Dạng B: xem mũi bong bóng có chạm đầu không → chưa khớp thì chỉnh `heads` rồi render lại.
@@ -184,30 +265,40 @@ tiếng Anh — dùng `fileKeywords` từ `reel-metadata-writer`); tạo `.srt`;
 ### 7b. (BẮT BUỘC) Kiểm duyệt YouTube
 Spawn **`reel-policy-checker`** (`project: projects/$ID/`). FAIL → sửa blocker rồi
 chạy lại; WARN → báo user. Đính kèm `uploadChecklist` vào báo cáo cuối. (Agent này
-coi thumbnail là tùy chọn, kiểm `#Shorts`, và không tự flag hoạt hình là kids.)
+coi thumbnail là tùy chọn, kiểm `#shorts` không phân biệt hoa thường, và không tự flag hoạt hình là kids.)
 
 ### 7c. (BẮT BUỘC) Ghi SỔ NỘI DUNG (chống trùng lần sau)
-Sau khi finalize + kiểm duyệt xong, ghi 1 dòng vào sổ local (tự lấy topic/level/
-opening/script từ dialogue.json):
+Sau khi finalize + kiểm duyệt xong, ghi 1 dòng thẳng lên Google Sheet (tự lấy
+topic/level/opening/script từ dialogue.json; idempotent theo `id`):
 ```bash
 npm run --silent ledger -- append --tab reels --data "projects/$ID/dialogue.json" \
-  --format <A|B|C> --theme "<bucket: workplace/travel/food/…>" --situation "<tình huống>"
+  --format <A|B> --theme "<bucket: workplace/travel/food/…>" --situation "<tình huống>"
 ```
-Lưu ở `ledger/reels.csv`. Lần sau bước 3 `check`/`dupe` sẽ đọc lại để tránh lặp.
-> **Đồng bộ Google Sheet (không cần MCP connector):** nếu đã cài webhook Apps Script
-> (`scripts/ledger-webhook.gs` + `ledger/webhook.json`), lệnh `append` TỰ POST dòng
-> lên đúng tab Sheet. Muốn kéo dòng thêm tay trên Sheet về local: `npm run ledger --
-> pull --tab reels`. Chưa cài webhook → chỉ lưu local (vẫn chống trùng bình thường);
-> muốn đưa lên Sheet thủ công thì File→Import `ledger/reels.csv`. (Cài webhook: xem đầu file `scripts/ledger-webhook.gs`.)
+Lần sau bước 3 `check`/`dupe` đọc lại từ Sheet để tránh lặp. Muốn thêm/sửa dòng
+thì làm thẳng trên Sheet online — không có bản local nào phải đồng bộ.
+> Ledger là **online-only**: thiếu `ledger/webhook.json` hoặc mất mạng → lệnh báo
+> lỗi (KHÔNG âm thầm ghi local). Báo user rồi chạy lại khi có mạng — đừng bỏ qua
+> bước này. (Cài webhook lần đầu: xem đầu file `scripts/ledger-webhook.gs`.)
 
 ### 8. (Hỏi cuối) Upload Google Drive
-**HỎI: "Upload kết quả lên Google Drive không?"** Nếu CÓ → Google Drive MCP upload
-folder `projects/$ID/` (chi tiết luồng `create_file`/base64/parentId ở
-`../english-podcast-video/SKILL.md` mục 8).
+**HỎI: "Upload kết quả lên Google Drive không?"** Nếu CÓ → upload folder
+`projects/$ID/` vào mục **`reels`** (`parentId = 1jUUnNCDT8q_se6bH9BrusWRho4MN9_CE`
+— folder con của thư mục gốc, KHÔNG up thẳng vào gốc):
+- Tạo subfolder `<slug>` bằng MCP `create_file`; file text (.srt / youtube-metadata.txt /
+  project.json) up bằng MCP `textContent` + `disableConversionToGoogleType: true`.
+- **MP4/PNG dùng `rclone`** (remote `gdrive` đã OAuth sẵn) — MCP nhận base64 trong
+  lệnh gọi tool nên file vài MB là vượt payload, ĐỪNG thử:
+  ```bash
+  rclone copy "projects/$ID/<slug>-shorts.mp4" gdrive: --drive-root-folder-id <id-subfolder>
+  rclone lsf gdrive: --drive-root-folder-id <id-subfolder>   # xác nhận đủ file
+  ```
+- Chi tiết luồng + cài rclone lần đầu (winget + OAuth): `../english-podcast-video/SKILL.md` mục 8.
 
 ## Tham chiếu
-- `references/reel-format.md` — đầy đủ trường dialogue.json (hội thoại A/B + micro-lesson C).
-- `assets/reel-conversation-example.json` (A/B) · `assets/reel-example.json` (C) — mẫu chạy được.
-- `assets/scenes/` — thư viện ảnh cảnh dạng B (vd `hospital-reception.png`).
-- Code: `src/reel/ReelDialogueList.tsx` (A), `src/reel/ReelComicScene.tsx` (B), `src/reel/Reel.tsx` (C); đăng ký ở `src/Root.tsx`.
+- `assets/reel-conversation-example.json` — mẫu dialogue.json hội thoại chạy được (schema chuẩn cho A/B).
+- `references/reel-format.md` — LEGACY: trường riêng của micro-lesson C cũ (không dùng trong workflow nữa).
+- `assets/genmax-voice-pool.json` — pool giọng ElevenLabs qua GenMax để xoay cặp giọng.
+- `assets/scenes/` — thư viện ảnh cảnh dùng chung A + B (bản gốc chưa crop; vd `hotel-checkin-lobby-1280x720.png`).
+- Code: `src/reel/ReelDialogueList.tsx` (A — dùng `preset:"storybook"`), `src/reel/ReelComicScene.tsx` (B); đăng ký ở `src/Root.tsx`.
+  (`src/reel/Reel.tsx` — micro-lesson C cũ và preset "classic" của A vẫn nằm trong code nhưng KHÔNG dùng trong workflow nữa.)
 - `../english-podcast-video/references/` — better-tts, voices, canva-bg, youtube-metadata.

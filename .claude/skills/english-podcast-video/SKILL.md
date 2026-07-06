@@ -7,9 +7,10 @@ description: >-
   bằng Remotion; tự tạo ảnh nền + thumbnail bằng Canva. DÙNG khi người dùng muốn
   làm video/podcast/hội thoại tiếng Anh có phụ đề chạy, video luyện nghe thụ động,
   dựng conversation tiếng Anh bằng Remotion, hoặc đưa chủ đề + cấp độ nhờ dựng
-  video — kể cả khi không nói rõ "Remotion"/"Canva"/"skill". LUÔN hỏi đã có kịch
-  bản chưa; nếu có thì dùng nó và TỰ suy chủ đề + cấp độ CEFR, không hỏi lại. Có
-  biến thể phụ: Anh-Việt + badge, và câu đơn lặp để nghe thụ động (một giọng).
+  video — kể cả khi không nói rõ "Remotion"/"Canva"/"skill". MẶC ĐỊNH TỰ VIẾT
+  kịch bản (KHÔNG hỏi "đã có kịch bản chưa"); nếu người dùng ĐƯA sẵn kịch bản thì
+  dùng nó và TỰ suy chủ đề + cấp độ CEFR, không hỏi lại. Có biến thể phụ:
+  Anh-Việt + badge, và câu đơn lặp để nghe thụ động (một giọng).
 ---
 
 # English Podcast Video
@@ -27,7 +28,8 @@ Anh** hiện theo cụm, **làm sáng từ đang đọc** (composition `Podcast`
    `projects/$ID/audio/`), render thẳng vào project, video/thumbnail/srt/metadata đều ở đó.
 2. **Nguồn thật = `projects/$ID/dialogue.json`.** `data/` chỉ là buffer render →
    **LUÔN `project:use` trước mỗi lần render** và sau mỗi lần sửa dialogue.
-3. **LUÔN hỏi "đã có kịch bản chưa" TRƯỚC.** Nếu có → TỰ suy `topic` + `level`,
+3. **KHÔNG hỏi "đã có kịch bản chưa" — mặc định TỰ VIẾT kịch bản.** Chỉ khi người
+   dùng ĐƯA sẵn kịch bản (dán/file) thì dùng nó → TỰ suy `topic` + `level`,
    KHÔNG hỏi lại chủ đề/cấp độ/độ dài.
 4. **LUÔN tạo thumbnail + `.srt`** cho mỗi video (bước 6 + 7). **LUÔN ghép intro
    `public/intro.mp4` TRƯỚC finalize** (bước 6b) — bắt buộc, không hỏi.
@@ -43,9 +45,9 @@ Anh** hiện theo cụm, **làm sáng từ đang đọc** (composition `Podcast`
 
 ## Pipeline (TL;DR — chi tiết ở các bước dưới)
 ```bash
-cp -r "<SKILL_DIR>/assets/template" "<TARGET_DIR>" && cd "<TARGET_DIR>" && npm install  # 1) chỉ lần đầu
-ID=$(npm run --silent project:new -- "<chủ đề>")                                         # 1) tạo folder
-# 2) HỎI: đã có kịch bản chưa?
+cd "<REPO_ROOT>"                                                    # 1) repo pipeline (chứa SKILL.md này, đã npm install)
+ID=$(npm run --silent project:new -- "<chủ đề>")                    # 1) tạo folder
+# 2) KHÔNG hỏi kịch bản — mặc định TỰ viết (user đưa sẵn thì dùng); chỉ hỏi thông số còn thiếu
 npm run --silent ledger -- check --tab video                        # 3a) chống trùng -> avoid
 # 3) viết projects/$ID/dialogue.json (+ topic/level/metadata)
 npm run --silent ledger -- dupe --tab video --data "projects/$ID/dialogue.json"  # 3b) too-similar? -> viết lại
@@ -69,46 +71,52 @@ npm run --silent ledger -- append --tab video --data "projects/$ID/dialogue.json
 ## Quy trình chi tiết
 
 ### 1. Chuẩn bị project
-Copy template rồi tạo folder (slug lấy từ chủ đề — biết chủ đề ở bước 2 mới tạo):
+Làm việc TRỰC TIẾP trong repo pipeline (repo chứa SKILL.md này — thường là
+`d:\english-listening-video`; mỗi video là một folder con `projects/<id>/`,
+KHÔNG copy code đi đâu). Tạo folder (slug lấy từ chủ đề — biết chủ đề ở bước 2
+mới tạo):
 ```bash
-cp -r "<SKILL_DIR>/assets/template" "<TARGET_DIR>"   # <SKILL_DIR> = thư mục chứa SKILL.md này
-cd "<TARGET_DIR>" && npm install                      # ~1 phút, chỉ lần đầu mỗi project
-ID=$(npm run --silent project:new -- "<chủ đề>")     # vd: animals_20260624-1340
+cd "<REPO_ROOT>"                                  # nếu chưa đứng ở repo; npm install nếu thiếu node_modules
+ID=$(npm run --silent project:new -- "<chủ đề>")  # vd: animals_20260624-1340
 ```
-Đã có project cũ từ template → dùng lại, bỏ copy + install.
 
 `project:new` tạo sẵn `projects/$ID/PROGRESS.md` (checklist tiến độ). **Mở rộng nó
 thành các việc nhỏ cụ thể cho video này rồi tick dần** (xem nguyên tắc #8).
 
-### 2. Hỏi ĐẦU TIÊN: đã có kịch bản chưa?
-**LUÔN hỏi bằng câu hỏi DẠNG LỰA CHỌN (dùng tool `AskUserQuestion`), KHÔNG hỏi mở.**
-Người dùng đã cấu hình sẵn nhiều thứ (giọng trong `.env`, mẫu ảnh…) và chỉ muốn
-**bấm chọn** — nên mọi câu hỏi phải kèm sẵn các phương án để chọn (luôn có sẵn
-"Other" để họ tự gõ nếu cần). Đặt phương án mặc định lên đầu + ghi "(Recommended)".
+### 2. Kịch bản: MẶC ĐỊNH TỰ VIẾT — KHÔNG hỏi "đã có kịch bản chưa"
+**Không hỏi người dùng đã có kịch bản hay chưa.** Mặc định = **bạn (Claude) tự
+viết kịch bản** (nhánh B). Chỉ khi người dùng **chủ động đưa** kịch bản (dán vào
+tin nhắn / đưa file) thì mới theo nhánh A.
 
-Câu hỏi đầu tiên (lựa chọn): **"Bạn đã có sẵn kịch bản chưa?"** → 2 phương án:
-*Đã có (mình sẽ dán/đưa file)* | *Chưa, để Claude viết*.
+Khi cần hỏi thông số, **LUÔN hỏi DẠNG LỰA CHỌN (tool `AskUserQuestion`), KHÔNG
+hỏi mở** — người dùng đã cấu hình sẵn nhiều thứ (giọng trong `.env`, mẫu ảnh…) và
+chỉ muốn **bấm chọn** (luôn có "Other" để tự gõ). Đặt phương án mặc định lên đầu
++ ghi "(Recommended)". Thông số nào người dùng ĐÃ nói trong tin nhắn (chủ đề, cấp
+độ, độ dài…) thì KHÔNG hỏi lại.
 
-**A) ĐÃ CÓ** (dán nội dung / đưa file): **KHÔNG hỏi chủ đề/cấp độ** — tự suy:
+**A) Người dùng ĐƯA sẵn kịch bản**: **KHÔNG hỏi chủ đề/cấp độ** — tự suy:
 - `topic`: cụm ngắn mô tả nội dung (vd "Talking About Money Habits").
 - `level`: CEFR theo độ khó từ vựng/ngữ pháp/độ dài câu (A2 / B1 / B1-B2 / B2 /
   B2-C1 / C1). **Nói rõ cấp độ đã suy** cho người dùng biết.
 - Độ dài = theo kịch bản. Chỉ còn hỏi (nếu cần) bằng LỰA CHỌN: **định dạng**
   (ngang / dọc / cả hai) và **dùng TTS nào**.
 
-**B) CHƯA CÓ** — hỏi **một loạt câu LỰA CHỌN** (gộp trong 1 lần gọi `AskUserQuestion`,
-mỗi tiêu chí một câu, mỗi câu vài phương án bấm chọn):
-- **Chủ đề**: đưa 3–4 gợi ý hợp cấp độ (+ "Other" để tự nhập).
+**B) TỰ VIẾT (mặc định)** — hỏi **một loạt câu LỰA CHỌN** cho các thông số còn
+thiếu (gộp trong 1 lần gọi `AskUserQuestion`, mỗi tiêu chí một câu, mỗi câu vài
+phương án bấm chọn), rồi TỰ viết kịch bản ở bước 3 — không cần người dùng duyệt
+nháp trước:
+- **Chủ đề**: đưa 3–4 gợi ý hợp cấp độ (+ "Other" để tự nhập) — dựa `ledger check`
+  để gợi ý chủ đề CHƯA làm.
 - **Cấp độ**: A1 / A2 / B1 / **B1-B2 (Recommended)** / B2 / B2-C1 / C1.
 - **Độ dài**: ~5 phút / **~10 phút (Recommended)** / ~15 phút… (ước lượng
   **~12 lượt ≈ 1 phút** → 10 phút ≈ 120 lượt).
 - **Định dạng**: cả hai / chỉ ngang / chỉ dọc.
 - **Dùng TTS nào**: ElevenLabs web (v3, lái Chrome — Recommended) / SAPI (Zira/David) /
-  AI Studio / ElevenLabs API / Gemini / aivideoauto (web).
+  AI Studio / ElevenLabs API / Gemini / aivideoauto (web) / GenMax API.
   **KHÔNG hỏi "giọng nào"** — mỗi TTS đã cấu hình sẵn giọng trong `.env`
   (vd `ELEVEN_WEB_VOICE_A/_B`, `AISTUDIO_VOICE_A/_B`, `ELEVEN_VOICE_A/_B`,
-  `GEMINI_VOICE_A/_B`, `AIVA_VOICE_A/_B`…); chỉ cần người dùng chọn adapter,
-  giọng tự lấy từ `.env` (xem bước 4).
+  `GEMINI_VOICE_A/_B`, `AIVA_VOICE_A/_B`, `GENMAX_VOICE_A/_B`…); chỉ cần người
+  dùng chọn adapter, giọng tự lấy từ `.env` (xem bước 4).
 
 ### 3. Dựng `projects/$ID/dialogue.json`
 Viết file NGUỒN vào **`projects/$ID/dialogue.json`** (KHÔNG phải `data/`).
@@ -118,8 +126,9 @@ Viết file NGUỒN vào **`projects/$ID/dialogue.json`** (KHÔNG phải `data/`
 làm) và né lặp. Sau khi ráp xong dialogue.json, kiểm:
 `npm run --silent ledger -- dupe --tab video --data "projects/$ID/dialogue.json"` —
 `too-similar` (cùng chủ đề / opening trùng / overlap ≥ 0.4) thì đổi góc, viết lại.
-Nguồn chuẩn = Google Sheet online (fallback cache local); cần webhook đã cài
-(`scripts/ledger-webhook.gs` + `ledger/webhook.json`).
+Ledger là ONLINE-ONLY: nguồn duy nhất = Google Sheet, BẮT BUỘC có webhook
+(`ledger/webhook.json`; cài lần đầu: `scripts/ledger-webhook.gs`) — thiếu
+webhook/mất mạng thì lệnh báo lỗi, không fallback offline.
 
 **Nhánh A — đã có kịch bản:** chuyển thành `turns`, **giữ nguyên câu chữ** (chỉ
 chuẩn hoá nhẹ nếu khó đọc TTS). Có nhãn người nói → map A/B đúng; đoạn văn liền →
@@ -166,7 +175,9 @@ Chia việc cho các subagent trong `.claude/agents/` chạy **song song** rồi
 3. **Nối** theo thứ tự; đánh lại `id` liên tục 3 chữ số; bảo đảm luân phiên A/B ở chỗ ghép.
 4. **Spawn `dialogue-cefr-reviewer`** (truyền `level`) → `turns` chuẩn hoá + báo cáo.
 5. **Spawn `youtube-metadata-writer`** → điền `title`, `topic`, metadata YouTube
-   + `fileKeywords` (cụm từ khóa tiếng Anh đặt tên file — dùng ở bước 7).
+   + `fileKeywords` (cụm từ khóa tiếng Anh đặt tên file — dùng ở bước 7). Agent
+   tự chạy `scripts/keyword-suggest.mjs` (YouTube/Google autocomplete) để tra cụm
+   từ khóa đang được tìm thật rồi mới viết tags/description.
 6. Ráp vào `projects/$ID/dialogue.json` (+ `fps`, `speakers`) → bước 4.
 
 Video ngắn: gọi lần lượt `english-dialogue-writer` → `dialogue-cefr-reviewer` →
@@ -207,6 +218,10 @@ npm run dialogue:audio -- -Data "projects/$ID/dialogue.json"
 - `dialogue:audio:aiva` — lái web aivideoauto Voice Studio bằng Playwright, nhiều
   model (Eleven V3, Minimax, Omnivoice; trả bằng credit nền tảng). Đăng nhập tay
   1 lần khi chạy headed, hoặc `--cdp 9222` với Chrome đã đăng nhập.
+- `dialogue:audio:genmax` — GenMax API (api.genmax.io, cần `GENMAX_API_KEY`):
+  gateway REST cho ElevenLabs / MiniMax / CapCut, trả bằng credit GenMax. Async
+  (submit → poll `/v1/history/{id}` → tải mp3), giọng `GENMAX_VOICE_A/_B`
+  (voice_id PHẢI khớp provider). KHÔNG trả mốc từ → chạy 4b.
 
 Trừ ElevenLabs **API**, các adapter còn lại (kể cả ElevenLabs **web**) **không trả
 mốc từ → chạy bước 4b**. Kiểm tra giọng SAPI có sẵn: `references/voices.md`.
@@ -347,8 +362,9 @@ JSON `PASS/WARN/FAIL`. `FAIL` → sửa blocker rồi chạy lại; `WARN` → b
 quyết định. Đính kèm `uploadChecklist` của agent vào báo cáo cuối cho user.
 
 ### 7c. (BẮT BUỘC) Ghi SỔ NỘI DUNG (chống trùng lần sau)
-Sau finalize + kiểm duyệt, ghi 1 dòng vào tab `video` (idempotent theo `id`, tự đẩy
-lên Google Sheet nếu đã cài webhook; luôn lưu cache local):
+Sau finalize + kiểm duyệt, ghi 1 dòng thẳng lên Google Sheet tab `video`
+(idempotent theo `id`; ledger ONLINE-ONLY — mất mạng/thiếu webhook thì lệnh báo
+lỗi, báo user rồi chạy lại, đừng bỏ qua):
 ```bash
 npm run --silent ledger -- append --tab video --data "projects/$ID/dialogue.json" \
   --theme "<bucket: money/health/travel/…>" --situation "<mô tả ngắn>"
@@ -356,28 +372,40 @@ npm run --silent ledger -- append --tab video --data "projects/$ID/dialogue.json
 
 ### 8. (Hỏi cuối cùng) Upload lên Google Drive
 Sau khi `finalize` xong, **HỎI người dùng: "Bạn có muốn upload kết quả lên Google
-Drive không?"** Nếu KHÔNG thì kết thúc. Nếu CÓ, dùng **Google Drive MCP** upload vào
-thư mục đích (mặc định):
-`https://drive.google.com/drive/folders/1TNL6whGzBi1hfGzGLf2ar_kW0sQzpaLL`
-(folder id = `1TNL6whGzBi1hfGzGLf2ar_kW0sQzpaLL`).
+Drive không?"** Nếu KHÔNG thì kết thúc. Nếu CÓ, dùng **Google Drive MCP**. Thư mục
+gốc `https://drive.google.com/drive/folders/1TNL6whGzBi1hfGzGLf2ar_kW0sQzpaLL`
+chia 2 mục theo LOẠI video — upload vào đúng mục:
+- **Podcast** (skill này) → folder `podcast`, id = `1Vc9ecRm6DBNuHxZ-oHGfCQBj7yohB2if`
+- **Reel/Shorts** (skill english-reel-video) → folder `reels`, id = `1jUUnNCDT8q_se6bH9BrusWRho4MN9_CE`
 
-1. **Tạo subfolder** cho gọn: `create_file` với `mimeType:
+1. **Tạo subfolder** cho gọn: `create_file` (MCP) với `contentMimeType:
    "application/vnd.google-apps.folder"`, `title: "<slug>"`, `parentId:
-   "1TNL6whGzBi1hfGzGLf2ar_kW0sQzpaLL"` → lấy `id` subfolder.
-2. **Upload từng file** trong `projects/$ID/` vào subfolder (`parentId` = id trên):
-   - Nhị phân (mp4/png): `create_file` với `base64Content` = nội dung base64,
-     `contentMimeType` (`video/mp4` | `image/png`), `disableConversionToGoogleType: true`.
-   - Text (.srt / youtube-metadata.txt / project.json): `textContent` +
-     `disableConversionToGoogleType: true` (để không bị đổi thành Google Docs).
-   - Lấy base64: `node -e "process.stdout.write(require('fs').readFileSync('<path>').toString('base64'))"`.
-3. **Ưu tiên** (theo `project.json`): `<slug>.mp4`, `<slug>-shorts.mp4`,
+   "1Vc9ecRm6DBNuHxZ-oHGfCQBj7yohB2if"` (podcast; reel dùng id `reels` ở trên)
+   → lấy `id` subfolder.
+2. **File nhị phân (mp4/png) → dùng `rclone`** (MCP `create_file` nhận nội dung
+   base64 TRONG lệnh gọi tool nên file vài MB trở lên là vượt giới hạn payload —
+   ĐỪNG thử base64 mp4 qua MCP):
+   ```bash
+   rclone copy "projects/$ID/<file>.mp4" gdrive: --drive-root-folder-id <id-subfolder>
+   ```
+   - Remote `gdrive` ĐÃ cấu hình OAuth sẵn (config: `%APPDATA%\rclone\rclone.conf`,
+     token tự refresh). Nếu shell mới cài chưa có `rclone` trong PATH, exe ở:
+     `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Rclone.Rclone_*\rclone-*\rclone.exe`.
+   - Nếu máy khác/chưa có remote: `winget install Rclone.Rclone` rồi
+     `rclone config create gdrive drive scope=drive` (mở trình duyệt cho người dùng
+     bấm Allow — chạy background và báo người dùng xác nhận OAuth).
+3. **File text nhỏ** (.srt / youtube-metadata.txt / project.json): MCP `create_file`
+   với `textContent` + `disableConversionToGoogleType: true` (để không bị đổi thành
+   Google Docs). rclone copy cũng được — chọn đường nào tiện.
+4. **Ưu tiên** (theo `project.json`): `<slug>.mp4`, `<slug>-shorts.mp4`,
    `<slug>-thumbnail.png`, `<slug>.srt`, `youtube-metadata.txt`, `project.json`.
-4. Xong thì báo link subfolder cho người dùng.
+5. Xong thì `rclone lsf gdrive: --drive-root-folder-id <id-subfolder>` xác nhận đủ
+   file, rồi báo link subfolder `https://drive.google.com/drive/folders/<id>` cho
+   người dùng.
 
-> **Lưu ý:** (a) MCP có thể cần **re-authorize** (nếu báo token expired → nhắc người
-> dùng kết nối lại Google Drive rồi thử lại). (b) MP4 dài rất lớn → upload base64 qua
-> MCP có thể vượt giới hạn payload; nếu MP4 lỗi/quá lớn thì upload các file nhẹ trước
-> (thumbnail, .srt, metadata, bản shorts) và báo người dùng kéo-thả MP4 lớn thủ công.
+> **Lưu ý:** MCP có thể cần **re-authorize** (nếu báo token expired → nhắc người
+> dùng kết nối lại Google Drive rồi thử lại); rclone thì tự refresh token, chỉ hỏng
+> khi người dùng thu hồi quyền — khi đó chạy lại `rclone config reconnect gdrive:`.
 
 ## Sóng âm chạy xuyên suốt (tự động — chống trùng nội dung)
 Mọi composition đã có dải sóng âm chuyển động liên tục, phản ứng theo audio + một

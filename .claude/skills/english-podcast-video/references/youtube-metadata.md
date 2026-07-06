@@ -13,9 +13,9 @@ vào tâm lý người học, bám chủ đề + cấp độ, ≤ 50 ký tự. C
 - Khơi tò mò: *"The English Trick Natives Never Tell You"*
 
 ## `youtubeDescription`
-2–4 câu (hook → video có gì → lợi ích → CTA subscribe), rồi 3–5 hashtag ở cuối
-(vd `#LearnEnglish #EnglishPodcast #EnglishListening`). Dùng `\n` để xuống dòng
-trong chuỗi JSON.
+2–4 câu (hook → video có gì → lợi ích → CTA subscribe), rồi 3–5 hashtag ở cuối —
+**hashtag LUÔN chữ thường toàn bộ** (vd `#learnenglish #englishpodcast
+#englishlistening`, KHÔNG CamelCase). Dùng `\n` để xuống dòng trong chuỗi JSON.
 
 ## `tags`
 Mảng ~8–12 từ khóa tìm kiếm, vd: `"learn english"`, `"english listening practice"`,

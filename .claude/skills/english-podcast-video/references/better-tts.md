@@ -98,6 +98,37 @@ npm run dialogue:align -- --data "projects/<id>/dialogue.json"        # Whisper 
 - Selector bám theo text tiếng Việt + role (trang không có id/data-testid ổn định);
   UI đổi thì chạy `--verbose` và chỉnh các hàm `select*` trong script.
 
+## GenMax API cho HỘI THOẠI (gateway ElevenLabs / MiniMax / CapCut)
+Adapter `scripts/tts-genmax.mjs` (npm: `dialogue:audio:genmax`) gọi REST
+`https://api.genmax.io` — gateway TTS trả phí theo **credit GenMax**, không cần
+key ElevenLabs riêng. Docs: https://genmax.io/app/api-docs (SPA — nội dung nằm
+trong các chunk YAML của bundle).
+
+- **Auth**: header `xi-api-key: $GENMAX_API_KEY` (lấy ở trang API Keys sau khi
+  đăng nhập genmax.io).
+- **Luồng async**: `POST /v1/text-to-speech/{voice_id}` → `202 {id}` →
+  poll `GET /v1/history/{id}` đến `status=completed` → tải `result.audio_url`
+  (mp3). Script tự poll 2s/lần, timeout 3 phút/lượt.
+- **Provider** (`GENMAX_PROVIDER` / `--provider` / `speakers[X].genmaxProvider`):
+  `elevenlabs` (mặc định, model `eleven_multilingual_v2`) · `minimax`
+  (`speech-2.8-turbo`, `language_code` là TÊN ngôn ngữ, script tự xử) · `capcut`.
+- **Giọng**: `GENMAX_VOICE_A/_B` hoặc `speakers[X].genmaxVoiceId` — voice_id
+  PHẢI khớp provider (ElevenLabs: ID thư viện, vd Rachel `21m00Tcm4TlvDq8ikWAM`;
+  MiniMax: uniq_id kiểu `English_ManWithDeepVoice`; CapCut: xem
+  `GET /v1/capcut-voices`). Duyệt giọng: `GET /v1/default-voices?search=...`.
+- **Speed**: `GENMAX_SPEED` / `--speed` / `speakers[X].genmaxSpeed`
+  (ElevenLabs 0.7–1.2; MiniMax/CapCut 0.5–2.0) — thường KHÔNG cần vì đã có
+  bước `dialogue:speed` theo level.
+
+```bash
+npm run dialogue:audio:genmax -- --data "projects/<id>/dialogue.json" --limit 2  # test trước
+npm run dialogue:align -- --data "projects/<id>/dialogue.json"                   # Whisper -> words[]
+```
+- Tự **RESUME**; `--fresh` làm lại từ đầu. Gửi `enTts` nếu có (ElevenLabs v3 hiểu tag).
+- **Không trả mốc từng từ** → luôn chạy `dialogue:align` sau.
+- API còn `POST /v1/dialogue` (nguyên hội thoại nhiều speaker → MỘT file audio) —
+  KHÔNG dùng cho pipeline này vì cần audio TÁCH TỪNG LƯỢT để karaoke/verify.
+
 ## Thẻ cảm xúc cho Gemini / AI Studio (KHÁC ElevenLabs)
 `tts-gemini.mjs` và `tts-aistudio.mjs` gửi `turn.enTts` nếu có (fallback `turn.en`),
 nên bạn có thể chèn tag cảm xúc vào `enTts` — GIỮ `turn.en` SẠCH (phụ đề `.srt`

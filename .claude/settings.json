@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(node scripts/tts-elevenlabs-web.mjs --data projects/_test-eleven-web/dialogue.json --limit 2 --verbose --fresh)",
+      "PowerShell(node \"C:\\\\Users\\\\hungt\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--english-listening-video\\\\cdc8d04b-ed47-404a-aee4-916bee43fba1\\\\scratchpad\\\\probe-eleven5.mjs\")",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Select-Object Id, StartTime, @{n='CPU_s';e={[math]::Round\\($_.CPU,1\\)}}, @{n='RunMin';e={[math]::Round\\(\\(\\(Get-Date\\)-$_.StartTime\\).TotalMinutes,1\\)}} | Format-Table -AutoSize)",
+      "PowerShell(node \"C:\\\\Users\\\\hungt\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--english-listening-video\\\\cdc8d04b-ed47-404a-aee4-916bee43fba1\\\\scratchpad\\\\dismiss-popups.mjs\")",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Select-Object Id, StartTime, @{n='RunMin';e={[math]::Round\\(\\(\\(Get-Date\\)-$_.StartTime\\).TotalMinutes,1\\)}} | Format-Table -AutoSize; node \"C:\\\\Users\\\\hungt\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--english-listening-video\\\\cdc8d04b-ed47-404a-aee4-916bee43fba1\\\\scratchpad\\\\probe-eleven5.mjs\")",
+      "PowerShell(node --check scripts/tts-elevenlabs-web.mjs)",
+      "PowerShell(if \\($?\\) { \"syntax OK\" })",
+      "PowerShell(node \"C:\\\\Users\\\\hungt\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--english-listening-video\\\\cdc8d04b-ed47-404a-aee4-916bee43fba1\\\\scratchpad\\\\probe-contexts.mjs\")",
+      "PowerShell(node \"C:\\\\Users\\\\hungt\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--english-listening-video\\\\cdc8d04b-ed47-404a-aee4-916bee43fba1\\\\scratchpad\\\\probe-newtab.mjs\")",
+      "PowerShell(node \"C:\\\\Users\\\\hungt\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--english-listening-video\\\\cdc8d04b-ed47-404a-aee4-916bee43fba1\\\\scratchpad\\\\probe-editor.mjs\")",
+      "PowerShell(Get-Process chrome -ErrorAction SilentlyContinue)",
+      "PowerShell(node scripts/tts-elevenlabs-web.mjs --data projects/_test-eleven-web/dialogue.json --cdp 9223 --limit 2 --verbose --fresh)",
+      "PowerShell(node \"C:\\\\Users\\\\hungt\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--english-listening-video\\\\cdc8d04b-ed47-404a-aee4-916bee43fba1\\\\scratchpad\\\\probe-gen.mjs\")",
+      "PowerShell(node -e \"const fs=require\\('fs'\\);const b=fs.readFileSync\\('public/audio/_test-eleven-web/d1.mp3'\\);console.log\\('d1 header:', b.slice\\(0,3\\).toString\\('latin1'\\), '| bytes:', b.length\\)\")"
+    ]
+  }
+}

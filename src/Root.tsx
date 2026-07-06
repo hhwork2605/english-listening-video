@@ -109,6 +109,12 @@ export const RemotionRoot: React.FC = () => {
         fps={podcastFps}
         width={1080}
         height={1920}
+        // dialogue truyền được qua --props để render không phụ thuộc buffer data/
+        // (nhiều phiên song song đè nhau data/dialogue.json) → duration tính theo props
+        calculateMetadata={({ props }) => ({
+          durationInFrames: Math.max(1, totalDialogueFrames(props.dialogue)),
+          fps: props.dialogue.fps ?? 30,
+        })}
         defaultProps={{
           dialogue,
           // header / background / accent truyền qua --props (tùy chọn)
@@ -123,6 +129,13 @@ export const RemotionRoot: React.FC = () => {
         fps={podcastFps}
         width={1080}
         height={1920}
+        // dialogue truyền được qua --props để render không phụ thuộc buffer data/
+        // (nhiều phiên song song đè nhau data/dialogue.json) → duration tính theo props
+        calculateMetadata={({ props }) => ({
+          durationInFrames:
+            Math.max(1, totalDialogueFrames(props.dialogue)) + ENDCARD_FRAMES,
+          fps: props.dialogue.fps ?? 30,
+        })}
         defaultProps={{
           dialogue,
           // backgroundImage (ảnh cảnh) truyền qua --props

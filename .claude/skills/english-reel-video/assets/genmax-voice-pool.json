@@ -1,0 +1,588 @@
+{
+  "_readme": "Pool giọng ElevenLabs cho GenMax gateway — chống 'repetitive content' (đừng video nào cũng đúng 1 cặp giọng). Cách dùng: chọn cặp A/B KHÁC cặp của reel gần nhất, ghi vào dialogue.json: speakers.A.genmaxVoiceId / speakers.B.genmaxVoiceId (adapter tts-genmax.mjs đọc override này, đè GENMAX_VOICE_A/_B trong .env). Mọi giọng trong pool đã test OK qua GenMax (2026-07-06). Thêm giọng mới -> đặt tested:false và thử `npm run dialogue:audio:genmax -- --data <file> --limit 1` trước khi dùng; hỏng thì xóa khỏi pool. Trường models[] = các model ElevenLabs giọng đó hỗ trợ (từ shared-voices verified_languages); muốn đổi model cho 1 speaker: đặt speakers[X].genmaxModel trong dialogue.json (adapter tts-genmax.mjs đọc override này), hoặc GENMAX_MODEL trong .env cho cả bài.",
+  "provider": "elevenlabs",
+  "voices": [
+    {
+      "id": "UgBBYS2sOqTuMpoF3BR0",
+      "label": "Mark - Natural Conversations (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "NOpBlnGInO9m6vDvFkFC",
+      "label": "Spuds Oxley - Wise and Approachable (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_turbo_v2",
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2_5",
+        "eleven_multilingual_sts_v2"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "IRHApOXLvnW57QJPQH2P",
+      "label": "Adam - American, Dark and Tough (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "EkK5I93UQWFDigLMpZcX",
+      "label": "James - Husky, Engaging and Bold (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "uju3wxzG5OhpWcoi3SMy",
+      "label": "Michael C. Vincent - Confident, Expressive (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "ZthjuvLPty3kTMaNKVKb",
+      "label": "Peter (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "yl2ZDV1MzN4HbQJbMihG",
+      "label": "Alex - Upbeat, Energetic and Clear (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "wBXNqKUATyqu0RtYt25i",
+      "label": "Adam (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "1SM7GgM6IMuvQlz2BwM3",
+      "label": "Mark - Casual, Relaxed and Light (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "dtSEyYGNJqjrtBArPCVZ",
+      "label": "default-B (giọng nam trầm — cặp gốc .env)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "tnSpp4vdxKPjI9w0GnoV",
+      "label": "Hope - upbeat and clear (premade)",
+      "gender": "female",
+      "tested": true,
+      "models": [
+        "eleven_turbo_v2",
+        "eleven_turbo_v2_5",
+        "eleven_multilingual_sts_v2",
+        "eleven_multilingual_v2"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "56AoDkrOh6qfVPDXZ7Pt",
+      "label": "Cassidy - Crisp, Direct and Clear (premade)",
+      "gender": "female",
+      "tested": true,
+      "models": [
+        "eleven_turbo_v2_5",
+        "eleven_flash_v2",
+        "eleven_multilingual_sts_v2",
+        "eleven_turbo_v2",
+        "eleven_multilingual_v2",
+        "eleven_flash_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_v2_flash"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "qSeXEcewz7tA0Q0qk9fH",
+      "label": "default-A (giọng nữ ấm — cặp gốc .env)",
+      "gender": "female",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "21m00Tcm4TlvDq8ikWAM",
+      "label": "Rachel (premade)",
+      "gender": "female",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "EXAVITQu4vr4xnSDxMaL",
+      "label": "Bella (premade)",
+      "gender": "female",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "AZnzlk1XvdvUeBnXmlld",
+      "label": "Domi (premade)",
+      "gender": "female",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "alFofuDn3cOwyoz1i44T",
+      "label": "Dallin - Positive, Inspiring and Clear (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_flash_v2",
+        "eleven_flash_v2_5",
+        "eleven_multilingual_v2",
+        "eleven_multilingual_sts_v2",
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_turbo_v2",
+        "eleven_v2_flash"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "MFZUKuGQUsGJPQjTS4wC",
+      "label": "Jon - Warm & Grounded Storyteller (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_multilingual_v2",
+        "eleven_multilingual_sts_v2"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "EiNlNiXeDU1pqqOPrYMO",
+      "label": "John Doe - Deep (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "iiidtqDt9FBdT1vfBluA",
+      "label": "Bill Oxley - Documentary Commentator (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_turbo_v2",
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2_5",
+        "eleven_multilingual_sts_v2"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "e5WNhrdI30aXpS2RSGm1",
+      "label": "Ian Cartwell - Suspense and Mystery (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_turbo_v2",
+        "eleven_turbo_v2_5",
+        "eleven_multilingual_v2",
+        "eleven_multilingual_sts_v2"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "kqVT88a5QfII1HNAEPTJ",
+      "label": "Declan Sage - Wise and Captivating (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_multilingual_sts_v2"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "XjLkpWUlnhS8i7gGz3lZ",
+      "label": "David Castlemore - Newsreader and Educator (premade)",
+      "gender": "male",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ],
+      "modelsNote": "không có trong shared-voices (premade gốc) — multilingual_v2 đã xác nhận chạy"
+    },
+    {
+      "id": "kPzsL2i3teMYv0FxEYQ6",
+      "label": "Brittney - Fun, Youthful & Informative (premade)",
+      "gender": "female",
+      "tested": true,
+      "models": [
+        "eleven_turbo_v2",
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2_5",
+        "eleven_multilingual_sts_v2"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "Z3R5wn05IrDiVCyEkUrK",
+      "label": "Arabella - Mysterious and Emotive (premade)",
+      "gender": "female",
+      "tested": true,
+      "models": [
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "lxYfHSkYm1EzQzGhdbfc",
+      "label": "Jessica Anne Bogart - A VO Professional (premade)",
+      "gender": "female",
+      "tested": true,
+      "models": [
+        "eleven_turbo_v2",
+        "eleven_multilingual_sts_v2",
+        "eleven_turbo_v2_5",
+        "eleven_multilingual_v2"
+      ],
+      "freeUsersAllowed": true
+    },
+    {
+      "id": "8XJVprAhZyQJ3P7WjmQ5",
+      "label": "Hannah (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": false,
+      "models": [
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2"
+      ]
+    },
+    {
+      "id": "pPd9oF6dS3IEotr2Fmhq",
+      "label": "Zara - Made for Numbers & Finance (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_multilingual_v2",
+        "eleven_multilingual_sts_v2"
+      ]
+    },
+    {
+      "id": "RaelJk8tltOJ5KMrKjDu",
+      "label": "Layla - Elegant and articulate (high_quality)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "6l0ObIy4mHn0XfeKlCgW",
+      "label": "Maya - Clear, Warm, Japanese Narrator (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "zORK9zlVk5JLkgvi02K9",
+      "label": "Elena  (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": false,
+      "models": [
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "McVZB9hVxVSk3Equu8EH",
+      "label": "Audrey - Energetic Commercial (high_quality)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "bJEUA3YZ7lKIR27GczXg",
+      "label": "Gabi - Calm & Friendly (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": false,
+      "models": [
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "NEjemlRxgWmL5ZGJetsB",
+      "label": "Claire - Conversationnel (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "1YfmfuouRyRwVbpAZP7R",
+      "label": "Serena - British, Friendly Ad (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_multilingual_v2",
+        "eleven_multilingual_sts_v2"
+      ]
+    },
+    {
+      "id": "tSFrmifcoKA2lXImR5MW",
+      "label": "Iris - Warm, Intimate & Narrative (high_quality)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": false,
+      "models": [
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "Q6HPFg7bazU61NeyrvBp",
+      "label": "Ruby - Warm, kind & friendly bestie (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5"
+      ]
+    },
+    {
+      "id": "Gf1PsJucEAVOTGykaTJr",
+      "label": "Alice - Calm, Clear & Trustworthy (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": false,
+      "models": [
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_multilingual_sts_v2"
+      ]
+    },
+    {
+      "id": "nHIe7B3HzjldgtM8jZ3S",
+      "label": "Cora - Clear, British Podcast (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_multilingual_v2",
+        "eleven_multilingual_sts_v2"
+      ]
+    },
+    {
+      "id": "KoVIHoyLDrQyd4pGalbs",
+      "label": "Autumn Veil - Warm and Reflective (high_quality)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_multilingual_sts_v2"
+      ]
+    },
+    {
+      "id": "bD9maNcCuQQS75DGuteM",
+      "label": "Sadie - Calm, Gritty & Expressive (high_quality)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "C0FdjllEk4e2514QqJu9",
+      "label": "Violet - Calm, Soothing and Youthful (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_multilingual_sts_v2"
+      ]
+    },
+    {
+      "id": "Z0sfiJh6h4bYBleAJnMn",
+      "label": "Nora - Natural, Warm & Clear (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": true,
+      "models": [
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "YyqkX0AHv8W5D1vxG9lR",
+      "label": "Hazel - Warm, Witty & Conversational Female Voice (high_quality)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": false,
+      "models": [
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "WKIYAVSTdl1Lerecpf4E",
+      "label": "Aurora - Vibrant & Kind Storyteller (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": false,
+      "models": [
+        "eleven_multilingual_v2"
+      ]
+    },
+    {
+      "id": "cGTsirYpy6wOhGlRNA9x",
+      "label": "Stella - Warm, Upbeat & Motivational (professional)",
+      "gender": "female",
+      "tested": true,
+      "freeUsersAllowed": false,
+      "models": [
+        "eleven_turbo_v2_5",
+        "eleven_v2_5_flash",
+        "eleven_flash_v2_5",
+        "eleven_multilingual_v2",
+        "eleven_turbo_v2",
+        "eleven_v2_flash",
+        "eleven_flash_v2",
+        "eleven_multilingual_sts_v2"
+      ]
+    }
+  ]
+}

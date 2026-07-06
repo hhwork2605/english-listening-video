@@ -1,0 +1,59 @@
+{
+  "_readme": "Bộ theme preset cho ReelDialogueList (dạng A) — chống 'repetitive content'. Mỗi reel A chọn 1 preset KHÁC 2 reel gần nhất (xem projects/*/reel.props.json mới nhất). Các key ghép thẳng vào reel.props.json cùng header/headerEmoji.",
+  "presets": [
+    {
+      "name": "cream",
+      "background": "#fbf6e9",
+      "headerColor": "#2e9d4f",
+      "textColor": "#1c2b4a",
+      "highlightColor": "rgba(160, 200, 90, 0.35)"
+    },
+    {
+      "name": "navy",
+      "background": "#101c33",
+      "headerColor": "#ffd23f",
+      "textColor": "#f2f5fa",
+      "highlightColor": "rgba(255, 210, 63, 0.28)"
+    },
+    {
+      "name": "blush",
+      "background": "#fdf0f3",
+      "headerColor": "#c2185b",
+      "textColor": "#3a2230",
+      "highlightColor": "rgba(244, 143, 177, 0.35)"
+    },
+    {
+      "name": "mint",
+      "background": "#eef8f2",
+      "headerColor": "#0f766e",
+      "textColor": "#143029",
+      "highlightColor": "rgba(45, 212, 191, 0.30)"
+    },
+    {
+      "name": "lavender",
+      "background": "#f4f1fb",
+      "headerColor": "#6d28d9",
+      "textColor": "#241b3a",
+      "highlightColor": "rgba(167, 139, 250, 0.32)"
+    },
+    {
+      "name": "charcoal",
+      "background": "#1f2428",
+      "headerColor": "#ff8a3d",
+      "textColor": "#f5f2ec",
+      "highlightColor": "rgba(255, 138, 61, 0.26)"
+    }
+  ],
+  "headerEmojiByTopic": {
+    "hotel": "🏨",
+    "coffee shop / cafe": "☕",
+    "doctor / hospital": "🩺",
+    "airport / flight": "✈️",
+    "shopping": "🛍️",
+    "restaurant / food": "🍽️",
+    "small talk / friends": "💬",
+    "job / interview / office": "💼",
+    "taxi / directions": "🚕",
+    "_default": "👉"
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "title": "Daily English - Sample",
-  "level": "B1",
-  "fps": 30,
-  "items": [
-    { "id": "001", "en": "Could you tell me where the station is?", "vi": "Bạn chỉ giúp tôi nhà ga ở đâu được không?", "phonetic": "/kʊd juː tel miː weər ðə ˈsteɪʃn ɪz/", "topic": "travel", "audio": "", "durationInSec": 2.8, "repeat": 2, "gapBetweenRepeatsSec": 0.6, "pauseAfterSec": 1.5 }
-  ]
-}
