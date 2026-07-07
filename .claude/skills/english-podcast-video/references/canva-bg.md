@@ -46,6 +46,22 @@ Dùng `design_type: "phone_wallpaper"` (1080×1920), mô tả 2 nhân vật ở 
 `public/backgrounds/scene-vertical.png`. (Ở khung dọc, sóng âm tự dời lên vùng
 trống phía trên; caption ở ~16% trên.)
 
+## Fallback Gemini (khi Canva LỖI / hết quota AI)
+Canva AI cạn lượt rất nhanh. Khi `generate-design` trả lỗi quota/lỗi bất kỳ:
+1. **Tự soạn PROMPT sinh ảnh** (tiếng Anh) từ query mẫu ở trên, GHI RÕ trong prompt:
+   - tỉ lệ + kích thước đích (video 16:9 1920×1080; thumbnail 16:9 1280×720;
+     bản dọc 9:16 1080×1920);
+   - GIỮA trống cho caption/tiêu đề, góc PHẢI DƯỚI thoáng cho logo;
+   - "No text, no words, no letters, no logo, no watermark".
+2. **Đưa prompt cho người dùng** dán vào Gemini (gemini.google.com — sinh ảnh miễn
+   phí trên web; API image thì KHÔNG có free quota, đừng gọi API). Nói rõ path đích
+   để người dùng lưu (vd `public\backgrounds\scene.png`) hoặc bảo họ dán ảnh vào
+   chat cho mình tự lưu.
+3. **NGỪNG và CHỜ** người dùng xác nhận đã có ảnh → kiểm tra file tồn tại (Read
+   ảnh xem có hợp bố cục không) rồi mới render.
+4. Người dùng từ chối/không tạo được → lúc đó mới dùng phương án cuối: tái dùng
+   ảnh cũ CHỈ KHI trung tính hợp chủ đề (nền video), hoặc nền gradient (thumbnail).
+
 ## Mẹo
 - Muốn xem trước candidate: export PNG rồi tải về bằng PowerShell và mở ra (link
   thumbnail trực tiếp của Canva trả 403 nếu tải ngoài phiên).

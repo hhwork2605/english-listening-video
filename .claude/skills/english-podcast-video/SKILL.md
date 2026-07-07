@@ -62,7 +62,7 @@ npm run video:intro -- --video "projects/$ID/podcast.mp4" --intro public/intro.m
 npm run --silent project:finalize -- "$ID"                        # 7)  gom + .srt + metadata
 # 7b) BẮT BUỘC: spawn youtube-policy-checker
 npm run --silent ledger -- append --tab video --data "projects/$ID/dialogue.json" --theme "<bucket>" --situation "<mô tả>"  # 7c) ghi sổ chống trùng
-# 8) HỎI upload Google Drive → dùng Google Drive MCP
+# 8) HỎI upload Google Drive → dùng rclone (toàn bộ, kể cả tạo subfolder)
 ```
 
 > Biến thể phụ "2 nhân vật + phụ đề Anh-Việt + badge" (`PodcastVideo`, không đăng ký
@@ -279,8 +279,13 @@ Lệch mục tiêu → thêm/bớt lượt rồi chạy lại bước 4 + `proje
 
 **Ảnh nền cố định** (tạo nên "1 ảnh xuyên suốt"): nếu có Canva MCP, tự tạo ảnh
 studio 2 host hợp chủ đề, tải về `public/backgrounds/scene.png` — **các bước Canva
-+ query mẫu: `references/canva-bg.md`**. Không có Canva → đặt ảnh của người dùng vào
-`public/backgrounds/scene.png`.
++ query mẫu: `references/canva-bg.md`**. **Canva LỖI / hết quota AI → fallback
+Gemini thủ công**: tự soạn PROMPT sinh ảnh (tiếng Anh, theo query mẫu + nêu rõ tỉ
+lệ 16:9, giữa trống, không chữ/logo, chừa góc phải dưới), đưa cho người dùng dán
+vào Gemini rồi NGỪNG chờ; người dùng lưu ảnh về đúng path mình chỉ định
+(`public/backgrounds/scene.png`…) hoặc dán/copy ảnh cho mình tự lưu — xem
+`references/canva-bg.md` mục "Fallback Gemini". KHÔNG lặng lẽ tái dùng ảnh của
+chủ đề khác khi ảnh đó không hợp nội dung.
 
 Render **thẳng vào project folder**, ảnh nền qua `--props`:
 ```bash
@@ -318,6 +323,11 @@ npx remotion still src/index.ts Thumbnail "projects/$ID/thumbnail.png" --props="
 - `title` = danh từ chính của chủ đề (vd "Talking About Your Weekend" → `YOUR WEEKEND`),
   tránh lặp pill `kicker`. Không có Canva → bỏ `backgroundImage`, `Thumbnail` tự vẽ nền
   gradient + 2 avatar chữ cái (logo vẫn hiện).
+- **Canva LỖI / hết quota AI** → như bước 5: soạn PROMPT sinh ảnh thumbnail (từ
+  `canvaQuery` của agent, thêm tỉ lệ 16:9 + giữa trống + không chữ), đưa người dùng
+  tạo bằng Gemini rồi chờ ảnh lưu về `public/thumbnails/scene.png` mới render still
+  (xem `references/canva-bg.md` mục "Fallback Gemini"). Chỉ dùng nền gradient khi
+  người dùng từ chối/không tạo được ảnh.
 
 ### 6b. Ghép intro (BẮT BUỘC — trước finalize, KHÔNG hỏi)
 Luôn ghép intro `public/intro.mp4` vào đầu video **trước** khi finalize, ghép thẳng
@@ -372,40 +382,39 @@ npm run --silent ledger -- append --tab video --data "projects/$ID/dialogue.json
 
 ### 8. (Hỏi cuối cùng) Upload lên Google Drive
 Sau khi `finalize` xong, **HỎI người dùng: "Bạn có muốn upload kết quả lên Google
-Drive không?"** Nếu KHÔNG thì kết thúc. Nếu CÓ, dùng **Google Drive MCP**. Thư mục
-gốc `https://drive.google.com/drive/folders/1TNL6whGzBi1hfGzGLf2ar_kW0sQzpaLL`
+Drive không?"** Nếu KHÔNG thì kết thúc. Nếu CÓ, dùng **`rclone` cho TOÀN BỘ**
+(remote `gdrive` đã OAuth sẵn — KHÔNG dùng Google Drive MCP cho bước upload nữa,
+kể cả tạo folder hay file text). Thư mục gốc
+`https://drive.google.com/drive/folders/1TNL6whGzBi1hfGzGLf2ar_kW0sQzpaLL`
 chia 2 mục theo LOẠI video — upload vào đúng mục:
 - **Podcast** (skill này) → folder `podcast`, id = `1Vc9ecRm6DBNuHxZ-oHGfCQBj7yohB2if`
 - **Reel/Shorts** (skill english-reel-video) → folder `reels`, id = `1jUUnNCDT8q_se6bH9BrusWRho4MN9_CE`
 
-1. **Tạo subfolder** cho gọn: `create_file` (MCP) với `contentMimeType:
-   "application/vnd.google-apps.folder"`, `title: "<slug>"`, `parentId:
-   "1Vc9ecRm6DBNuHxZ-oHGfCQBj7yohB2if"` (podcast; reel dùng id `reels` ở trên)
-   → lấy `id` subfolder.
-2. **File nhị phân (mp4/png) → dùng `rclone`** (MCP `create_file` nhận nội dung
-   base64 TRONG lệnh gọi tool nên file vài MB trở lên là vượt giới hạn payload —
-   ĐỪNG thử base64 mp4 qua MCP):
+1. **Upload một phát** — rclone TỰ TẠO subfolder `<slug>` qua đường dẫn đích,
+   không cần tạo folder trước; `--include` lọc đúng các file cần đăng (bỏ audio/
+   lượt lẻ, background trung gian, PROGRESS.md):
    ```bash
-   rclone copy "projects/$ID/<file>.mp4" gdrive: --drive-root-folder-id <id-subfolder>
+   rclone copy "projects/$ID" "gdrive:<slug>" --drive-root-folder-id <id-mục> \
+     --include "*.mp4" --include "*.srt" --include "youtube-metadata.txt" \
+     --include "project.json" --include "*-thumbnail.png"
    ```
-   - Remote `gdrive` ĐÃ cấu hình OAuth sẵn (config: `%APPDATA%\rclone\rclone.conf`,
-     token tự refresh). Nếu shell mới cài chưa có `rclone` trong PATH, exe ở:
-     `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Rclone.Rclone_*\rclone-*\rclone.exe`.
-   - Nếu máy khác/chưa có remote: `winget install Rclone.Rclone` rồi
-     `rclone config create gdrive drive scope=drive` (mở trình duyệt cho người dùng
-     bấm Allow — chạy background và báo người dùng xác nhận OAuth).
-3. **File text nhỏ** (.srt / youtube-metadata.txt / project.json): MCP `create_file`
-   với `textContent` + `disableConversionToGoogleType: true` (để không bị đổi thành
-   Google Docs). rclone copy cũng được — chọn đường nào tiện.
-4. **Ưu tiên** (theo `project.json`): `<slug>.mp4`, `<slug>-shorts.mp4`,
-   `<slug>-thumbnail.png`, `<slug>.srt`, `youtube-metadata.txt`, `project.json`.
-5. Xong thì `rclone lsf gdrive: --drive-root-folder-id <id-subfolder>` xác nhận đủ
-   file, rồi báo link subfolder `https://drive.google.com/drive/folders/<id>` cho
-   người dùng.
-
-> **Lưu ý:** MCP có thể cần **re-authorize** (nếu báo token expired → nhắc người
-> dùng kết nối lại Google Drive rồi thử lại); rclone thì tự refresh token, chỉ hỏng
-> khi người dùng thu hồi quyền — khi đó chạy lại `rclone config reconnect gdrive:`.
+2. **Xác nhận đủ file** (theo `project.json`: `<slug>.mp4`, `<slug>-shorts.mp4`,
+   `<slug>-thumbnail.png`, `<slug>.srt`, `youtube-metadata.txt`, `project.json`):
+   ```bash
+   rclone lsf "gdrive:<slug>" --drive-root-folder-id <id-mục>
+   ```
+3. **Báo link subfolder** cho người dùng — lấy ID bằng lsf định dạng `ip`:
+   ```bash
+   rclone lsf gdrive: --drive-root-folder-id <id-mục> --dirs-only --format "ip"
+   ```
+   → dòng `<id>;<slug>/` → link `https://drive.google.com/drive/folders/<id>`.
+- Remote `gdrive` ĐÃ cấu hình OAuth sẵn (config: `%APPDATA%\rclone\rclone.conf`,
+  token tự refresh; hỏng chỉ khi người dùng thu hồi quyền — khi đó chạy
+  `rclone config reconnect gdrive:`). Nếu shell mới cài chưa có `rclone` trong
+  PATH, exe ở: `%LOCALAPPDATA%\Microsoft\WinGet\Packages\Rclone.Rclone_*\rclone-*\rclone.exe`.
+- Nếu máy khác/chưa có remote: `winget install Rclone.Rclone` rồi
+  `rclone config create gdrive drive scope=drive` (mở trình duyệt cho người dùng
+  bấm Allow — chạy background và báo người dùng xác nhận OAuth).
 
 ## Sóng âm chạy xuyên suốt (tự động — chống trùng nội dung)
 Mọi composition đã có dải sóng âm chuyển động liên tục, phản ứng theo audio + một
