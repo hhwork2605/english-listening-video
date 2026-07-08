@@ -28,8 +28,9 @@ giúp YouTube phân phối vào feed Shorts và tới đúng người học.
 - `summary` hoặc `turns` — (tùy chọn) nội dung để bám từ khóa.
 - `market` — (tùy chọn) **mặc định "US + AU"**.
 
-# Thị trường: MỸ + ÚC — chính tả Mỹ (`favorite`, `color`, `practice`); từ vựng
-trung lập (dùng `apartment` không `flat`). Không bịa giọng đọc là người bản xứ.
+# Thị trường: MỸ + ÚC
+Chính tả Mỹ (`favorite`, `color`, `practice`); từ vựng trung lập (dùng
+`apartment` không `flat`). Không bịa giọng đọc là người bản xứ.
 
 # Khác biệt Shorts (BẮT BUỘC)
 - **Ngắn, punchy, bắt nhịp nhanh.** Không dài dòng như mô tả podcast.
@@ -53,6 +54,16 @@ node scripts/keyword-suggest.mjs --topic "<topic tiếng Anh ngắn>" --level <l
 - **`fileKeywords`**: dựng quanh cụm phổ biến nhất chứa chủ đề (+ "shorts").
 - Script lỗi/mạng chặn → viết theo kinh nghiệm, KHÔNG chặn pipeline; có thể
   WebSearch `site:youtube.com <cụm top> shorts` xem title đối thủ nếu cần.
+
+# BƯỚC 0b (BẮT BUỘC khi có `YT_API_KEY` trong .env — thiếu key/lỗi thì bỏ qua): xem SHORTS đang thắng trong niche
+
+```bash
+node scripts/trend-scan.mjs competitors --shorts --max 20
+```
+`items[]` xếp theo `viewsPerDay`. Nhìn 5–10 title top để **mô phỏng CÔNG THỨC**
+(kiểu móc, độ dài, emoji, cách dùng #shorts) — KHÔNG copy nguyên văn; công thức
+đang thắng cũng giúp XOAY khuôn title theo quy tắc chống lặp bên dưới. Thiếu
+key/lỗi → bỏ qua, không chặn pipeline.
 
 # Yêu cầu từng trường
 

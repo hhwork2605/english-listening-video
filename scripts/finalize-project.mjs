@@ -26,10 +26,17 @@ import { execFileSync } from "node:child_process";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 
-const id = process.argv[2];
+let id = process.argv[2];
 if (!id) {
   console.error("Cần <id>. Dùng: node scripts/finalize-project.mjs <id> [tu-khoa]");
   process.exit(1);
+}
+
+// id có thể gồm nhánh (video/… | reels/…). Nếu truyền id trần thì tự dò 2 nhánh
+// (chỉ khi id trần chưa tồn tại — tránh tạo folder phẳng mới ở gốc projects/).
+if (!existsSync(resolve(ROOT, "projects", id))) {
+  const alt = ["video/" + id, "reels/" + id].find((x) => existsSync(resolve(ROOT, "projects", x)));
+  if (alt) id = alt;
 }
 
 // Slug tiếng Anh không dấu, nối bằng gạch ngang (đặt tên file kết quả cho SEO).

@@ -48,6 +48,8 @@ trống phía trên; caption ở ~16% trên.)
 
 ## Fallback Gemini (khi Canva LỖI / hết quota AI)
 Canva AI cạn lượt rất nhanh. Khi `generate-design` trả lỗi quota/lỗi bất kỳ:
+0. **Thumbnail**: agent `youtube-thumbnail-designer` LUÔN trả sẵn `geminiPrompt`
+   trong output — dùng NGUYÊN VĂN prompt đó, bỏ qua bước 1, đi thẳng bước 2.
 1. **Tự soạn PROMPT sinh ảnh** (tiếng Anh) từ query mẫu ở trên, GHI RÕ trong prompt:
    - tỉ lệ + kích thước đích (video 16:9 1920×1080; thumbnail 16:9 1280×720;
      bản dọc 9:16 1080×1920);

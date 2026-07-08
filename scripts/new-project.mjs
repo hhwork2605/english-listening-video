@@ -1,8 +1,14 @@
 /**
  * Tạo một project folder mới theo dạng `tenchude_thoigian` và in ra id.
  *
- * Dùng:  node scripts/new-project.mjs "Talking About Animals"
- * In ra (stdout) đúng một dòng = id, vd: talking-about-animals_20260624-1230
+ * Kết quả chia 2 nhánh: projects/video/<id> (podcast ngang) và
+ * projects/reels/<id> (reel/shorts dọc). Chọn nhánh bằng --type video|reels
+ * (mặc định video).
+ *
+ * Dùng:  node scripts/new-project.mjs "Talking About Animals" --type video
+ *        node scripts/new-project.mjs "Coffee Shop" --type reels
+ * In ra (stdout) đúng một dòng = id GỒM CẢ nhánh, vd:
+ *   video/talking-about-animals_20260624-1230
  * Skill bắt lấy dòng này để render vào projects/<id>/.
  */
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -12,7 +18,23 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 
-const topic = process.argv.slice(2).join(" ").trim() || "podcast";
+const argv = process.argv.slice(2);
+let type = "video";
+const ti = argv.indexOf("--type");
+if (ti >= 0) {
+  type = (argv[ti + 1] || "").toLowerCase();
+  argv.splice(ti, 2);
+}
+if (argv.includes("--reels")) {
+  type = "reels";
+  argv.splice(argv.indexOf("--reels"), 1);
+}
+if (!["video", "reels"].includes(type)) {
+  console.error("LỖI: --type phải là video hoặc reels (nhận: " + type + ")");
+  process.exit(1);
+}
+
+const topic = argv.join(" ").trim() || "podcast";
 const slug =
   topic
     .toLowerCase()
@@ -26,7 +48,9 @@ const slug =
 const d = new Date();
 const p = (n) => String(n).padStart(2, "0");
 const ts = `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`;
-const id = `${slug}_${ts}`;
+// id gồm cả nhánh (video/… hoặc reels/…) để mọi script downstream chỉ cần nối
+// "projects/<id>" là ra đúng đường dẫn.
+const id = `${type}/${slug}_${ts}`;
 
 const projDir = resolve(ROOT, "projects", id);
 mkdirSync(projDir, { recursive: true });

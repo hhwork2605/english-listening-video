@@ -70,6 +70,17 @@ Cách dùng kết quả:
 - Script lỗi/mạng chặn (exit ≠ 0) → cứ viết theo kinh nghiệm, KHÔNG chặn pipeline;
   có thể thay bằng WebSearch ("<topic> learn english youtube") xem title đối thủ.
 
+# BƯỚC 0b (BẮT BUỘC khi có `YT_API_KEY` trong .env — thiếu key/lỗi thì bỏ qua): xem TITLE đang thắng trong niche
+
+```bash
+node scripts/trend-scan.mjs competitors --long --max 20        # video dài đang hot của các kênh cùng niche
+node scripts/trend-scan.mjs search --topic "<topic>" --max 10  # (chọn lọc — search bucket ~100 call/ngày)
+```
+`items[]` xếp theo `viewsPerDay` (sức nóng). Cách dùng: nhìn 5–10 title top để
+**mô phỏng CÔNG THỨC** (cấu trúc câu, kiểu móc, độ dài, viết hoa) — KHÔNG copy
+nguyên văn; ưu tiên góc/chủ đề phụ mà kênh mình chưa làm. Thiếu key/lỗi → bỏ
+qua bước này, không chặn pipeline.
+
 (Tuỳ chọn, video cạnh tranh cao) WebSearch thêm `site:youtube.com <cụm top>` để
 xem title các video xếp cao rồi viết title KHÁC GÓC nhưng cùng từ khóa.
 

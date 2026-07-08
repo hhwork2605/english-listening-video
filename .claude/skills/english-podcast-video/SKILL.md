@@ -46,9 +46,10 @@ Anh** hiện theo cụm, **làm sáng từ đang đọc** (composition `Podcast`
 ## Pipeline (TL;DR — chi tiết ở các bước dưới)
 ```bash
 cd "<REPO_ROOT>"                                                    # 1) repo pipeline (chứa SKILL.md này, đã npm install)
-ID=$(npm run --silent project:new -- "<chủ đề>")                    # 1) tạo folder
+ID=$(npm run --silent project:new -- "<chủ đề>" --type video)       # 1) tạo folder (ID = video/<slug>_<ts>)
 # 2) KHÔNG hỏi kịch bản — mặc định TỰ viết (user đưa sẵn thì dùng); chỉ hỏi thông số còn thiếu
 npm run --silent ledger -- check --tab video                        # 3a) chống trùng -> avoid
+npm run --silent trends -- competitors --long --max 20              # 3a2) BẮT BUỘC: nghiên cứu chủ đề/title đang hot trong niche (YT_API_KEY)
 # 3) viết projects/$ID/dialogue.json (+ topic/level/metadata)
 npm run --silent ledger -- dupe --tab video --data "projects/$ID/dialogue.json"  # 3b) too-similar? -> viết lại
 npm run dialogue:audio    -- -Data  "projects/$ID/dialogue.json"    # 4)  TTS (SAPI mặc định)
@@ -72,13 +73,14 @@ npm run --silent ledger -- append --tab video --data "projects/$ID/dialogue.json
 
 ### 1. Chuẩn bị project
 Làm việc TRỰC TIẾP trong repo pipeline (repo chứa SKILL.md này — thường là
-`d:\english-listening-video`; mỗi video là một folder con `projects/<id>/`,
-KHÔNG copy code đi đâu). Tạo folder (slug lấy từ chủ đề — biết chủ đề ở bước 2
-mới tạo):
+`d:\english-listening-video`; mỗi video là một folder con `projects/video/<id>/`
+(reel nằm nhánh `projects/reels/`), KHÔNG copy code đi đâu). Tạo folder (slug lấy
+từ chủ đề — biết chủ đề ở bước 2 mới tạo):
 ```bash
 cd "<REPO_ROOT>"                                  # nếu chưa đứng ở repo; npm install nếu thiếu node_modules
-ID=$(npm run --silent project:new -- "<chủ đề>")  # vd: animals_20260624-1340
+ID=$(npm run --silent project:new -- "<chủ đề>" --type video)  # vd: video/animals_20260624-1340
 ```
+`$ID` đã GỒM nhánh `video/` — cứ nối `projects/$ID/...` như cũ là ra đúng đường dẫn.
 
 `project:new` tạo sẵn `projects/$ID/PROGRESS.md` (checklist tiến độ). **Mở rộng nó
 thành các việc nhỏ cụ thể cho video này rồi tick dần** (xem nguyên tắc #8).
@@ -105,8 +107,13 @@ chỉ muốn **bấm chọn** (luôn có "Other" để tự gõ). Đặt phươn
 thiếu (gộp trong 1 lần gọi `AskUserQuestion`, mỗi tiêu chí một câu, mỗi câu vài
 phương án bấm chọn), rồi TỰ viết kịch bản ở bước 3 — không cần người dùng duyệt
 nháp trước:
-- **Chủ đề**: đưa 3–4 gợi ý hợp cấp độ (+ "Other" để tự nhập) — dựa `ledger check`
-  để gợi ý chủ đề CHƯA làm.
+- **Chủ đề**: đưa 3–4 gợi ý hợp cấp độ (+ "Other" để tự nhập). **BẮT BUỘC nghiên
+  cứu trước bằng 2 lệnh**: `npm run --silent ledger -- check --tab video` (né chủ
+  đề ĐÃ làm) + `npm run --silent trends -- competitors --long --max 20` (chủ đề
+  đang HOT trong niche, xếp theo view/ngày — kênh ở `assets/competitor-channels.json`).
+  Ưu tiên gợi ý chủ đề đang hot mà ledger chưa có, ghi rõ nguồn trong mô tả
+  phương án (vd "đang hot: 17k view/ngày ở Speak English With Class"). Trend API
+  lỗi → vẫn gợi ý theo ledger, không chặn.
 - **Cấp độ**: A1 / A2 / B1 / **B1-B2 (Recommended)** / B2 / B2-C1 / C1.
 - **Độ dài**: ~5 phút / **~10 phút (Recommended)** / ~15 phút… (ước lượng
   **~12 lượt ≈ 1 phút** → 10 phút ≈ 120 lượt).
@@ -123,7 +130,21 @@ Viết file NGUỒN vào **`projects/$ID/dialogue.json`** (KHÔNG phải `data/`
 
 **CHỐNG TRÙNG (đọc SỔ NỘI DUNG — tab `video`):** trước khi viết, chạy
 `npm run --silent ledger -- check --tab video` để lấy `avoid` (topics/openings/…đã
-làm) và né lặp. Sau khi ráp xong dialogue.json, kiểm:
+làm) và né lặp.
+
+**NGHIÊN CỨU TREND (BẮT BUỘC trước khi viết):** dùng kết quả
+`npm run --silent trends -- competitors --long --max 20` đã chạy ở bước 2 (chưa
+chạy thì chạy ngay; lỗi API → bỏ qua, không chặn). Cách dùng khi VIẾT:
+- Rút 3–5 video hot nhất LIÊN QUAN đến chủ đề đã chốt → tóm thành `trendHints`
+  (góc khai thác, kiểu móc, tông cảm xúc — vd niche đang chuộng chủ đề nội tâm
+  "calm your mind / love yourself" thì hội thoại nên có lớp cảm xúc, không chỉ
+  thoại giao dịch khô).
+- Truyền `trendHints` vào prompt của từng `english-dialogue-writer` (bước fan-out
+  dưới) để writer chọn khía cạnh + giọng điệu theo hướng đang thắng — KHÔNG
+  copy nội dung/title của đối thủ.
+- `youtube-metadata-writer` tự chạy trend-scan lại ở Bước 0b của nó, không cần đưa.
+
+Sau khi ráp xong dialogue.json, kiểm:
 `npm run --silent ledger -- dupe --tab video --data "projects/$ID/dialogue.json"` —
 `too-similar` (cùng chủ đề / opening trùng / overlap ≥ 0.4) thì đổi góc, viết lại.
 Ledger là ONLINE-ONLY: nguồn duy nhất = Google Sheet, BẮT BUỘC có webhook
@@ -171,7 +192,8 @@ Chia việc cho các subagent trong `.claude/agents/` chạy **song song** rồi
 2. **Spawn `english-dialogue-writer` song song** — mỗi agent một khía cạnh, truyền
    `topic`, `aspect`, `level`, `turns`, `startSpeaker`, `startId` (lệch nhau),
    `context`, `includeVi`, **`avoid`** (từ `ledger check --tab video` ở bước 3 — để
-   né trùng NGAY khi viết). Trả `{ turns: [...] }`.
+   né trùng NGAY khi viết), **`trendHints`** (tóm tắt góc/móc/tông đang thắng từ
+   trend-scan ở bước 3 — writer bám hướng, không copy). Trả `{ turns: [...] }`.
 3. **Nối** theo thứ tự; đánh lại `id` liên tục 3 chữ số; bảo đảm luân phiên A/B ở chỗ ghép.
 4. **Spawn `dialogue-cefr-reviewer`** (truyền `level`) → `turns` chuẩn hoá + báo cáo.
 5. **Spawn `youtube-metadata-writer`** → điền `title`, `topic`, metadata YouTube
@@ -307,27 +329,45 @@ cần truyền gì; đặt `"logo":""` trong props để ẩn. Đồng bộ vớ
 ### 6. Thumbnail (LUÔN tạo mỗi video)
 Thumbnail = ảnh 2 nhân vật (chừa giữa trống) + Remotion phủ chữ + **logo kênh góc
 phải dưới**. **Khuyến nghị: spawn subagent `youtube-thumbnail-designer`** (truyền
-`topic`, `level`, `speakers`, tóm tắt/turns) để nó thiết kế concept hợp hội thoại →
-trả JSON `{ props: { title, kicker, channel, backgroundImage }, canvaQuery, notes }`.
-Dùng `canvaQuery` tạo ảnh nền Canva `youtube_thumbnail`, tải về
-`public/thumbnails/scene.png` (**chi tiết + cách tải: `references/canva-bg.md`**),
-rồi render bằng `props` của agent:
+`topic`, `level`, `speakers`, tóm tắt/turns, và `style` nếu người dùng muốn kiểu
+riêng) để nó thiết kế concept hợp hội thoại → trả JSON
+`{ style, props: { title, kicker, channel, backgroundImage }, canvaQuery, geminiPrompt, notes }`.
+Agent có 2 style — làm theo đúng nhánh mà agent trả về:
+
+**Style `classic` (mặc định)** — ảnh cartoon KHÔNG chữ, Remotion phủ chữ:
+1. Dùng `canvaQuery` tạo ảnh nền Canva `youtube_thumbnail`, tải về
+   `public/thumbnails/scene.png` (**chi tiết + cách tải: `references/canva-bg.md`**).
+2. Render bằng `props` của agent:
 ```bash
-printf '{"backgroundImage":"thumbnails/scene.png","title":"FOOD & DRINK","kicker":"TALK ABOUT"}' > "projects/$ID/thumb.props.json"
+printf '{"backgroundImage":"thumbnails/scene.png","title":"WHO PAYS?!","kicker":"THE 94 DOLLAR BILL"}' > "projects/$ID/thumb.props.json"
+npx remotion still src/index.ts Thumbnail "projects/$ID/thumbnail.png" --props="projects/$ID/thumb.props.json"
+```
+
+**Style `dramatic`** — ảnh tả thực kịch tính, CHỮ NƯỚNG TRONG ẢNH (kiểu "RUINING
+YOUR MORNING?"), ảnh sinh ra ĐÃ là thumbnail hoàn chỉnh:
+1. Tạo ảnh (Canva/Gemini theo prompt của agent), lưu về `public/thumbnails/scene.png`.
+2. **Read ảnh SOÁT CHÍNH TẢ từng chuỗi trong `texts` của agent** (AI hay vẽ sai
+   chữ — sai thì sinh lại).
+3. Render chỉ để phủ logo (`bare` ẩn toàn bộ chữ Remotion):
+```bash
+printf '{"backgroundImage":"thumbnails/scene.png","bare":true}' > "projects/$ID/thumb.props.json"
 npx remotion still src/index.ts Thumbnail "projects/$ID/thumbnail.png" --props="projects/$ID/thumb.props.json"
 ```
 - **Logo kênh**: composition `Thumbnail` **LUÔN tự phủ `public/logo.jpg`** ở góc PHẢI
   DƯỚI (tròn, viền trắng, **mờ opacity 0.5 như watermark** — giống trong video) —
   không cần truyền gì; đặt `"logo":""` trong props để ẩn. Vì vậy concept/ảnh nền phải
   **chừa góc phải dưới thoáng** (agent đã lo trong query).
-- `title` = danh từ chính của chủ đề (vd "Talking About Your Weekend" → `YOUR WEEKEND`),
-  tránh lặp pill `kicker`. Không có Canva → bỏ `backgroundImage`, `Thumbnail` tự vẽ nền
+- `title`/`kicker` lấy từ agent (agent tối ưu móc tò mò/CTR), tránh lặp nghĩa giữa
+  hai dòng. Không có Canva → bỏ `backgroundImage`, `Thumbnail` tự vẽ nền
   gradient + 2 avatar chữ cái (logo vẫn hiện).
-- **Canva LỖI / hết quota AI** → như bước 5: soạn PROMPT sinh ảnh thumbnail (từ
-  `canvaQuery` của agent, thêm tỉ lệ 16:9 + giữa trống + không chữ), đưa người dùng
-  tạo bằng Gemini rồi chờ ảnh lưu về `public/thumbnails/scene.png` mới render still
-  (xem `references/canva-bg.md` mục "Fallback Gemini"). Chỉ dùng nền gradient khi
-  người dùng từ chối/không tạo được ảnh.
+- **Canva LỖI / hết quota AI** → dùng NGUYÊN VĂN `geminiPrompt` trong output của
+  agent (agent LUÔN trả kèm, đã có sẵn tỉ lệ 16:9 + giữa trống + không chữ): đưa
+  người dùng dán vào gemini.google.com (KHÔNG gọi Gemini API — image không có
+  free quota), **NGỪNG CHỜ** người dùng lưu ảnh về `public/thumbnails/scene.png`
+  (hoặc dán vào chat để mình lưu), Read ảnh kiểm tra bố cục rồi mới render still
+  (xem `references/canva-bg.md` mục "Fallback Gemini"). KHÔNG lặng lẽ tái dùng
+  ảnh của video khác. Chỉ dùng nền gradient khi người dùng từ chối/không tạo
+  được ảnh.
 
 ### 6b. Ghép intro (BẮT BUỘC — trước finalize, KHÔNG hỏi)
 Luôn ghép intro `public/intro.mp4` vào đầu video **trước** khi finalize, ghép thẳng

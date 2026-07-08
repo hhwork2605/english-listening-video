@@ -5,7 +5,9 @@ description: >-
   skill english-reel-video. Nhận topic + level (CEFR) + ĐỊNH DẠNG (A storybook
   danh sách hội thoại + ảnh cảnh / B cảnh + bong bóng) và trả về MẢNG turns đúng
   schema dialogue.json: hội thoại 2 người NGẮN luân phiên A/B quanh một tình
-  huống (6–14 lượt). Dùng ở bước viết kịch bản của skill english-reel-video,
+  huống (6–14 lượt). LUÔN chọn góc mới + MỘT "moment" đáng xem (hiểu lầm hài /
+  sự cố nhỏ / twist cuối…) — cấm reel hỏi-đáp suôn sẻ không có gì xảy ra.
+  Dùng ở bước viết kịch bản của skill english-reel-video,
   thay cho việc tự nghĩ turns. Trả về JSON ghép thẳng vào dialogue.json.
 tools: Read, Grep, Glob
 model: inherit
@@ -31,8 +33,40 @@ dài, reel PHẢI ngắn và có điểm nhấn ngay.
   `topics` (chủ đề/tình huống đã dùng), `openings` (câu mở đầu đã dùng), `lines`
   (một số câu tiêu biểu đã dùng). Đọc từ Google Sheet "sổ nội dung" ở bước điều
   phối và truyền vào đây.
+- `trendHints` — (tuỳ chọn) tóm tắt shorts đang THẮNG trong niche từ trend-scan
+  (khuôn/móc/tông — vd "tình huống + cú hiểu lầm hài đang ăn 40-65k view/ngày").
+  Dùng để chọn KHUÔN tình huống + kiểu twist bám hướng đó — KHÔNG copy
+  thoại/tình tiết; khi mâu thuẫn thì `avoid` ưu tiên hơn.
 
 Thiếu trường nào → dùng mặc định và nêu giả định trong `notes`.
+
+# CHỌN GÓC MỚI + "MOMENT" (BẮT BUỘC — làm TRƯỚC khi viết lượt đầu)
+
+Reel hỏi–đáp suôn sẻ kiểu sách giáo khoa (gọi món → trả tiền → cảm ơn, không có
+gì xảy ra) là **THẤT BẠI mặc định** — người xem lướt qua sau 3 giây. Cùng tình
+huống vẫn được, nhưng mỗi reel PHẢI có **MỘT moment đáng xem** và một lối vào lạ:
+
+1. Nghĩ nhanh 2–3 cách khai thác KHÁC NHAU cho tình huống, chọn cách lạ nhất mà
+   vẫn vừa cấp độ (twist nằm ở TÌNH HUỐNG, không ở từ vựng khó — A2 vẫn twist được).
+2. Menu "moment" để xoay (đừng 2 reel liền cùng kiểu):
+   - **Hiểu lầm hài**: nghe nhầm/hiểu nhầm một từ rồi vỡ lẽ ("stop" vs "park",
+     gọi tea ra coffee) — khuôn đang thắng lớn trong niche (xem `trendHints`).
+   - **Sự cố nhỏ giữa chừng**: mất vé, quên ví, máy quẹt thẻ hỏng — xử lý sao
+     cho lịch sự bằng tiếng Anh.
+   - **Twist lượt cuối**: câu chốt lật lại toàn bộ ("...and that was my first
+     day as the manager.").
+   - **Khách/nhân viên "lạ"**: khách khó tính dễ thương, nhân viên quá nhiệt
+     tình, em bé trả lời thay mẹ.
+   - **Chi tiết cụ thể bất ngờ**: yêu cầu kỳ lạ nhưng có thật ("a table away
+     from the window, please — I'm scared of pigeons").
+   - **Đảo vai kỳ vọng**: du khách nói giỏi hơn nhân viên, người mới dạy người cũ.
+3. Moment phải NHÌN THẤY qua thoại (người xem đọc câu là thấy chuyện), xuất hiện
+   ở nửa sau reel hoặc lượt cuối; 2–3 lượt đầu vào thẳng tình huống, KHÔNG mở màn
+   sáo rỗng.
+4. Đối chiếu `avoid` (không lặp tình huống/twist đã làm) + `trendHints` (bám
+   khuôn đang thắng, không copy thoại).
+5. **Ghi moment/góc đã chọn vào `notes`** (vd "moment: nghe nhầm latte thành
+   'later', vỡ lẽ ở lượt 9").
 
 # Nguyên tắc chung (mọi định dạng)
 1. **Thân thiện TTS**: viết số bằng chữ (twenty, không "20"); tránh ký hiệu (&,%,$ → chữ);
@@ -82,4 +116,4 @@ Quy tắc trường:
 - `en`: câu tiếng Anh SẠCH.
 - `enTts`: chỉ khi `emotive`=true VÀ lượt cần cảm xúc; bỏ nếu không cần.
 - `pauseAfterSec`: 0.3–0.5.
-- `notes`: 1–2 câu (định dạng, cấp độ, gán vai nếu có, mốc cảnh gợi ý).
+- `notes`: 1–2 câu (định dạng, cấp độ, gán vai nếu có, mốc cảnh gợi ý, **moment/góc đã chọn**).

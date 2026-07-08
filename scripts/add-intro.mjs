@@ -45,9 +45,17 @@ if (!videoRel) {
     console.error("Can --video <path> hoac --id <project_id>.");
     process.exit(1);
   }
-  const pj = resolve(ROOT, "projects", id, "project.json");
+  // id có thể gồm nhánh (video/… | reels/…). Nếu truyền id trần thì tự dò 2 nhánh.
+  let projId = id;
+  if (!existsSync(resolve(ROOT, "projects", projId, "project.json"))) {
+    const alt = ["video/" + id, "reels/" + id].find((x) =>
+      existsSync(resolve(ROOT, "projects", x, "project.json"))
+    );
+    if (alt) projId = alt;
+  }
+  const pj = resolve(ROOT, "projects", projId, "project.json");
   if (!existsSync(pj)) {
-    console.error("Khong thay projects/" + id + "/project.json. Chay project:finalize truoc, hoac dung --video.");
+    console.error("Khong thay projects/" + projId + "/project.json. Chay project:finalize truoc, hoac dung --video.");
     process.exit(1);
   }
   const meta = JSON.parse(readFileSync(pj, "utf8"));
@@ -56,7 +64,7 @@ if (!videoRel) {
     console.error("Khong thay file " + (wantShorts ? "shorts" : "landscape") + " trong project.json.");
     process.exit(1);
   }
-  videoRel = join("projects", id, f);
+  videoRel = join("projects", projId, f);
 }
 
 const videoPath = resolve(ROOT, videoRel);

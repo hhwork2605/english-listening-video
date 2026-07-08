@@ -21,6 +21,11 @@ export type ThumbnailProps = {
   /** Logo kênh (trong public/) — LUÔN hiện ở góc PHẢI DƯỚI. Mặc định "logo.jpg".
    *  Đặt "" để ẩn. */
   logo?: string;
+  /**
+   * true = ảnh nền ĐÃ CÓ SẴN CHỮ (style "dramatic" nướng chữ vào ảnh) — chỉ
+   * hiện ảnh + logo, ẩn toàn bộ pill/tiêu đề/badge/tag kênh để không đè chữ.
+   */
+  bare?: boolean;
 };
 
 /**
@@ -35,6 +40,7 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
   channel = "ENGLISH PODCAST",
   backgroundImage,
   logo = "logo.jpg",
+  bare = false,
 }) => {
   const headline = title ?? dialogue.topic;
   const ids = Object.keys(dialogue.speakers) as SpeakerId[];
@@ -57,6 +63,7 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
       ) : null}
 
       {/* Tên kênh góc trên phải */}
+      {!bare ? (
       <div
         style={{
           position: "absolute",
@@ -73,8 +80,10 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
       >
         {channel}
       </div>
+      ) : null}
 
       {/* Khối chữ ở giữa (pill + tiêu đề + badge) */}
+      {!bare ? (
       <AbsoluteFill
         style={{
           alignItems: "center",
@@ -129,9 +138,10 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({
           {dialogue.level}
         </div>
       </AbsoluteFill>
+      ) : null}
 
       {/* Không có ảnh nền: dựng 2 avatar chữ cái hai góc dưới */}
-      {!backgroundImage ? (
+      {!backgroundImage && !bare ? (
         <>
           <div style={{ position: "absolute", bottom: 24, left: 48 }}>
             <Speaker info={dialogue.speakers[leftId]} active enterFrame={0} size={300} />

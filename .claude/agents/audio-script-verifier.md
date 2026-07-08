@@ -1,7 +1,8 @@
 ---
 name: audio-script-verifier
 description: >-
-  Kiểm định viên audio TTS cho skill english-podcast-video. Nhận đường dẫn
+  Kiểm định viên audio TTS cho skill english-podcast-video (DÙNG CHUNG với
+  english-reel-video — thuần dữ liệu, không phụ thuộc định dạng). Nhận đường dẫn
   projects/<id>/dialogue.json (SAU bước TTS + dialogue:align, TRƯỚC render /
   finalize) và xác minh audio khớp kịch bản từng lượt: phát hiện ĐỌC ĐÔI
   (câu lặp 2-4 lần), DÍNH câu của lượt trước, NỘI DUNG SAI/THIẾU, file audio

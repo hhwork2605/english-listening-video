@@ -46,8 +46,9 @@ KHÔNG cần `role`).
 
 ## Pipeline (TL;DR)
 ```bash
-ID=$(npm run --silent project:new -- "<chủ đề reel>")               # 1) tạo folder
+ID=$(npm run --silent project:new -- "<chủ đề reel>" --type reels)  # 1) tạo folder (ID = reels/<slug>_<ts>)
 npm run --silent ledger -- check --tab reels                       # 2) avoid (chống trùng) — chạy TRƯỚC để gợi ý chủ đề
+npm run --silent trends -- competitors --shorts --max 20           # 2b) BẮT BUỘC: shorts đang hot trong niche (chủ đề + khuôn) — YT_API_KEY
 # 2) KHÔNG hỏi nội dung — mặc định TỰ viết; GỢI Ý 3-4 chủ đề chưa làm (né avoid) + hỏi ĐỊNH DẠNG (A/B)/level/TTS
 #    (2 reel trước đều A -> Recommended chuyển sang B — xen kẽ chống repetitive)
 # 3) spawn reel-dialogue-writer(+avoid) (+ reel-metadata-writer) -> ráp projects/$ID/dialogue.json
@@ -94,7 +95,7 @@ Ba tầng phải biến hóa, làm TỰ ĐỘNG không cần hỏi user:
 khác nhau — nhưng ĐỪNG để các reel liên tiếp trùng cả tông nền: đảo nhẹ
 `background` (hồng nhạt #fdeaea ↔ kem #fbf6e9 ↔ xanh nhạt #eef6fb…) và
 `speakerColors` giữa các reel (xem `background` trong `reel.props.json` của 2
-reel trước: `ls -t projects/*/reel.props.json | head -3`). Dạng B đổi ảnh cảnh +
+reel trước: `ls -t projects/reels/*/reel.props.json | head -3`). Dạng B đổi ảnh cảnh +
 bố cục nhân vật. KHÔNG tái dùng đúng một bộ ảnh cho 2 reel liên tiếp.
 
 **Tầng giọng (TTS GenMax/ElevenLabs):** đừng video nào cũng đúng 1 cặp giọng.
@@ -114,8 +115,9 @@ kiểu kết) và `reel-metadata-writer` (xoay công thức title), không cần
 
 ### 1. Tạo project
 ```bash
-ID=$(npm run --silent project:new -- "<chủ đề reel>")   # vd: coffee-shop_20260706-1010
+ID=$(npm run --silent project:new -- "<chủ đề reel>" --type reels)   # vd: reels/coffee-shop_20260706-1010
 ```
+`$ID` đã GỒM nhánh `reels/` — cứ nối `projects/$ID/...` như cũ là ra đúng đường dẫn.
 Mở rộng `PROGRESS.md` thành việc nhỏ cho reel này, tick dần.
 
 ### 2. Nội dung: MẶC ĐỊNH TỰ VIẾT — KHÔNG hỏi "đã có nội dung chưa"
@@ -128,6 +130,12 @@ TRƯỚC khi hỏi (kết quả `avoid` dùng lại cho bước 3, không cần 
 nghĩ 3–4 chủ đề/tình huống **CHƯA có trong `avoid`**, ưu tiên tình huống đời
 thường dễ viral (quán cà phê / khách sạn / sân bay / bác sĩ / phỏng vấn / mua
 sắm / small talk…), đưa làm phương án bấm chọn.
+**BẮT BUỘC nghiên cứu trend cùng lúc**: `npm run --silent trends -- competitors
+--shorts --max 20` (shorts đang hot của các kênh cùng niche, xếp theo view/ngày —
+kênh cấu hình ở `assets/competitor-channels.json`) → ưu tiên gợi ý chủ đề ĐANG
+HOT mà ledger chưa có, ghi rõ "đang hot: n view/ngày ở kênh X" trong mô tả
+phương án; để ý cả KHUÔN đang thắng (vd tình huống + cú hiểu lầm hài kiểu "Taxi
+Misunderstanding") để dùng ở bước viết. API lỗi → gợi ý theo ledger, không chặn.
 
 Hỏi 1 lần `AskUserQuestion` (dạng LỰA CHỌN, mặc định lên đầu + "(Recommended)";
 thông số nào người dùng ĐÃ nói trong tin nhắn thì KHÔNG hỏi lại):
@@ -146,7 +154,10 @@ Chọn xong → TỰ viết ở bước 3, không cần người dùng duyệt n
   chạy thì chạy ngay: `npm run --silent ledger -- check --tab reels` — đọc thẳng
   Google Sheet online).
 - **Spawn `reel-dialogue-writer`** (truyền `format`, `topic`, `level`, `turns`,
-  `speakerNames`, `emotive`, **`avoid`** = kết quả `check`): trả `{ turns, [reelFields], notes }`.
+  `speakerNames`, `emotive`, **`avoid`** = kết quả `check`, **`trendHints`** = tóm
+  tắt 3–5 shorts hot nhất liên quan từ trend-scan bước 2 — khuôn/móc/tông đang
+  thắng, vd "tình huống + hiểu lầm hài đang ăn khách"; writer bám HƯỚNG, không
+  copy thoại/title): trả `{ turns, [reelFields], notes }`.
   Agent sẽ chọn tình huống/khuôn/câu mở đầu KHÁC những gì đã có trong `avoid`.
 - **Cổng kiểm trùng** (sau khi ráp dialogue.json):
   ```bash
@@ -154,18 +165,21 @@ Chọn xong → TỰ viết ở bước 3, không cần người dùng duyệt n
   ```
   `verdict:"too-similar"` (cùng topic / opening trùng / overlap ≥ 0.4) → yêu cầu
   `reel-dialogue-writer` viết lại góc khác rồi kiểm lại tới khi `ok`.
-  - Turns hội thoại 2 người, KHÔNG `role`. Ráp `speakers` (A trái / B phải,
-    `side` cho bong bóng dạng B), `topic` (dùng cho metadata; dạng A storybook
-    thường ẨN header). Câu nên NGẮN (≤ ~9 từ) để dạng A mỗi câu 1–2 dòng.
+- **Ráp khung dialogue:** turns hội thoại 2 người, KHÔNG `role`. Ráp `speakers`
+  (A trái / B phải, `side` cho bong bóng dạng B), `topic` (dùng cho metadata;
+  dạng A storybook thường ẨN header). Câu nên NGẮN (≤ ~9 từ) để dạng A mỗi câu
+  1–2 dòng.
 - (Tùy chọn) **`reel-cefr-reviewer`** rà lại turns theo `level`.
 - **`reel-metadata-writer`** → `youtubeTitle`/`youtubeDescription`/`tags` + `fileKeywords`
   (tối ưu Shorts, có `#shorts`; MỌI hashtag chữ thường). Agent tự chạy `scripts/keyword-suggest.mjs`
   (YouTube/Google autocomplete, `--format shorts`) để tra cụm từ khóa đang được
   tìm thật rồi mới viết. Truyền kèm `youtubeTitle` của 1–2 reel gần nhất (lấy từ
-  `projects/*/dialogue.json` mới nhất) để agent xoay công thức title KHÁC khuôn cũ.
+  `projects/reels/*/dialogue.json` mới nhất) để agent xoay công thức title KHÁC khuôn cũ.
 - Ráp tất cả vào `projects/$ID/dialogue.json` (+ `fps`, `speakers`). Để
   `audio`/`durationInSec`/`words` trống. Mẫu: `assets/reel-conversation-example.json`;
-  trường đầy đủ: `references/reel-format.md`.
+  trường đầy đủ: `references/reel-format.md` (chú ý: các trường micro-lesson C
+  như `phrase`/`hook`/`kicker`/`cta`/`role` trong đó là LEGACY — dạng A/B hiện
+  tại KHÔNG dùng; phần trường chung title/level/topic/speakers/turns vẫn đúng).
 - **Xoay giọng (TTS GenMax):** chọn cặp voice từ `assets/genmax-voice-pool.json`
   KHÁC cặp reel gần nhất, ghi `speakers.A.genmaxVoiceId` / `speakers.B.genmaxVoiceId`
   vào dialogue.json (giọng `tested:false` → thử `--limit 1` trước; xem mục

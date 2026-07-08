@@ -32,7 +32,8 @@
     "build:content": "tsx scripts/build.ts",
     "dialogue:speed": "node scripts/adjust-speed.mjs",
     "ledger": "node scripts/ledger.mjs",
-    "keywords": "node scripts/keyword-suggest.mjs"
+    "keywords": "node scripts/keyword-suggest.mjs",
+    "trends": "node scripts/trend-scan.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.10.0",

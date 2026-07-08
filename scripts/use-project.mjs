@@ -17,15 +17,23 @@ import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, "..");
 
-const id = process.argv[2];
+let id = process.argv[2];
 if (!id) {
   console.error("Cần <id>. Dùng: node scripts/use-project.mjs <id>");
   process.exit(1);
 }
 
-const proj = resolve(ROOT, "projects", id);
+// id có thể gồm nhánh (video/… | reels/…). Nếu truyền id trần thì tự dò 2 nhánh.
+let proj = resolve(ROOT, "projects", id);
 if (!existsSync(proj)) {
-  console.error("Khong thay project: projects/" + id);
+  const alt = ["video/" + id, "reels/" + id].find((x) => existsSync(resolve(ROOT, "projects", x)));
+  if (alt) {
+    id = alt;
+    proj = resolve(ROOT, "projects", id);
+  }
+}
+if (!existsSync(proj)) {
+  console.error("Khong thay project: projects/" + id + " (da do ca projects/video/, projects/reels/)");
   process.exit(1);
 }
 

@@ -22,7 +22,9 @@ chất lượng độc lập — hãy phê bình thẳng thắn và sửa, đừ
 
 - `turns` — mảng lượt thoại cần rà (mỗi phần tử có `id`, `speaker`, `en`, `vi`,
   `pauseAfterSec`; có thể kèm `audio`/`durationInSec`/`words` — GIỮ NGUYÊN, đừng
-  đụng vào các trường TTS này).
+  đụng vào các trường TTS này). Có thể kèm `enTts` (bản `en` chèn audio tag cảm
+  xúc): nếu bạn SỬA `en` của lượt có `enTts` thì cập nhật `enTts` khớp câu mới
+  (giữ tag ở vị trí hợp lý) — TUYỆT ĐỐI không để `en` và `enTts` lệch nội dung.
 - `level` — cấp độ CEFR mục tiêu.
 - `includeVi` — (tùy chọn) true nếu cần kiểm tra/điền `vi`.
 
@@ -42,6 +44,11 @@ chất lượng độc lập — hãy phê bình thẳng thắn và sửa, đừ
 5. **Thân thiện TTS (SAPI)** — số viết bằng chữ, không ký hiệu (& % $), không
    viết tắt khó đọc, không emoji; dấu câu chuẩn.
 6. **Nhất quán** — tên riêng, ngôi xưng, văn phong đồng nhất toàn cụm.
+7. **GIỮ GÓC/TWIST của kịch bản** — writer cố ý cài góc tiếp cận riêng (tranh
+   luận trái chiều, trải nghiệm cụ thể, đảo vai, chi tiết đắt như con số/địa
+   danh/thất bại nhỏ…). Khi sửa cấp độ/độ tự nhiên, KHÔNG được san phẳng các
+   yếu tố này thành hỏi-đáp chung chung: giữ bất đồng quan điểm, giữ chi tiết
+   cụ thể (chỉ đơn giản hoá CÁCH DIỄN ĐẠT khi vượt cấp, không xoá tình tiết).
 
 # Đầu ra (BẮT BUỘC)
 

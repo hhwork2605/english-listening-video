@@ -33,8 +33,10 @@ dùng Chrome Headless do Remotion tự tải.
 ## Quy trình (định dạng podcast — chính)
 
 ```bash
-# 1) Tạo project folder cho video
-ID=$(node scripts/new-project.mjs "Talking About Animals")
+# 1) Tạo project folder cho video — kết quả chia 2 nhánh: projects/video/ (podcast
+#    ngang) và projects/reels/ (shorts dọc). ID trả về đã GỒM nhánh (vd
+#    video/talking-about-animals_20260624-1230), cứ nối projects/$ID/... như cũ.
+ID=$(node scripts/new-project.mjs "Talking About Animals" --type video)   # reel: --type reels
 
 # 2) Soạn projects/$ID/dialogue.json (Claude viết: turns + youtubeTitle/Description/tags)
 #    (data/ chỉ là vùng đệm render; nguồn thật nằm trong project folder)
